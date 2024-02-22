@@ -17,6 +17,7 @@ To get started with the Backend Lyon project, follow these steps:
 2. Install the necessary dependencies using `npm install`.
 3. Configure the environment variables for your development environment.
 4. Run the application using `npm start`.
+5. Configure file .env with your credentials /MYSQL
 
 ## Contributing
 
