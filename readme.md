@@ -31,27 +31,4 @@ This project is licensed under the [MIT License](LICENSE).
 If you have any questions or suggestions regarding the Backend Lyon project, please feel free to reach out to us at [oscar_varela_gallardo@hotmail.com]
 (oscar_varela_gallardo@hotmail.com).
 
-
-Levantar docker con postgres
-```
-Comando para levantar un contenedor de postgres con docker
-docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
-```
-Inicializar el docker con la base de datos
-```
-Comando para inicializar la base de datos
-docker-compose up -d database
-
-Comando para validar si esta corriendo la base de datos
-
- docker-compose ps
-```
-
-Conectarse a la base de datos
-```
-docker-compose exec database bash
-```
-conectarse a la base de datos
-```
-psql -h localhost -d "nombreDB" -U "usuario"
 ```
