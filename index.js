@@ -1,6 +1,8 @@
 import express from 'express'
 import db from './src/config/db.js'
 import userRoutes from './src/routes/userRoutes.js'
+import productRoutes from './src/routes/productRoutes.js';
+
 const app = express()
 
 app.use(express.json())
@@ -13,7 +15,8 @@ try {
 catch (error) {
     console.log(error);
 }
-app.use('/',userRoutes)
+app.use('/user',userRoutes);
+app.use('/product', productRoutes);
 
 const port = 3000   || process.env.PORT
 

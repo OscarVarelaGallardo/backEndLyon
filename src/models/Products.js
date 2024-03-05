@@ -32,4 +32,6 @@ const Products = db.define('products', {
         type: DataType.STRING,
         allowNull: false
     }
-})
+});
+
+export default Products;
