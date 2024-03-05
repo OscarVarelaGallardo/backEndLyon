@@ -1,4 +1,4 @@
-import Products from '../models/Products';
+import Products from '../models/Products.js';
 
 const createProduct = async (req,res) => {
     const{name, price, image, stock, category, description} = req.body;
@@ -13,7 +13,7 @@ const createProduct = async (req,res) => {
     }
 };
 
-const getALLProduct = async (req,res) => {
+const getALLProducts = async (req,res) => {
     
     try{
         const products = await Products.findAll();
@@ -51,7 +51,7 @@ const updateProduct = async (req,res) => {
         },{
             where:{id:productId}
         });
-        res.status(200).json({status:200, msg:'producto actualizado exitosamente', product: newProduct});
+        res.status(200).json({status:200, msg:'producto actualizado exitosamente'});
     }catch (error){
         console.error('Error al actualizar producto:',error);
         res.status(500).json({status:500, msg:'error al actualizar producto', error:error.mesage});
@@ -69,11 +69,11 @@ const deleteProduct = async (req,res) => {
         await Products.destroy({
             where:{id:productId}
         });
-        res.status(200).json({status:200, msg:'producto eliminado exitosamente', product});
+        res.status(200).json({status:200, msg:'producto eliminado exitosamente'});
     }catch (error){
         console.error('Error al eliminar producto:',error);
         res.status(500).json({status:500, msg:'error al eliminar producto', error:error.mesage});
     }
 };
 
-export {createProduct, getALLProduct, getProductById, deleteProduct};
+export {createProduct, getALLProducts, getProductById, updateProduct, deleteProduct};
