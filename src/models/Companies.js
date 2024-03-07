@@ -1,7 +1,7 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
 
-const Companies = db.define('companies', {
+const companiesSchema = db.define('companies', {
     id: {
         type: DataType.INTEGER,
         primaryKey: true,
@@ -31,23 +31,22 @@ const Companies = db.define('companies', {
         type: DataType.STRING,
         allowNull: false
     },
-  
-    userId: {
+/*     userId: {
         type: DataType.INTEGER,
         allowNull: false,
         references: {
             model: 'users',
             key: 'id'
         }
-    }
+    } */
 
 })
 
-Companies.associate = (models) => {
-    Companies.belongsTo(models.User, {
+/* companiesSchema.associate = (models) => {
+    companiesSchema.belongsTo(models.User, {
         foreignKey: 'userId',
         onDelete: 'CASCADE'
     })
 }
-
-export default Companies;
+ */
+export default companiesSchema;
