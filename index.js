@@ -2,6 +2,8 @@ import express from 'express'
 import db from './src/config/db.js'
 import userRoutes from './src/routes/userRoutes.js'
 import productRoutes from './src/routes/productRoutes.js';
+import comentRoutes from './src/routes/comentRoutes.js'
+import companiesRoutes from './src/routes/companiesRoutes.js'
 
 const app = express()
 
@@ -15,6 +17,8 @@ try {
 catch (error) {
     console.log(error);
 }
+app.use('/companies', companiesRoutes);
+app.use('/coments', comentRoutes);
 app.use('/user',userRoutes);
 app.use('/product', productRoutes);
 
