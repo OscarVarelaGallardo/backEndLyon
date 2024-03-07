@@ -17,6 +17,12 @@ try {
 catch (error) {
     console.log(error);
 }
+
+//recibir json
+app.use(express.json());
+//recibir datos por formulario
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/companies', companiesRoutes);
 app.use('/coments', comentRoutes);
 app.use('/user',userRoutes);
