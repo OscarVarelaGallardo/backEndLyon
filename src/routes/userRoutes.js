@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/register', register);
 router.post('/login', login);
-router.post('/confirm/:token', confirmToken)
+router.get('/confirm/:token', confirmToken)
 
 
 
