@@ -4,8 +4,10 @@ import userRoutes from './src/routes/userRoutes.js'
 import productRoutes from './src/routes/productRoutes.js';
 import comentRoutes from './src/routes/comentRoutes.js'
 import companiesRoutes from './src/routes/companiesRoutes.js'
+import {transporter} from './src/helpers/nodemailer.js'
 
 const app = express()
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -17,6 +19,14 @@ try {
 catch (error) {
     console.log(error);
 }
+
+
+transporter.verify().then(() => {
+    console.log('Ready for send emails')
+}).catch((error) => {
+    console.log(error)
+})
+
 
 //recibir json
 app.use(express.json());
