@@ -14,7 +14,7 @@ const createProduct = async (req, res) => {
     }
 };
 
-const getALLProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
 
     try {
         const products = await Products.findAll();
@@ -95,11 +95,11 @@ const storageImg = async (req, res) => {
     const productId = req.params.id;
     try {
         const product = await Products.findByPk(productId);
+        
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
         await product.update({
-           //poner el nombre de la imagen en la base de datos
             image: req.file.filename
         });
 
@@ -111,4 +111,4 @@ const storageImg = async (req, res) => {
 }
 
 
-export { createProduct, getALLProducts, getProductById, updateProduct, deleteProduct, updateProduct2,storageImg };
+export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, updateProduct2,storageImg };

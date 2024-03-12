@@ -4,9 +4,10 @@ import userRoutes from './src/routes/userRoutes.js'
 import productRoutes from './src/routes/productRoutes.js';
 import comentRoutes from './src/routes/comentRoutes.js'
 import companiesRoutes from './src/routes/companiesRoutes.js'
+import categoryRoutes from './src/routes/categoryRoutes.js'
 import {transporter} from './src/helpers/nodemailer.js'
 import cors from 'cors';
-
+import seeders from './src/helpers/seeders.js';
 const app = express()
 
 app.use(cors({
@@ -18,8 +19,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 try {
     await db.authenticate();
-    db.sync();
-    console.log('Conexión a la base de datos establecida correctamente.');
+    await db.sync({ force: true });
+   
 }
 catch (error) {
     console.log(error);
@@ -42,6 +43,7 @@ app.use('/companies', companiesRoutes);
 app.use('/coments', comentRoutes);
 app.use('/user',userRoutes);
 app.use('/product', productRoutes);
+app.use('/category', categoryRoutes);
 
 const port = 3000   || process.env.PORT
 

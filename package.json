@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "build": "netlify deploy --prod"
+    "build": "netlify deploy --prod",
+    "db:import":"node ./src/helpers/seeders.js"
   },
   "keywords": [
     "MVC",

@@ -24,14 +24,27 @@ const Products = db.define('products', {
         type: DataType.INTEGER,
         allowNull: false
     },
-    category: {
-        type: DataType.STRING,
-        allowNull: false
-    },
+ 
     description: {
         type: DataType.STRING,
         allowNull: false
-    }
-});
+    },
+  
+    createdAt: {
+        type: DataType.DATE,
+        allowNull: false,
+        defaultValue: DataType.NOW
+    },
+})
+
+Products.associate = (models) => {
+    Products.belongsTo(models.Category, {
+        foreignKey: 'category_id',
+        onDelete: 'CASCADE'
+    })
+}
+
+
+
 
 export default Products;
