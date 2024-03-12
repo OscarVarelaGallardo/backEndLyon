@@ -16,6 +16,7 @@ const Rol = db.define('rol', {
         allowNull: false
     }
 })
+Rol.sync({ force: true })
 
 
 export default Rol;

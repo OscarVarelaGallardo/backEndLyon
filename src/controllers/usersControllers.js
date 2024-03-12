@@ -1,7 +1,7 @@
 import userSchema from '../models/User.js';
 import generateToken from '../helpers/generateId.js';
 import generateJWT from '../helpers/generarJWT.js';
-import { transporter } from '../helpers/nodemailer.js';
+import { sendMail } from '../helpers/nodemailer.js';
 const register = async (req, res) => {
     const { email, password } = req.body;
     const existEmail = await userSchema.findOne({ where: { email } });
@@ -13,23 +13,7 @@ const register = async (req, res) => {
         user.token = generateToken();
         user.confirm = false;
         await user.save();
-
-        const mail = {
-            from: ' ',
-            to: user.email,
-            subject: 'Bienvenido a la plataforma  para configurar tu cuenta',
-            text: ' Hola, bienvenido a la plataforma  para configurar tu cuenta, por favor sigue el siguiente enlace para configurar tu cuenta',
-            html: '<h1>Hola, bienvenido a la plataforma  para configurar tu cuenta, por favor sigue el siguiente enlace para configurar tu cuenta</h1>' +
-                `<a href="https://backendlyon.onrender.com/user/confirm/${user.token}">Click aqui para confirmar tu cuenta</a>`
-        }
-        transporter.sendMail(mail, (error, info) => {
-            if (error) {
-                console.log(error)
-            } else {
-                console.log(info)
-            }
-        }
-        )
+        await sendMail(user.token, user.email);
         res.status(200).json({ status: 200, msg: 'Cliente creado correctamente' });
     } catch (error) {
         res.status(500).json({ status: 500, msg: error });

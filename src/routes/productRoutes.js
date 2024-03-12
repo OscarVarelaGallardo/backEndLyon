@@ -10,8 +10,10 @@ router.get('/', getALLProducts);
 
 router.get('/:id', getProductById);
 
-router.put('/:id', updateProduct );
+router.put('/update/:id', updateProduct );
 
-router.delete('/:id', deleteProduct);
+router.delete('/delete/:id', deleteProduct);
+
+
 
 export default router;
