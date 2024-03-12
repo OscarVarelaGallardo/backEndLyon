@@ -1,5 +1,6 @@
 import Products from '../models/Products.js';
 
+
 const createProduct = async (req, res) => {
     const { name, price, image, stock, category, description } = req.body;
     try {
@@ -90,5 +91,24 @@ const updateProduct2 = async (req, res) => {
         res.status(500).json({ status: 500, msg: 'error al actualizar producto', error: error.message });
     }
 }
+const storageImg = async (req, res) => {
+    const productId = req.params.id;
+    try {
+        const product = await Products.findByPk(productId);
+        if (!product) {
+            return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
+        }
+        await product.update({
+           //poner el nombre de la imagen en la base de datos
+            image: req.file.filename
+        });
 
-export { createProduct, getALLProducts, getProductById, updateProduct, deleteProduct, updateProduct2 };
+        res.status(200).json({ status: 200, msg: 'producto actualizado exitosamente', product });
+    } catch (error) {
+        console.error('Error al actualizar producto:', error);
+        res.status(500).json({ status: 500, msg: 'error al actualizar producto', error: error.message });
+    }
+}
+
+
+export { createProduct, getALLProducts, getProductById, updateProduct, deleteProduct, updateProduct2,storageImg };
