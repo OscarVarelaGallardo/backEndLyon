@@ -5,9 +5,14 @@ import productRoutes from './src/routes/productRoutes.js';
 import comentRoutes from './src/routes/comentRoutes.js'
 import companiesRoutes from './src/routes/companiesRoutes.js'
 import {transporter} from './src/helpers/nodemailer.js'
+import cors from 'cors';
 
 const app = express()
 
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
