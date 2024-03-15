@@ -2,10 +2,10 @@ import Products from '../models/Products.js';
 
 
 const createProduct = async (req, res) => {
-    const { name, price, image, stock, category, description } = req.body;
+    const { name, price, image, stock, category, description,productStatus } = req.body;
     try {
         const newProduct = await Products.create({
-            name, price, image, stock, category, description
+            name, price, image, stock, category, description,productStatus
         });
         res.status(201).json({ status: 201, msg: 'producto creado exitosamente', product: newProduct });
     } catch (error) {
@@ -39,22 +39,30 @@ const getProductById = async (req, res) => {
     }
 };
 
-const updateProduct = async (req, res) => {
 
+const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, price, image, stock, category, description } = req.body;
+
     try {
         const product = await Products.findByPk(id);
         if (!product) {
-            return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
+            return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
+
+        const productStatus = product.productStatus;
+        if (productStatus === 0 || productStatus === false) {
+            return res.status(403).json({ status: 403, msg: 'No se puede actualizar el producto porque el status es inactivo' });
+        }
+
         await product.update({
             name, price, image, stock, category, description
         });
-        res.status(200).json({ status: 200, msg: 'producto actualizado exitosamente', product });
+
+        res.status(200).json({ status: 200, msg: 'Producto actualizado exitosamente', product });
     } catch (error) {
         console.error('Error al actualizar producto:', error);
-        res.status(500).json({ status: 500, msg: 'error al actualizar producto', error: error.message });
+        res.status(500).json({ status: 500, msg: 'Error al actualizar producto', error: error.message });
     }
 };
 

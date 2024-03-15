@@ -29,6 +29,11 @@ const Products = db.define('products', {
         type: DataType.STRING,
         allowNull: false
     },
+    productStatus:{
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
   
     createdAt: {
         type: DataType.DATE,
