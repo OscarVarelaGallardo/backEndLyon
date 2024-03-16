@@ -11,11 +11,11 @@ const companiesSchema = db.define('companies', {
         type: DataType.STRING,
         allowNull: false
     },
-    companyDescription: {
+    companyCountry: {
         type: DataType.STRING,
         allowNull: false
     },
-    companyAddress: {
+    productType: {
         type: DataType.STRING,
         allowNull: false
     },
@@ -23,11 +23,11 @@ const companiesSchema = db.define('companies', {
         type: DataType.STRING,
         allowNull: false
     },
-    companyEmail: {
+    companyContact: {
         type: DataType.STRING,
         allowNull: false
     },
-    companyWeb: {
+    companyRfc: {
         type: DataType.STRING,
         allowNull: false
     },
