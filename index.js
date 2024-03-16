@@ -20,7 +20,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 try {
     await db.authenticate();
-   await db.sync({ force: true }); 
+   //create table if not exist
+    await db.sync({ force: false });
+    //seeders()
+    console.log('Connection has been established successfully.');
    
 }
 catch (error) {
