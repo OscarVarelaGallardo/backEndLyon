@@ -1,10 +1,10 @@
 import companiesSchema from '../models/Companies.js';
 
 const createCompany = async (req, res) => {
-    const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc } = req.body;
+    const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc,user_id } = req.body;
     try {
         const newCompany = await companiesSchema.create({ 
-            companyName, companyCountry, productType, companyPhone, companyContact, companyRfc 
+            companyName, companyCountry, productType, companyPhone, companyContact, companyRfc ,user_id
         });
         
         res.status(200).json({ status: 200, msg: 'Empresa creada correctamente', company:newCompany });
