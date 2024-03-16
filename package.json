@@ -9,7 +9,8 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "build": "netlify deploy --prod",
-    "db:import":"node ./src/helpers/seeders.js"
+    "db:import":"node ./src/config/seeders.js -i",
+    "db:delete":"node ./src/config/seeders.js -d"
   },
   "keywords": [
     "MVC",

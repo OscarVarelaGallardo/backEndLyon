@@ -7,7 +7,7 @@ import companiesRoutes from './src/routes/companiesRoutes.js'
 import categoryRoutes from './src/routes/categoryRoutes.js'
 import {transporter} from './src/helpers/nodemailer.js'
 import cors from 'cors';
-import seeders from './src/helpers/seeders.js';
+import seeders from './src/config/seeders.js';
 const app = express()
 
 app.use(cors({
@@ -19,20 +19,19 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 try {
     await db.authenticate();
-    await db.sync({ force: true });
+   // await db.sync({ force: true });
    
 }
 catch (error) {
     console.log(error);
 }
 
-
+//validar que se envien los correos
 transporter.verify().then(() => {
     console.log('Ready for send emails')
 }).catch((error) => {
     console.log(error)
 })
-
 
 //recibir json
 app.use(express.json());
