@@ -1,7 +1,7 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
 
-const Rol = db.define('rols', {
+const Rol = db.define('rol', {
     id: {
         type: DataType.INTEGER,
         primaryKey: true,
@@ -16,7 +16,7 @@ const Rol = db.define('rols', {
         allowNull: false
     }
 })
-Rol.sync({ force: true })
+
 
 
 export default Rol;

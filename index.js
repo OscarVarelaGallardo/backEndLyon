@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 try {
     await db.authenticate();
-   // await db.sync({ force: true });
+ /*    await db.sync({ force: true }); */
    
 }
 catch (error) {

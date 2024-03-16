@@ -3,7 +3,7 @@ import generateToken from '../helpers/generateId.js';
 import generateJWT from '../helpers/generarJWT.js';
 import { sendMail } from '../helpers/nodemailer.js';
 const register = async (req, res) => {
-    const { email, password } = req.body;
+    const { email } = req.body;
     const existEmail = await userSchema.findOne({ where: { email } });
     if (existEmail) {
         return res.status(400).json({ status: 400, msg: 'El email ya se encuentra registrado' });
@@ -12,13 +12,13 @@ const register = async (req, res) => {
         const user = new userSchema(req.body);
         user.token = generateToken();
         user.confirm = false;
+        user.rol_id = 2;
         await user.save();
         await sendMail(user.token, user.email);
         res.status(200).json({ status: 200, msg: 'Cliente creado correctamente' });
     } catch (error) {
         res.status(500).json({ status: 500, msg: error });
     }
-
 }
 const login = async (req, res) => {
     try {
@@ -39,13 +39,11 @@ const login = async (req, res) => {
         }
 
         res.status(200).json({ status: 200, msg: 'Usuario logueado correctamente', user: generateUser(user) });
-
     } catch (error) {
         const msg = new Error("Error en el servidor")
         res.status(500).json({ status: 500, msg: msg.message });
     }
 }
-
 const confirmToken = async (req, res) => {
     const { token } = req.params
     const userConfirm = await userSchema.findOne({ where: { token } });
