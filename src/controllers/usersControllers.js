@@ -1,8 +1,8 @@
 import User from '../models/User.js';
 import generateToken from '../helpers/generateId.js';
 import generateJWT from '../helpers/generarJWT.js';
-import { sendMail } from '../helpers/nodemailer.js';
-import jwt from 'jsonwebtoken';
+import { sendMail, sendMailRecover } from '../helpers/nodemailer.js';
+
 const register = async (req, res) => {
     const { email } = req.body;
     const existEmail = await User.findOne({ where: { email } });
@@ -70,6 +70,27 @@ const confirmToken = async (req, res) => {
 
 }
 
+const recoverPassword = async (req, res) => {
+    const { email } = req.body
+    const user = await User.findOne({ where: { email } })
+    if (!user) {
+        const error = new Error("Usuario no encontrado ")
+        return res.status(400).json({ status: 400, msg: error.message })
+    }
+    try {
+        const token = generateToken()
+        user.password = token
+        console.log(user.password)
+        await user.save()
+        await sendMailRecover(token, user.email)
+        res.status(200).json({ status: 200, msg: 'Correo enviado correctamente' });
+    } catch (error) {
+        const msg = new Error("Error en el servidor")
+        res.status(500).json({ status: 500, msg: msg.message });
+    }
+}
+
+
 const generateUser = (user) => {
     const userReturn = {
         id: user.id,
@@ -81,4 +102,4 @@ const generateUser = (user) => {
     return userReturn
 }
 
-export { register, login, confirmToken }
+export { register, login, confirmToken, recoverPassword}

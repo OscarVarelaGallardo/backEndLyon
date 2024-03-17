@@ -38,7 +38,41 @@ const sendMail = async (token, email) => {
 
 }
 
+const sendMailRecover = async (token, email) => {
+   
+    const mailToken = {
+
+        from: ' ',
+        to: email,
+        subject: 'Recuperar contraseña',
+        text: `Recuperar contraseña`,
+        html: 
+            '<div  style="padding:50px; border-radius:10px; text-align:center; box-shadow: 10px 5px 5px yellow; line-height: 1.6; background-color: #f2f2f2; ">' +
+            '<h1>Recuperar contraseña </h1>' +
+
+            '<p>Por favor copia y pega la siguiente contraseña temporal en la aplicacion</p>' +
+
+           '<p>Si no has solicitado este cambio, por favor ignora este mensaje</p>' +
+           //esta es tu contraseña temporal
+            `<p style="background-color:green;  
+            color:white;margin:10px;padding:10px;border-radius:10px;text-decoration:none;">Esta  es tu contraseña temporal es : 
+            <br style="margin:10px;padding:10px;border-radius:10px;text-decoration:none;">
+            ${token}</br></p>`
+    
+            + '</div>'
+    }
+    transporter.sendMail(mailToken, (error, info) => {
+        if (error) {
+            console.log(error)
+        } else {
+            console.log(info)
+        }
+    }
+    )
+
+}
 
 
 
-export { transporter, sendMail }
+
+export { transporter, sendMail, sendMailRecover }
