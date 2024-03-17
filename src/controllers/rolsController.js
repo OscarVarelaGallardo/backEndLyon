@@ -45,6 +45,7 @@ const updateRol = async (req, res) => {
         if (!rol) {
             return res.status(404).json({ status: 404, msg: 'Rol no encontrado' })
         }
+        await rol.update({ name, description });
         return res.status(200).json({ status: 200, msg: 'Rol actualizado exitosamente', rol });
     } catch (error) {
         console.error('Error al actualizar el rol:', error);
