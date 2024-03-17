@@ -31,6 +31,10 @@ const User = db.define('user', {
         type: DataType.STRING,
         allowNull: true
     },
+    jwt: {
+        type: DataType.STRING,
+        allowNull: true
+    },
     createdAt: {
         type: DataType.DATE,
         allowNull: false,

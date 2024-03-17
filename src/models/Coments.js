@@ -15,7 +15,7 @@ const Coments = db.define('coments', {
         type: DataType.INTEGER,
         allowNull: false
     },
-   /*  userId: {
+    userId: {
         type: DataType.INTEGER,
         allowNull: false,
         references: {
@@ -30,7 +30,7 @@ const Coments = db.define('coments', {
             model: 'products',
             key: 'id'
         }
-    } */
+    } 
 })
 
 export default Coments

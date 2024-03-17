@@ -1,15 +1,16 @@
-import userSchema from '../models/User.js';
+import User from '../models/User.js';
 import generateToken from '../helpers/generateId.js';
 import generateJWT from '../helpers/generarJWT.js';
 import { sendMail } from '../helpers/nodemailer.js';
+import jwt from 'jsonwebtoken';
 const register = async (req, res) => {
     const { email } = req.body;
-    const existEmail = await userSchema.findOne({ where: { email } });
+    const existEmail = await User.findOne({ where: { email } });
     if (existEmail) {
         return res.status(400).json({ status: 400, msg: 'El email ya se encuentra registrado' });
     }
     try {
-        const user = new userSchema(req.body);
+        const user = new User(req.body);
         user.token = generateToken();
         user.confirm = false;
         user.rol_id = 2;
@@ -23,7 +24,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await userSchema.findOne({ where: { email } });
+        const user = await User.findOne({ where: { email } });
         if (!user) {
             const error = new Error("El usuario no existe ")
             return res.status(400).json({ status: 200, msg: error.message })
@@ -37,8 +38,11 @@ const login = async (req, res) => {
             const error = new Error("Contraseña incorrecta ")
             return res.status(400).json({ status: 400, msg: error.message })
         }
-
-        res.status(200).json({ status: 200, msg: 'Usuario logueado correctamente', user: generateUser(user) });
+        //generate token
+        const createUser = generateUser(user) 
+        createUser.token = generateJWT(user.id)
+        User.update({ jwt: createUser.token }, { where: { id: user.id } })
+        res.status(200).json({ status: 200, msg: 'Usuario logueado correctamente', createUser });
     } catch (error) {
         const msg = new Error("Error en el servidor")
         res.status(500).json({ status: 500, msg: msg.message });
@@ -46,7 +50,7 @@ const login = async (req, res) => {
 }
 const confirmToken = async (req, res) => {
     const { token } = req.params
-    const userConfirm = await userSchema.findOne({ where: { token } });
+    const userConfirm = await User.findOne({ where: { token } });
     if (!userConfirm) {
         const error = new Error("Usuario no encontrado ")
         return res.status(400).json({ status: 400, msg: error.message })
@@ -71,7 +75,8 @@ const generateUser = (user) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        token: generateJWT(user.id)
+       
+
     }
     return userReturn
 }
