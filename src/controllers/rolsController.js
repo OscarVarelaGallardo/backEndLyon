@@ -16,6 +16,9 @@ const createRol = async (req, res) => {
 const getAllRols = async (req, res) => {
     try {
         const rols = await Rol.findAll();
+        if (rols.length === 0) {
+            return res.status(200).json({ status: 200, msg: 'No hay roles actualmente, crea uno' });
+        }
         res.status(200).json({ status: 200, msg: 'Roles econtrados exitosamente', rols });
     } catch (error) {
         console.error('Error al encontrar roles:', error);
