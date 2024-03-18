@@ -1,6 +1,7 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
-
+import Users from './User.js'
+import Products from './Product.js'
 const Coments = db.define('coments', {
     id: {
         type: DataType.INTEGER,
