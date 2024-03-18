@@ -1,6 +1,6 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
-import Users from './models/Users.js'
+import User from '../models/User.js'
 import Products from '../models/Products.js'
 const Coments = db.define('coments', {
     id: {
@@ -19,12 +19,7 @@ const Coments = db.define('coments', {
    
 })
 
-Users.associate = (models) => {
-    Users.belongsTo(models.User, {
-        foreignKey: 'user_Id',
-        onDelete: 'CASCADE'
-    })
-}
+User.hasMany(Coments, { foreignKey: 'user_Id' })
 
 Products.associate = (models) => {
     Products.belongsTo(models.Product, {
