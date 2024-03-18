@@ -50,7 +50,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/companies', companiesRoutes);
-app.use('/coments', comentRoutes);
+/* app.use('/coments', comentRoutes); */
 app.use('/user', userRoutes);
 app.use('/product', productRoutes);
 app.use('/category', categoryRoutes);
