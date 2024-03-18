@@ -15,22 +15,22 @@ const Coments = db.define('coments', {
         type: DataType.INTEGER,
         allowNull: false
     },
-    userId: {
-        type: DataType.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
-        }
-    },
-    productId: {
-        type: DataType.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'products',
-            key: 'id'
-        }
-    } 
+   
 })
+
+Users.associate = (models) => {
+    Users.belongsTo(models.User, {
+        foreignKey: 'user_Id',
+        onDelete: 'CASCADE'
+    })
+}
+
+Products.associate = (models) => {
+    Products.belongsTo(models.Product, {
+        foreignKey: 'product_Id',
+        onDelete: 'CASCADE'
+    })
+}
+
 
 export default Coments
