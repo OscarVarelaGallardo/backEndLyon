@@ -6,18 +6,23 @@ import { exit } from 'process';
 const seeders = async () => {
     try {
         const count = await Category.count();
-        if (count > 0) return;
-        await Category.bulkCreate([
-            { name: 'Electronics', description: 'All electronics products', createdAt: new Date(), updatedAt: new Date(), status: true },
-            { name: 'Books', description: 'All books', createdAt: new Date(), updatedAt: new Date(), status: true },
-            { name: 'Clothes', description: 'All clothes', createdAt: new Date(), updatedAt: new Date(), status: true }
-        ]);
+        if (count === 0) {
+            await Category.bulkCreate([
+                { name: 'Electronics', description: 'All electronics products', createdAt: new Date(), updatedAt: new Date(), status: true },
+                { name: 'Books', description: 'All books', createdAt: new Date(), updatedAt: new Date(), status: true },
+                { name: 'Clothes', description: 'All clothes', createdAt: new Date(), updatedAt: new Date(), status: true }
+            ]);
+        }
+        const countRol = await Rol.count();
+        if (countRol === 0) {
+            await Rol.bulkCreate([
+                { name: 'Admin', description: 'Este rol es para los administradores' },
+                { name: 'User', description: 'Este rol es para los usuarios' },
+                { name: 'Empresa', description: 'Este rol es para las empresas' },
 
-        await Rol.bulkCreate([
-            { name: 'admin', description: 'Administrator' },
-            { name: 'moderator', description: 'Moderator' },
-            { name: 'user', description: 'User' }
-        ]);
+            ]);
+        }
+
         console.log('Seeders run successfully');
         exit();
     } catch (error) {
@@ -26,7 +31,7 @@ const seeders = async () => {
 }
 const deleteSeeders = async () => {
     try {
-        await Promise.all([Category.destroy({ where: {},truncate:true }), Rol.destroy({ where: {},truncate: true })]);
+        await Promise.all([Category.destroy({ where: {}, truncate: true }), Rol.destroy({ where: {}, truncate: true })]);
         console.log('Seeders deleted successfully');
         exit();
     } catch (error) {

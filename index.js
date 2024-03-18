@@ -10,6 +10,7 @@ import { transporter } from './src/helpers/nodemailer.js'
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './src/config/swagger.js';
+import seeders from './src/config/seeders.js';
 
 const app = express()
 
@@ -28,10 +29,9 @@ app.use(express.urlencoded({ extended: true }))
 try {
     await db.authenticate();
     //create table if not exist
-   //await db.sync({ force: true });
-    //seeders()
+   await db.sync({ force: true });
+    await seeders()
     console.log('Connection has been established successfully.');
-
 }
 catch (error) {
     console.log(error);
