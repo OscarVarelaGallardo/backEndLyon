@@ -5,8 +5,8 @@ import { exit } from 'process';
 
 const seeders = async () => {
     try {
-        const count = await Category.count();
-        if (count === 0) {
+        const countCategory = await Category.count();
+        if (countCategory === 0) {
             await Category.bulkCreate([
                 { name: 'Electronics', description: 'All electronics products', createdAt: new Date(), updatedAt: new Date(), status: true },
                 { name: 'Books', description: 'All books', createdAt: new Date(), updatedAt: new Date(), status: true },

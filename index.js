@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }))
 try {
     await db.authenticate();
     //create table if not exist
-   await db.sync({ force: true });
+   //await db.sync({ force: true });
     await seeders()
     console.log('Connection has been established successfully.');
 }
