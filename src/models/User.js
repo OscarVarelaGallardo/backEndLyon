@@ -1,9 +1,6 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
 import bcrypt from 'bcrypt'
-
-
-
 const User = db.define('user', {
     id: {
         type: DataType.INTEGER,

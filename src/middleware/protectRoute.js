@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-
+import jwt from 'jsonwebtoken';
 const protectRoute = (req, res, next) => {
         const token = req.headers.authorization;
         if (!token) {
@@ -16,6 +16,10 @@ const protectRoute = (req, res, next) => {
                 message: 'Usuario no autorizado para esta accion.'
             });
         }
+
+     /*    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+         */
         next(); 
     
 }

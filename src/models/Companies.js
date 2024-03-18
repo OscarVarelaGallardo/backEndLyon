@@ -32,6 +32,11 @@ const companiesSchema = db.define('companies', {
         type: DataType.STRING,
         allowNull: false
     },
+    status: {
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
     user_id: {
         type: DataType.INTEGER,
         allowNull: false
