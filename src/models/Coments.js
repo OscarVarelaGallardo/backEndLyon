@@ -19,7 +19,12 @@ const Coments = db.define('coments', {
    
 })
 
-User.hasMany(Coments, { foreignKey: 'user_Id' })
+User.associate = (models) => {
+    User.hasMany(models.Coments, {
+        foreignKey: 'user_Id',
+        onDelete: 'CASCADE'
+    })
+}
 
 Products.associate = (models) => {
     Products.belongsTo(models.Product, {
