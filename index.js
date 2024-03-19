@@ -30,7 +30,7 @@ try {
     await db.authenticate();
     //create table if not exist
    //await db.sync({ force: true });
-    await seeders()
+   // await seeders()
     console.log('Connection has been established successfully.');
 }
 catch (error) {
