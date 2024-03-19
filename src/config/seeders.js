@@ -22,8 +22,7 @@ const seeders = async () => {
 
             ]);
         }
-        console.log('Seeders run successfully');
-        exit();
+        
     } catch (error) {
         console.log(error);
     }
