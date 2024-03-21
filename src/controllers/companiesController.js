@@ -2,6 +2,12 @@ import companiesSchema from '../models/Companies.js';
 
 const createCompany = async (req, res) => {
     const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc,user_id } = req.body;
+    if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc) {
+        return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
+    }
+    const companyExist = await companiesSchema.findOne({ where: { companyName } });
+    companyExist ? res.status(400).json({ status: 400, msg: 'La empresa ya existe' }) : null;
+
     try {
         const newCompany = await companiesSchema.create({ 
             companyName, companyCountry, productType, companyPhone, companyContact, companyRfc ,user_id
@@ -24,9 +30,10 @@ const getAllCompanies = async (req, res) => {
 
 const getCompanyById = async (req, res) => {
     const companyId = req.params.id;
+
     try {
-        const company = await companiesSchema.findByPk(companyId);
-        if (!company) {
+        const companyExist = await companiesSchema.findByPk(companyId);
+        if (!companyExist) {
             return res.status(404).json({ status: 404, msg: 'empersa no encontrada' });
         }
         res.status(200).json({ status: 200, msg:'empresa encontrada', company });

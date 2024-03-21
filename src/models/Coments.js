@@ -1,37 +1,47 @@
-import db from '../config/db.js'
-import DataType from 'sequelize'
-import User from '../models/User.js'
-import Products from '../models/Products.js'
-const Coments = db.define('coments', {
-    id: {
-        type: DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+import mongoose from 'mongoose';
+
+const Schema = mongoose.Schema;
+
+const CommentSchema = new Schema({
     content: {
-        type: DataType.STRING,
-        allowNull: false
+        type: String,
+        required: true
     },
     rating: {
-        type: DataType.INTEGER,
-        allowNull: false
+        type: Number,
+        required: true
     },
-   
-})
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product'
+    }
+});
 
-User.associate = (models) => {
-    User.hasMany(models.Coments, {
-        foreignKey: 'user_Id',
-        onDelete: 'CASCADE'
-    })
-}
+const UserSchema = new Schema({
+    // Definición de tu esquema User...
+});
 
-Products.associate = (models) => {
-    Products.belongsTo(models.Product, {
-        foreignKey: 'product_Id',
-        onDelete: 'CASCADE'
-    })
-}
+const ProductSchema = new Schema({
+    // Definición de tu esquema Product...
+});
+
+UserSchema.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'user'
+});
+
+ProductSchema.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'product'
+});
+
+const Comment = mongoose.model('Comment', CommentSchema);
 
 
-export default Coments
+export default Comment;

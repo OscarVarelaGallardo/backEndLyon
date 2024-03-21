@@ -1,22 +1,16 @@
-import db from '../config/db.js'
-import DataType from 'sequelize'
+import mongoose from 'mongoose';
 
-const Rol = db.define('rol', {
-    id: {
-        type: DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+const RolSchema = new mongoose.Schema({
     name: {
-        type: DataType.STRING,
-        allowNull: false
+        type: String,
+        required: true
     },
     description: {
-        type: DataType.STRING,
-        allowNull: false
+        type: String,
+        required: true
     }
-})
+});
 
-
+const Rol = mongoose.model('Rol', RolSchema);
 
 export default Rol;

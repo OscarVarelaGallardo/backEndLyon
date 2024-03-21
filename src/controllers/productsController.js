@@ -93,6 +93,7 @@ const updateProduct2 = async (req, res) => {
 }
 const storageImg = async (req, res) => {
     const productId = req.params.id;
+
     try {
         const product = await Products.findByPk(productId);
         
@@ -100,7 +101,8 @@ const storageImg = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
         await product.update({
-            image: req.file.filename
+            image: req.file.filename,
+            id: productId
         });
 
         res.status(200).json({ status: 200, msg: 'producto actualizado exitosamente', product });

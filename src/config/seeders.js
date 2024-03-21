@@ -5,17 +5,17 @@ import { exit } from 'process';
 
 const seeders = async () => {
     try {
-        const countCategory = await Category.count();
+        const countCategory = await Category.countDocuments();
         if (countCategory === 0) {
-            await Category.bulkCreate([
+            await Category.insertMany([
                 { name: 'Electronics', description: 'All electronics products', createdAt: new Date(), updatedAt: new Date(), status: true },
                 { name: 'Books', description: 'All books', createdAt: new Date(), updatedAt: new Date(), status: true },
                 { name: 'Clothes', description: 'All clothes', createdAt: new Date(), updatedAt: new Date(), status: true }
             ]);
         }
-        const countRol = await Rol.count();
+        const countRol = await Rol.countDocuments();
         if (countRol === 0) {
-            await Rol.bulkCreate([
+            await Rol.insertMany([
                 { name: 'Admin', description: 'Este rol es para los administradores' },
                 { name: 'User', description: 'Este rol es para los usuarios' },
                 { name: 'Empresa', description: 'Este rol es para las empresas' },
