@@ -11,7 +11,7 @@ const protectRoute = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = User.findByPk(decoded.id);
+        const user = User.findById(decoded.id);
         if (!user) {
             return res.status(403).json({
                 status: '403',

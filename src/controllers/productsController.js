@@ -95,8 +95,8 @@ const storageImg = async (req, res) => {
     const productId = req.params.id;
 
     try {
-        const product = await Products.findByPk(productId);
-        
+       
+        const product = await Products.findById(productId);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }

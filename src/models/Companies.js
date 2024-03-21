@@ -31,7 +31,7 @@ const companiesSchema = new mongoose.Schema({
         defaultValue: false
     },
     user_id: {
-        type: Number,
+        type: String,
         allowNull: false
     },
 
