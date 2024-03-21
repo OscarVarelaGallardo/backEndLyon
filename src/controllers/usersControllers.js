@@ -27,27 +27,28 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email: email });
-        console.log(user)
         if (!user) {
             const error = new Error("El usuario no existe ")
             return res.status(400).json({ status: 200, msg: error.message })
+        }
+      
+
+        const validPassword = await user.validPassword(password);
+
+        if (!validPassword) {
+            const error = new Error("Contraseña incorrecta ")
+            return res.status(400).json({ status: 400, msg: error.message })
         }
         if (!user.confirm) {
             const error = new Error("Tu cuenta no esta confimada ")
             return res.status(403).json({ status: 403, msg: error.message })
         }
-
-        const validPassword = await user.comparePassword(password);
-        if (!validPassword) {
-            const error = new Error("Contraseña incorrecta ")
-            return res.status(400).json({ status: 400, msg: error.message })
-        }
         const createUser = generateUser(user)
         console.log("createUser", createUser)
-        const company = await Companies.findOne({ user_id: createUser.id });       
+        const company = await Companies.findOne({ user_id: createUser.id });
         createUser.token = generateJWT(user.id)
         User.updateOne({ _id: user.id }, { $set: { jwt: createUser.token } });
-        company ? createUser.company= company : "No tiene empresa registrada";
+        company ? createUser.company = company : "No tiene empresa registrada";
         res.status(200).json({ status: 200, msg: 'Usuario logueado correctamente', createUser });
     } catch (error) {
         const msg = new Error("Error en el servidor al iniciar sesion")
@@ -87,9 +88,7 @@ const recoverPassword = async (req, res) => {
     try {
         const token = generateToken()
         user.password = token
-       
         //TODO:validar que no se envien mas de 3 correos
-      
         await user.save()
         await sendMailRecover(token, user.email)
         res.status(200).json({ status: 200, msg: 'Correo enviado correctamente' });

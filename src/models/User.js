@@ -56,21 +56,10 @@ const userSchema = new mongoose.Schema({
 
 });
 
-
-
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) {
-        next();
-    }
-    const salt = await bcrypt.genSaltSync(10);
-    this.password = await bcrypt.hash(this.password, salt);
-
-});
-
-
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.validPassword = async function (password) {
+    console.log('this is', this.password)
     return await bcrypt.compare(password, this.password);
-}
+};
 
 userSchema.associate = (models) => {
     Rol.hasMany(models.User, {
@@ -79,6 +68,8 @@ userSchema.associate = (models) => {
     })
 
 }
+
+
 
 const Usuario = mongoose.model("User", userSchema);
 

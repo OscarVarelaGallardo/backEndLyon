@@ -4,11 +4,11 @@ import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
 
-router.post('/', protectRoute, createCategory);
-router.get('/', protectRoute, getAllCategories);
-router.get('/:id', protectRoute, getCategoryById);
-router.put('/update/:id', protectRoute, updateCategory);
-router.delete('/delete/:id', protectRoute, deleteCategory);
+router.post('/', createCategory);
+router.get('/', getAllCategories);
+router.get('/:id', getCategoryById);
+router.put('/update/:id', updateCategory);
+router.delete('/delete/:id', deleteCategory);
 
 
 export default router;
