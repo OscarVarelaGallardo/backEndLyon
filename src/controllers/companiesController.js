@@ -32,7 +32,7 @@ const getCompanyById = async (req, res) => {
     const companyId = req.params.id;
 
     try {
-        const companyExist = await companiesSchema.findByPk(companyId);
+        const companyExist = await companiesSchema.findById(companyId);
         if (!companyExist) {
             return res.status(404).json({ status: 404, msg: 'empersa no encontrada' });
         }
@@ -46,7 +46,7 @@ const updateCompany = async (req, res) => {
     const companyId = req.params.id;
     const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc } = req.body;
     try {
-        const company = await companiesSchema.findByPk(companyId);
+        const company = await companiesSchema.findById(companyId);
         if (!company) {
             return res.status(404).json({ status: 404, msg: 'empersa no encontrada' });
         }
@@ -62,11 +62,11 @@ const updateCompany = async (req, res) => {
 const deleteCompany = async (req, res) => {
     const companyId = req.params.id;
     try {
-        const company = await companiesSchema.findByPk(companyId);
+        const company = await companiesSchema.findById(companyId);
         if (!company) {
             return res.status(404).json({ status: 404, msg: 'empersa no encontrada' });
         }
-        await companiesSchema.destroy({where: {id:companyId}});
+        await companiesSchema.deleteOne({ _id: companyId });
         res.status(200).json({ status: 200, msg: 'Empresa eliminada correctamente' });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al eliminar empresa', error: error.message });
@@ -76,19 +76,18 @@ const deleteCompany = async (req, res) => {
 //create service for pdf
 const uploadPdf = async (req, res) => {
     const companyId = req.params.id;
-
+    console.log(req.file);
     try {
         const company = await companiesSchema.findById(companyId);
         if (!company) {
             return res.status(404).json({ status: 404, msg: 'empresa no encontrada no encontrada' });
         }
-        await company.update({
-            pdf: req.file.path
-        });
+        // Guardar el nombre del archivo PDF en la base de datos
+        await company.updateOne({ pdf: req.file.filename });
         res.status(200).json({ status: 200, msg: 'pdf subido correctamente', company });
     }
     catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error al eliminar empresa', error: error.message });
+        res.status(500).json({ status: 500, msg: 'Error al cargar pdf', error: error.message });
     }
 }
 

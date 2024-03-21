@@ -25,6 +25,10 @@ const companiesSchema = new mongoose.Schema({
         type: String,
         allowNull: false
     },
+    pdf: {
+        type: String,
+        allowNull: false
+    },
     status: {
         type: Boolean,
         allowNull: false,
