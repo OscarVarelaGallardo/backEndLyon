@@ -3,9 +3,7 @@ import Rol from '../models/Rol.js';
 const createRol = async (req, res) => {
     const { name, description } = req.body;
     try {
-        const newRol = await Rol.create({
-            name, description
-        });
+        const newRol = await Rol.create({ name, description });
         res.status(201).json({ status: 201, msg: 'Rol creado exitosamente', rol: newRol });
     } catch (error) {
         console.error('Errror al crear el rol:', error);
@@ -15,7 +13,7 @@ const createRol = async (req, res) => {
 
 const getAllRols = async (req, res) => {
     try {
-        const rols = await Rol.findAll();
+        const rols = await Rol.find()
         if (rols.length === 0) {
             return res.status(200).json({ status: 200, msg: 'No hay roles actualmente, crea uno' });
         }
@@ -28,8 +26,13 @@ const getAllRols = async (req, res) => {
 
 const getRolById = async (req, res) => {
     const rolId = req.params.id;
+    //validate id type string
+    if (rolId.length !== 24) {
+        return res.status(400).json({ status: 400, msg: 'Id invalido' });
+    }
     try {
-        const rol = await Rol.findByPk(rolId);
+        const rol = await Rol.findById(rolId);
+       
         if (!rol) {
             return res.status(404).json({ status: 404, msg: 'Rol no encontrado' });
         }
@@ -44,11 +47,11 @@ const updateRol = async (req, res) => {
     const { id } = req.params;
     const { name, description } = req.body;
     try {
-        const rol = await Rol.findByPk(id);
+        const rol = await Rol.findById(id);
         if (!rol) {
             return res.status(404).json({ status: 404, msg: 'Rol no encontrado' })
         }
-        await rol.update({ name, description });
+        await rol.updateOne({ name, description });
         return res.status(200).json({ status: 200, msg: 'Rol actualizado exitosamente', rol });
     } catch (error) {
         console.error('Error al actualizar el rol:', error);
@@ -59,11 +62,11 @@ const updateRol = async (req, res) => {
 const deleteRol = async (req, res) => {
     const { id } = req.params;
     try {
-        const rol = await Rol.findByPk(id);
+        const rol = await Rol.findById(id);
         if (!rol) {
             return res.status(404).json({ status: 404, msg: 'Rol no encontrado' });
         }
-        await rol.destroy();
+        await Rol.deleteOne({ _id: id });
         res.status(200).json({ status: 200, msg: 'Rol eliminado exitosamente' });
     } catch (error) {
         console.error('Error al eliminar el rol:', error);

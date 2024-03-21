@@ -2,6 +2,13 @@ import User from "../models/User.js";
 import jwt from 'jsonwebtoken';
 
 const protectRoute = (req, res, next) => {
+    if (!req.headers.authorization) {
+        return res.status(403).json({
+            status: '403',
+            message: 'No hay token, ingresado.'
+        });
+    }
+
     let token = req.headers.authorization.split(' ')[1];
     if (!token) {
         return res.status(403).json({

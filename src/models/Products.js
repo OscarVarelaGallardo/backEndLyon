@@ -40,7 +40,7 @@ const productSchema = new mongoose.Schema({
         defaultValue: Date.now()
     },
     user_id: {
-        type: Number,
+        type: String,
         allowNull: false
     },
 })
