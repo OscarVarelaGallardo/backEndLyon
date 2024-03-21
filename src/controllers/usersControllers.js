@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Companies from '../models/Companies.js';
 import generateToken from '../helpers/generateId.js';
 import generateJWT from '../helpers/generarJWT.js';
 import { sendMail, sendMailRecover } from '../helpers/nodemailer.js';
@@ -25,7 +26,8 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ where:  email  });
+      
         if (!user) {
             const error = new Error("El usuario no existe ")
             return res.status(400).json({ status: 200, msg: error.message })
