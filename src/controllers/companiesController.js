@@ -21,7 +21,7 @@ const createCompany = async (req, res) => {
 
 const getAllCompanies = async (req, res) => {
     try {
-        const companies = await companiesSchema.findAll();
+        const companies = await companiesSchema.find({});
         res.status(200).json({ status: 200, msg: 'Empresas encontradas', companies });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al encontrar empresas', error:error.message  });
@@ -73,4 +73,45 @@ const deleteCompany = async (req, res) => {
     }
 }
 
-export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany }
+//create service for pdf
+const uploadPdf = async (req, res) => {
+    const companyId = req.params.id;
+
+    try {
+        const company = await companiesSchema.findById(companyId);
+        if (!company) {
+            return res.status(404).json({ status: 404, msg: 'empresa no encontrada no encontrada' });
+        }
+        await company.update({
+            pdf: req.file.path
+        });
+        res.status(200).json({ status: 200, msg: 'pdf subido correctamente', company });
+    }
+    catch (error) {
+        res.status(500).json({ status: 500, msg: 'Error al eliminar empresa', error: error.message });
+    }
+}
+
+//show pdf
+const showPdf = async (req, res) => {
+    const companyId = req.params.id;
+    try {
+        const company = await companiesSchema.findById(companyId);
+        if (!company) {
+            return res.status(404).json({ status: 404, msg: 'empresa no encontrada no encontrada' });
+        }
+        // Ruta al archivo PDF
+        const pdfPath = company.pdfPath;
+
+        // Enviar el archivo PDF como respuesta
+        res.sendFile(pdfPath);
+
+    }
+    catch (error) {
+        res.status(500).json({ status: 500, msg: 'Error al eliminar empresa', error: error.message });
+    }
+}
+
+
+
+export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf }
