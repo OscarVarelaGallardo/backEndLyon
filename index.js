@@ -27,7 +27,6 @@ app.use(express.urlencoded({ extended: true }))
 
 
 try {
-    //llamar a ala conexcion con mongo
     await conectarDB()
     //create table if not exist
     //await db.sync({ force: true });
@@ -45,9 +44,8 @@ transporter.verify().then(() => {
     console.log(error)
 })
 
-//recibir json
+
 app.use(express.json());
-//recibir datos por formulario
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/companies', companiesRoutes);

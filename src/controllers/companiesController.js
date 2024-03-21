@@ -99,18 +99,17 @@ const showPdf = async (req, res) => {
         if (!company) {
             return res.status(404).json({ status: 404, msg: 'empresa no encontrada no encontrada' });
         }
-        // Ruta al archivo PDF
-        const pdfPath = company.pdfPath;
-
+        const pdfPath = company.pdf;
+        console.log(pdfPath);
         // Enviar el archivo PDF como respuesta
-        res.sendFile(pdfPath);
-
+        //:TODO enviar el pdf como respuesta en binario
+        res.status(200).json({ status: 200, msg: 'pdf encontrado', pdfPath });
     }
     catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error al eliminar empresa', error: error.message });
+        res.status(500).json({ status: 500, msg: 'Error al obtener pdf  de empresa', error: error.message });
     }
 }
 
 
 
-export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf }
+export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf }
