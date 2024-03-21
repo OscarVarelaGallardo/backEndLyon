@@ -3,10 +3,10 @@ import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCo
 import protectRoute from '../middleware/protectRoute.js';
 const router = express.Router();
 
-router.post('/', protectRoute, createCompany);
-router.get('/', protectRoute, getAllCompanies);
-router.get('/:id', protectRoute, getCompanyById);
-router.put('/:id', protectRoute, updateCompany);
-router.delete('/:id', protectRoute, deleteCompany);
+router.post('/', createCompany);
+router.get('/', getAllCompanies);
+router.get('/:id', getCompanyById);
+router.put('/:id', updateCompany);
+router.delete('/:id', deleteCompany);
 
 export default router;
