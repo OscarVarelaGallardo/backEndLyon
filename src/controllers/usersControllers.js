@@ -78,15 +78,18 @@ const confirmToken = async (req, res) => {
 
 const recoverPassword = async (req, res) => {
     const { email } = req.body
-    const user = await User.findOne({ where: { email } })
+    const user = await User.findOne({ email: email });
     if (!user) {
         const error = new Error("Usuario no encontrado ")
         return res.status(400).json({ status: 400, msg: error.message })
     }
+
     try {
         const token = generateToken()
         user.password = token
-        console.log(user.password)
+       
+        //TODO:validar que no se envien mas de 3 correos
+      
         await user.save()
         await sendMailRecover(token, user.email)
         res.status(200).json({ status: 200, msg: 'Correo enviado correctamente' });
