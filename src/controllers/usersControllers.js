@@ -6,8 +6,7 @@ import { sendMail, sendMailRecover } from '../helpers/nodemailer.js';
 
 const register = async (req, res) => {
     const { email } = req.body;
-    const existEmail = await User.findOne({ where: { email } });
-
+    const existEmail = await User.findOne({ email: email });
     if (existEmail) {
         return res.status(400).json({ status: 400, msg: 'El email ya se encuentra registrado' });
     }
