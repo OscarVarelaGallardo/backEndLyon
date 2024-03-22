@@ -45,12 +45,7 @@ const userSchema = new mongoose.Schema({
     }
 
 }, {
-    hooks: {
-        beforeCreate: async (user) => {
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-        }
-    },
+   
 
     timestamps: true
 
@@ -60,6 +55,18 @@ userSchema.methods.validPassword = async function (password) {
     console.log('this is', this.password)
     return await bcrypt.compare(password, this.password);
 };
+
+userSchema.pre('save', async function (next) {
+    const user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(user.password, salt);
+    user.password = hash;
+    next();
+}
+)
 
 userSchema.associate = (models) => {
     Rol.hasMany(models.User, {

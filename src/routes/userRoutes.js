@@ -1,5 +1,7 @@
 import express from 'express';
+
 import { register, login, confirmToken, recoverPassword } from '../controllers/usersControllers.js';
+
 
 const router = express.Router();
 
@@ -28,6 +30,14 @@ const router = express.Router();
  *         description: Error en el servidor.
  */
 router.post('/register', register);
+
+
+router.post('/login', login);
+router.get('/confirm/:token', confirmToken)
+router.post('/recovery', recoverPassword)
+router.get('/users', getAllUsers)
+
+
 
 /**
  * @openapi

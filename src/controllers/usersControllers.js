@@ -30,7 +30,7 @@ const login = async (req, res) => {
             const error = new Error("El usuario no existe ")
             return res.status(400).json({ status: 200, msg: error.message })
         }
-      
+
 
         const validPassword = await user.validPassword(password);
 
@@ -110,4 +110,14 @@ const generateUser = (user) => {
     return userReturn
 }
 
-export { register, login, confirmToken, recoverPassword }
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        console.log("users", users)
+        res.status(200).json({ status: 200, msg: 'Usuarios encontrados', users });
+    } catch (error) {
+        res.status(500).json({ status: 500, msg: error });
+    }
+}
+
+export { register, login, confirmToken, recoverPassword, getAllUsers }
