@@ -1,4 +1,7 @@
 import Products from '../models/Products.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
 const createProduct = async (req, res) => {
@@ -51,8 +54,7 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
 
-        const productStatus = product.productStatus;
-        if (productStatus === 0 || productStatus === false) {
+        const productStatus = product.productStatus;if (productStatus === 0 || productStatus === false) {
             return res.status(403).json({ status: 403, msg: 'No se puede actualizar el producto porque el status es inactivo' });
         }
 
@@ -102,5 +104,41 @@ const storageImg = async (req, res) => {
     }
 }
 
+const getImgProductById = async (req, res) => {
+    const productId = req.params.id;
 
-export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct,storageImg };
+    try {
+        const product = await Products.findById(productId);
+
+        if (!product || !product.image) {
+            return res.status(404).json({ status: 404, msg: 'Imagen de producto no encontrada' });
+        }
+
+        const rutaBase = path.join(__dirname, '..', '..', 'public', 'images');
+        const rutaCompleta = path.join(rutaBase, product.image);
+        const extension = product.image.split('.').pop().toLowerCase();
+
+        let contentType;
+        switch (extension) {
+            case 'jpg':
+            case 'jpeg':
+                contentType = 'image/jpeg';
+                break;
+            case 'png':
+                contentType = 'image/png';
+                break;
+            default:
+                contentType = 'application/octet-stream';
+        }
+    
+        res.set('Content-Type', contentType);
+        res.sendFile(rutaCompleta);
+    } catch (error) {
+        console.error('Error al obtener la imagen del producto:', error);
+        res.status(500).json({ status: 500, msg: 'Error al obtener la imagen del producto', error: error.message });
+    }
+};
+
+
+
+export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct,storageImg,getImgProductById };

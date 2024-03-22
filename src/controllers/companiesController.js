@@ -1,4 +1,8 @@
 import companiesSchema from '../models/Companies.js';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const createCompany = async (req, res) => {
     const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc,user_id } = req.body;
@@ -97,18 +101,23 @@ const showPdf = async (req, res) => {
     try {
         const company = await companiesSchema.findById(companyId);
         if (!company) {
-            return res.status(404).json({ status: 404, msg: 'empresa no encontrada no encontrada' });
+            return res.status(404).json({ status: 404, msg: 'Empresa no encontrada' });
         }
-        const pdfPath = company.pdf;
-        console.log(pdfPath);
-        // Enviar el archivo PDF como respuesta
-        //:TODO enviar el pdf como respuesta en binario
-        res.status(200).json({ status: 200, msg: 'pdf encontrado', pdfPath });
+        const pdfFilename = company.pdf;
+
+        const pdfPath = path.join(__dirname, '..', '..', 'public', 'pdf', pdfFilename);
+
+        if (!fs.existsSync(pdfPath)) {
+            return res.status(404).json({ status: 404, msg: 'PDF no encontrado' });
+        }
+
+        res.status(200).contentType('application/pdf').sendFile(pdfPath);
     }
     catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error al obtener pdf  de empresa', error: error.message });
+        res.status(500).json({ status: 500, msg: 'Error al obtener PDF de empresa', error: error.message });
     }
 }
+
 
 
 

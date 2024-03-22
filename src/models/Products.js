@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema({
         allowNull: false
     },
     productStatus:{
-        type: DataType.BOOLEAN,
+        type: Boolean,
         allowNull: false,
         defaultValue: false
     },
