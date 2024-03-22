@@ -1,8 +1,8 @@
 import swaggerJSDoc from 'swagger-jsdoc';
-
+import swaggerUi from 'swagger-ui-express';
 const options = {
   
-    swaggerDefinition: {
+    definition: {
        openapi: "3.0.2",
        tags: [
            {
@@ -19,15 +19,26 @@ const options = {
             servers: [
                 {
                     url: "http://localhost:3000",
-                   
+                    description:'Servidor local'
                 }
             ]
     },
     basePath: "/",
-    apis: ['./src/routes/userRoutes.js']
+    apis: ['./src/routes/*.js']
 
 };
 
 const swaggerSpec = swaggerJSDoc(options);
+
+const swaggerDocs = (app, port) =>{
+    app.use('/docs', swagger.serve, swaggerUi.setup(swaggerSpec));
+    app.get('/docs.json', (req, res) =>{
+        res.setHeader("Content-Type","aplication/json");
+        res.send(swaggerSpec);
+    });
+    console.log(
+        'version 1 docs are available at http://localhost:${port}/docs'
+    );
+};
 
 export default swaggerSpec;
