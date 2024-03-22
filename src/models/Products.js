@@ -23,6 +23,11 @@ const productSchema = new mongoose.Schema({
         type: String,
         allowNull: false
     },
+    productStatus:{
+        type: Boolean,
+        allowNull: false,
+        defaultValue: false
+    },
     status: {
         type: Boolean,
         allowNull: false,
