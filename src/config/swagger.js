@@ -18,7 +18,7 @@ const options = {
          },
             servers: [
                 {
-                    url: "https://backendlyon.onrender.com",
+                    url: "https://backendlyon.onrender.com/docs",
                     description:'Servidor de producción'
                 }
             ]

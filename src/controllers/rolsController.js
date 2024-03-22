@@ -2,6 +2,9 @@ import Rol from '../models/Rol.js';
 
 const createRol = async (req, res) => {
     const { name, description } = req.body;
+    if (!name || !description) {
+        return res.status(400).json({ status: 400, msg: 'Por favor envia todos los campos requeridos' });
+    }
     try {
         const newRol = await Rol.create({ name, description });
         res.status(201).json({ status: 201, msg: 'Rol creado exitosamente', rol: newRol });

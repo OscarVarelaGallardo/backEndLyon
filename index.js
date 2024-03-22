@@ -55,6 +55,7 @@ app.use('/product', productRoutes);
 app.use('/category', categoryRoutes);
 app.use('/rols', rolRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 const port = 3000 || process.env.PORT
 
 app.listen(port, () => {
