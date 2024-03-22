@@ -1,32 +1,26 @@
-import db from '../config/db.js'
 import DataType from 'sequelize'
 import Users from './User.js'
-
-const Products = db.define('products', {
-    id: {
-        type: DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+import mongoose from 'mongoose';
+const productSchema = new mongoose.Schema({
     name: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     price: {
-        type: DataType.FLOAT,
+        type: Number,
         allowNull: false
     },
     image: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     stock: {
-        type: DataType.INTEGER,
+        type:Number,
         allowNull: false
     },
 
     description: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     productStatus:{
@@ -35,28 +29,28 @@ const Products = db.define('products', {
         defaultValue: false
     },
     status: {
-        type: DataType.BOOLEAN,
+        type: Boolean,
         allowNull: false,
         defaultValue: false
     },
 
     createdAt: {
-        type: DataType.DATE,
+        type: Date,
         allowNull: false,
-        defaultValue: DataType.NOW
+        defaultValue: Date.now()
     },
     updatedAt: {
-        type: DataType.DATE,
+        type: Date,
         allowNull: false,
-        defaultValue: DataType.NOW
+        defaultValue: Date.now()
     },
     user_id: {
-        type: DataType.INTEGER,
+        type: String,
         allowNull: false
     },
 })
 
-Products.associate = (models) => {
+productSchema.associate = (models) => {
     Products.belongsTo(models.Category, {
         foreignKey: 'category_id',
         onDelete: 'CASCADE'
@@ -71,6 +65,6 @@ Users.associate = (models) => {
 }
 
 
+const Product = mongoose.model("Product", productSchema);
 
-
-export default Products;
+export default Product;

@@ -1,44 +1,41 @@
-import db from '../config/db.js'
-import DataType from 'sequelize'
-import User from './User.js'
+import mongoose from 'mongoose';
 
-const companiesSchema = db.define('companies', {
-    id: {
-        type: DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+const companiesSchema = new mongoose.Schema({
     companyName: {
-        type: DataType.STRING,
-        allowNull: false
+        type: String,
+        required: true
     },
     companyCountry: {
-        type: DataType.STRING,
-        allowNull: false
+        type: String,
+        required: true
     },
     productType: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     companyPhone: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     companyContact: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     companyRfc: {
-        type: DataType.STRING,
+        type: String,
+        allowNull: false
+    },
+    pdf: {
+        type: String,
         allowNull: false
     },
     status: {
-        type: DataType.BOOLEAN,
+        type: Boolean,
         allowNull: false,
         defaultValue: false
     },
     user_id: {
-        type: DataType.INTEGER,
+        type: String,
         allowNull: false
     },
 
@@ -50,5 +47,7 @@ const companiesSchema = db.define('companies', {
         onDelete: 'CASCADE'
     })
 }
- 
-export default companiesSchema;
+
+const Companies = mongoose.model("Company", companiesSchema);
+
+export default Companies;

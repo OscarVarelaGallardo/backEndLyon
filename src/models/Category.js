@@ -1,46 +1,35 @@
-import db from '../config/db.js'
-import DataType from 'sequelize'
+import mongoose from 'mongoose';
 
-const Category = db.define('category',{
-    id:{
-        type: DataType.INTEGER,
-        primaryKey:true,
-        autoIncrement:true
+const CategorySchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
     },
-    name:{   
-        type:DataType.STRING,
-        allowNull:false
+    description: {
+        type: String,
+        required: true
     },
-    description:{
-        type:DataType.STRING,
-        allowNull:false
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    createdAt:{
-        type:DataType.DATE,
-        allowNull:false,
-        defaultValue:DataType.NOW
+    updatedAt: {
+        type: Date
     },
-    updatedAt:{
-        type:DataType.DATE,
-        allowNull:false
-    },
-    status:{
-        type:DataType.BOOLEAN,
-        allowNull:false,
-        defaultValue:true
+    status: {
+        type: Boolean,
+        default: true
     }
+}, {
+    timestamps: true
+});
 
+CategorySchema.virtual('products', {
+    ref: 'Product',
+    localField: '_id',
+    foreignField: 'category'
+});
 
-})
-/* Category.sync({force:true}).then(()=>{
-    console.log('Tabla Category sincronizada')
-}
-) */
-Category.asociate = (models) => {
-    Category.hasMany(models.Products, {
-        foreignKey: 'category_id',
-        onDelete: 'CASCADE'
-    })
-}
+const Category = mongoose.model('Category', CategorySchema);
 
 export default Category;

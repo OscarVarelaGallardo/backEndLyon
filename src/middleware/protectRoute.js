@@ -2,6 +2,13 @@ import User from "../models/User.js";
 import jwt from 'jsonwebtoken';
 
 const protectRoute = (req, res, next) => {
+    if (!req.headers.authorization) {
+        return res.status(403).json({
+            status: '403',
+            message: 'No hay token, ingresado.'
+        });
+    }
+
     let token = req.headers.authorization.split(' ')[1];
     if (!token) {
         return res.status(403).json({
@@ -11,7 +18,7 @@ const protectRoute = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = User.findByPk(decoded.id);
+        const user = User.findById(decoded.id);
         if (!user) {
             return res.status(403).json({
                 status: '403',

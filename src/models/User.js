@@ -1,80 +1,83 @@
-import db from '../config/db.js'
-import DataType from 'sequelize'
+import db from '../config/db.js';
+import mongoose from 'mongoose';
 import bcrypt from 'bcrypt'
-const User = db.define('user', {
-    id: {
-        type: DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+const userSchema = new mongoose.Schema({
+    
     name: {
-        type: DataType.STRING,
-        allowNull: false
+        type: String,
+        allowNull: false,
+        required: true
     },
     email: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     password: {
-        type: DataType.STRING,
+        type: String,
         allowNull: false
     },
     confirm: {
-        type: DataType.BOOLEAN,
+        type: Boolean,
         allowNull: false,
         defaultValue: false
     },
     token: {
-        type: DataType.STRING,
+        type: String,
         allowNull: true
     },
     jwt: {
-        type: DataType.STRING,
+        type: String,
         allowNull: true
     },
     createdAt: {
-        type: DataType.DATE,
+        type: Date,
         allowNull: false,
-        defaultValue: DataType.NOW
+        defaultValue:   Date.now()
     },
     updatedAt: {
-        type: DataType.DATE,
+        type: Date,
         allowNull: false,
-        defaultValue: DataType.NOW
+        defaultValue: Date.now()
     },
     rol_id: {
-        type: DataType.INTEGER,
+        type: Number,
         allowNull: false
     }
 
 }, {
-    hooks: {
-        beforeCreate: async (user) => {
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-        }
-    },
+   
 
     timestamps: true
 
 });
-User.prototype.validPassword = async function (password) {
+
+userSchema.methods.validPassword = async function (password) {
+    console.log('this is', this.password)
     return await bcrypt.compare(password, this.password);
 };
-User.prototype.changePassword = async function (password) {
+
+userSchema.pre('save', async function (next) {
+    const user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(password, salt);
-    await this.save();
+    const hash = await bcrypt.hash(user.password, salt);
+    user.password = hash;
+    next();
 }
-User.associate = (models) => {
-    User.hasMany(models.Products, {
-        foreignKey: 'user_id',
-        onDelete: 'CASCADE'
-    })
-    User.belongsTo(models.Rol, {
+)
+
+userSchema.associate = (models) => {
+    Rol.hasMany(models.User, {
         foreignKey: 'rol_id',
         onDelete: 'CASCADE'
     })
+
 }
 
-export default User;
+
+
+const Usuario = mongoose.model("User", userSchema);
+
+export default Usuario;

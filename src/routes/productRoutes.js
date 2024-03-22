@@ -5,17 +5,17 @@ import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
 
-router.post('/', protectRoute,  createProduct);
+router.post('/',  createProduct);
 
-router.get('/', protectRoute, getAllProducts);
+router.get('/', getAllProducts);
 
-router.get('/:id', protectRoute, getProductById);
+router.get('/:id', getProductById);
 
-router.put('/update/:id', protectRoute, updateProduct );
+router.put('/update/:id', updateProduct );
 
-router.delete('/delete/:id', protectRoute, deleteProduct);
+router.delete('/delete/:id', deleteProduct);
 
-router.post('/img/:id', upload.single('image'), protectRoute, storageImg);
+router.post('/img/:id', upload.single('image'), storageImg);
 
 
 

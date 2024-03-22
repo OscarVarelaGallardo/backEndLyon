@@ -1,37 +1,16 @@
-import Sequelize from 'sequelize';
-import dotenv from 'dotenv';
-//Cargamos las variables de entorno
-dotenv.config({
-    path: 'local.env'
-});
-//Datos de conexion a la base de datos
-const dataBase = new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USERNAME,
-    process.env.DATABASE_PASSWORD,
-    {
-        host: process.env.DATABASE_HOST,
-        dialect: 'mysql',
-        port: process.env.DATABASE_PORT,
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
-        },
-        define: {
-            timestamps: false,
+import mongoose from "mongoose";
 
-        },
-        pool: {
-            max: 5,
-            min: 0,
-            acquire: 30000,
-            idle: 10000
-        },
-        
-
+const conectarDB = async () => {
+    
+    try {
+        const connection = await mongoose.connect(process.env.MONGO_URI)
+        const url = `${connection.connection.host}:${connection.connection.port}`
+        console.log(`MongoDB conectado: ${url}`)
+     
+    } catch (error) {
+        console.log(`error: ${error.message}`)
+        process.exit(1)
     }
-);
+}
 
-export default dataBase;
+export default conectarDB;

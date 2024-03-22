@@ -17,7 +17,7 @@ const createProduct = async (req, res) => {
 const getAllProducts = async (req, res) => {
 
     try {
-        const products = await Products.findAll();
+        const products = await Products.find();
         res.status(200).json({ status: 200, msg: 'productos encontrados exitosamente', products });
     } catch (error) {
         console.error('Error al encontrar producto:', error);
@@ -27,8 +27,9 @@ const getAllProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
     const productId = req.params.id;
+   
     try {
-        const product = await Products.findByPk(productId);
+        const product = await Products.findById(productId);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
@@ -45,7 +46,7 @@ const updateProduct = async (req, res) => {
     const { name, price, image, stock, category, description } = req.body;
 
     try {
-        const product = await Products.findByPk(id);
+        const product = await Products.findById(id);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
@@ -55,7 +56,7 @@ const updateProduct = async (req, res) => {
             return res.status(403).json({ status: 403, msg: 'No se puede actualizar el producto porque el status es inactivo' });
         }
 
-        await product.update({
+        await product.updateOne({
             name, price, image, stock, category, description
         });
 
@@ -70,11 +71,11 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     const { id } = req.params;
     try {
-        const product = await Products.findByPk(id);
+        const product = await Products.findById(id);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
-        await Products.destroy({ where: { id } });
+        await Products.deleteOne({ _id: id });
         res.status(200).json({ status: 200, msg: 'producto eliminado exitosamente' });
     } catch (error) {
         console.error('Error al eliminar producto:', error);
@@ -82,34 +83,17 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-const updateProduct2 = async (req, res) => {
-    const productId = req.params.id;
-    const { name, price, image, stock, category, description } = req.body;
-    try {
-        const product = await Products.findByPk(productId);
-        if (!product) {
-            return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
-        }
-        await product.update({
-            name, price, image, stock, category, description
-        });
-        res.status(200).json({ status: 200, msg: 'producto actualizado exitosamente', product });
-    } catch (error) {
-        console.error('Error al actualizar producto:', error);
-        res.status(500).json({ status: 500, msg: 'error al actualizar producto', error: error.message });
-    }
-}
+
 const storageImg = async (req, res) => {
     const productId = req.params.id;
+    console.log(req.file);
     try {
-        const product = await Products.findByPk(productId);
-        
+        const product = await Products.findById(productId);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
-        await product.update({
-            image: req.file.filename
-        });
+        
+        await product.updateOne({ image: req.file.filename });
 
         res.status(200).json({ status: 200, msg: 'producto actualizado exitosamente', product });
     } catch (error) {
@@ -119,4 +103,4 @@ const storageImg = async (req, res) => {
 }
 
 
-export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, updateProduct2,storageImg };
+export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct,storageImg };

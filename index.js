@@ -1,5 +1,5 @@
 import express from 'express'
-import db from './src/config/db.js'
+import conectarDB from './src/config/db.js'
 import userRoutes from './src/routes/userRoutes.js'
 import productRoutes from './src/routes/productRoutes.js';
 import comentRoutes from './src/routes/comentRoutes.js'
@@ -27,10 +27,10 @@ app.use(express.urlencoded({ extended: true }))
 
 
 try {
-    await db.authenticate();
+    await conectarDB()
     //create table if not exist
-   //await db.sync({ force: true });
-   // await seeders()
+    //await db.sync({ force: true });
+     await seeders()
     console.log('Connection has been established successfully.');
 }
 catch (error) {
@@ -44,9 +44,8 @@ transporter.verify().then(() => {
     console.log(error)
 })
 
-//recibir json
+
 app.use(express.json());
-//recibir datos por formulario
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/companies', companiesRoutes);
@@ -59,5 +58,5 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const port = 3000 || process.env.PORT
 
 app.listen(port, () => {
-    console.log( `Server is running on port ${port || process.env.PORT}`)
+    console.log(`Server is running on port ${port || process.env.PORT}`)
 })
