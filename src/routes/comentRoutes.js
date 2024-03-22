@@ -1,14 +1,14 @@
 import express from 'express';
 import { createComent, getAllComents, getComentById, updateComent, deleteComent } from '../controllers/comentsController.js';
-
+import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
 
-router.post('/createComent', createComent);
-router.get('/', getAllComents);
-router.get('/:id', getComentById);
-router.put('/:id', updateComent);
-router.delete('/:id', deleteComent);
+router.post('/createComent', protectRoute, createComent);
+router.get('/', protectRoute, getAllComents);
+router.get('/:id', protectRoute, getComentById);
+router.put('/:id', protectRoute, updateComent);
+router.delete('/:id', protectRoute, deleteComent);
 
 
 export default router;

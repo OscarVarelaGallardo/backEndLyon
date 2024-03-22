@@ -1,10 +1,7 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
 import bcrypt from 'bcrypt'
-
-
-
-const userSchema = db.define('user', {
+const User = db.define('user', {
     id: {
         type: DataType.INTEGER,
         primaryKey: true,
@@ -31,6 +28,24 @@ const userSchema = db.define('user', {
         type: DataType.STRING,
         allowNull: true
     },
+    jwt: {
+        type: DataType.STRING,
+        allowNull: true
+    },
+    createdAt: {
+        type: DataType.DATE,
+        allowNull: false,
+        defaultValue: DataType.NOW
+    },
+    updatedAt: {
+        type: DataType.DATE,
+        allowNull: false,
+        defaultValue: DataType.NOW
+    },
+    rol_id: {
+        type: DataType.INTEGER,
+        allowNull: false
+    }
 
 }, {
     hooks: {
@@ -43,13 +58,23 @@ const userSchema = db.define('user', {
     timestamps: true
 
 });
-userSchema.prototype.validPassword = async function (password) {
+User.prototype.validPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
-userSchema.prototype.changePassword = async function (password) {
+User.prototype.changePassword = async function (password) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(password, salt);
     await this.save();
 }
+User.associate = (models) => {
+    User.hasMany(models.Products, {
+        foreignKey: 'user_id',
+        onDelete: 'CASCADE'
+    })
+    User.belongsTo(models.Rol, {
+        foreignKey: 'rol_id',
+        onDelete: 'CASCADE'
+    })
+}
 
-export default userSchema;
+export default User;

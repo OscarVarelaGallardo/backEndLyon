@@ -1,5 +1,6 @@
 import db from '../config/db.js'
 import DataType from 'sequelize'
+import User from './User.js'
 
 const companiesSchema = db.define('companies', {
     id: {
@@ -11,11 +12,11 @@ const companiesSchema = db.define('companies', {
         type: DataType.STRING,
         allowNull: false
     },
-    companyDescription: {
+    companyCountry: {
         type: DataType.STRING,
         allowNull: false
     },
-    companyAddress: {
+    productType: {
         type: DataType.STRING,
         allowNull: false
     },
@@ -23,30 +24,31 @@ const companiesSchema = db.define('companies', {
         type: DataType.STRING,
         allowNull: false
     },
-    companyEmail: {
+    companyContact: {
         type: DataType.STRING,
         allowNull: false
     },
-    companyWeb: {
+    companyRfc: {
         type: DataType.STRING,
         allowNull: false
     },
-/*     userId: {
-        type: DataType.INTEGER,
+    status: {
+        type: DataType.BOOLEAN,
         allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
-        }
-    } */
+        defaultValue: false
+    },
+    user_id: {
+        type: DataType.INTEGER,
+        allowNull: false
+    },
 
 })
 
-/* companiesSchema.associate = (models) => {
+ companiesSchema.associate = (models) => {
     companiesSchema.belongsTo(models.User, {
-        foreignKey: 'userId',
+        foreignKey: 'user_id',
         onDelete: 'CASCADE'
     })
 }
- */
+ 
 export default companiesSchema;
