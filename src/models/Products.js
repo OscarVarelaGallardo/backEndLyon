@@ -32,7 +32,7 @@ const Products = db.define('products', {
     productStatus:{
         type: DataType.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: false
     },
     status: {
         type: DataType.BOOLEAN,
