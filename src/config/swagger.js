@@ -18,8 +18,8 @@ const options = {
          },
             servers: [
                 {
-                    url: `http://localhost:${port}`,
-                    description:'Servidor local'
+                    url: "https://backendlyon.onrender.com",
+                    description:'Servidor de producción'
                 }
             ]
     },
