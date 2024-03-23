@@ -8,9 +8,15 @@ import protectRoute from '../middleware/protectRoute.js';
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Product
+ *  description: Products management
+ * 
+ * @swagger
  * /products:
  *   post:
+ *     tags: [Product]
  *     summary: Crea un nuevo producto.
  *     requestBody:
  *       required: true
@@ -42,9 +48,14 @@ const router = express.Router();
 router.post('/', createProduct);
 
 /**
+ * @swagger
+ * tags: Product
+ * name: Product
+ * description: Products management
  * @openapi
  * /products:
  *   get:
+ *     tags: [Product]
  *     summary: Obtiene todos los productos.
  *     responses:
  *       '200':
@@ -55,9 +66,14 @@ router.post('/', createProduct);
 router.get('/', getAllProducts);
 
 /**
- * @openapi
+ * @swagger
+ * /products/{id}:
+ * tags: Product
+ * description: Products management
+ * @swagger
  * /products/{id}:
  *   get:
+ *     tags: [Product]
  *     summary: Obtiene un producto por su ID.
  *     parameters:
  *       - in: path
@@ -76,9 +92,16 @@ router.get('/', getAllProducts);
 router.get('/:id', getProductById);
 
 /**
- * @openapi
+ * @swagger
+ * /products/update/{id}:
+ * tags: Product
+ * description: Actualiza un producto por su ID.
+ * 
+ * 
+ * @swagger
  * /products/update/{id}:
  *   put:
+ *     tags: [Product]
  *     summary: Actualiza un producto por su ID.
  *     parameters:
  *       - in: path

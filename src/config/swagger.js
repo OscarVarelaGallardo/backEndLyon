@@ -9,6 +9,26 @@ const options = {
                name: "User",
                description: "User routes documentation to login and register"
            },
+           {
+                name: "Product",
+                description: "Product routes documentation to create, update, delete and get products"
+              },
+              {
+                name: "Category",
+                description: "Category routes documentation to create, update, delete and get categories"
+              },
+              {
+                name: "Coment",
+                description: "Coment routes documentation to create, update, delete and get coments"
+              },
+              {
+                name: "Companies",
+                description: "Companies routes documentation to create, update, delete and get companies"
+              },
+              {
+                name: "Rol",
+                description: "Rol routes documentation to create, update, delete and get rols"
+           }
          
        ],
          info: {
@@ -41,4 +61,5 @@ const swaggerDocs = (app, port) =>{
     );
 };
 
+    
 export default swaggerSpec;

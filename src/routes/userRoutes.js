@@ -6,10 +6,16 @@ import { register, login, confirmToken, recoverPassword, getAllUsers } from '../
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Users management
+
+ * @swagger
  * /user/register:
  *   post:
- *     summary: Crea un nuevo usuario.
+ *     tags: [User]
+ *     summary: Create a new user.
  *     requestBody:
  *       required: true
  *       content:
@@ -23,27 +29,20 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       '200':
- *         description: Usuario creado correctamente.
+ *         description: User created successfully.
  *       '400':
- *         description: El email ya está registrado.
+ *         description: Email is already registered.
  *       '500':
- *         description: Error en el servidor.
+ *         description: Server error.
  */
 router.post('/register', register);
 
-
-router.post('/login', login);
-router.get('/confirm/:token', confirmToken)
-router.post('/recovery', recoverPassword)
-router.get('/users', getAllUsers)
-
-
-
 /**
- * @openapi
+ * @swagger
  * /user/login:
  *   post:
- *     summary: Inicia sesión de usuario.
+ *     tags: [User]
+ *     summary: User login.
  *     requestBody:
  *       required: true
  *       content:
@@ -57,21 +56,22 @@ router.get('/users', getAllUsers)
  *                 type: string
  *     responses:
  *       '200':
- *         description: Usuario logueado correctamente.
+ *         description: User logged in successfully.
  *       '400':
- *         description: El usuario no existe o la contraseña es incorrecta.
+ *         description: User does not exist or password is incorrect.
  *       '403':
- *         description: La cuenta no está confirmada.
+ *         description: Account is not confirmed.
  *       '500':
- *         description: Error en el servidor.
+ *         description: Server error.
  */
 router.post('/login', login);
 
 /**
- * @openapi
+ * @swagger
  * /user/confirm/{token}:
  *   get:
- *     summary: Confirma un usuario mediante un token.
+ *     tags: [User]
+ *     summary: Confirm a user using a token.
  *     parameters:
  *       - in: path
  *         name: token
@@ -80,19 +80,20 @@ router.post('/login', login);
  *           type: string
  *     responses:
  *       '200':
- *         description: Usuario confirmado correctamente.
+ *         description: User confirmed successfully.
  *       '400':
- *         description: Usuario no encontrado.
+ *         description: User not found.
  *       '500':
- *         description: Error en el servidor.
+ *         description: Server error.
  */
 router.get('/confirm/:token', confirmToken);
 
 /**
- * @openapi
+ * @swagger
  * /user/recovery:
+ *   tags: [User]
  *   post:
- *     summary: Envía un correo para recuperar contraseña.
+ *     summary: Send an email to recover password.
  *     requestBody:
  *       required: true
  *       content:
@@ -104,12 +105,26 @@ router.get('/confirm/:token', confirmToken);
  *                 type: string
  *     responses:
  *       '200':
- *         description: Correo enviado correctamente.
+ *         description: Email sent successfully.
  *       '400':
- *         description: Usuario no encontrado.
+ *         description: User not found.
  *       '500':
- *         description: Error en el servidor.
+ *         description: Server error.
  */
 router.post('/recovery', recoverPassword);
+
+/**
+ * @swagger
+ * /user/users:
+ *   get:
+ *     tags: [User]
+ *     summary: Get all users.
+ *     responses:
+ *       '200':
+ *         description: Users retrieved successfully.
+ *       '500':
+ *         description: Server error.
+ */
+router.get('/users', getAllUsers);
 
 export default router;

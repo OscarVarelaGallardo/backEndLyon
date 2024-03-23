@@ -4,11 +4,17 @@ import { createRol, getAllRols, getRolById, updateRol, deleteRol } from '../cont
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Rol
+ *  description: Roles management
+ * 
+ * @swagger
  * /roles:
  *   post:
- *     summary: Crea un nuevo rol.
- *     requestBody:
+ *    tags: [Rol]
+ *    summary: Crea un nuevo rol.
+ *    requestBody:
  *       required: true
  *       content:
  *         application/json:
@@ -19,7 +25,7 @@ const router = express.Router();
  *                 type: string
  *               description:
  *                 type: string
- *     responses:
+ *    responses:
  *       '201':
  *         description: Rol creado exitosamente.
  *       '500':
@@ -28,9 +34,16 @@ const router = express.Router();
 router.post('/', createRol);
 
 /**
- * @openapi
+ * @swagger
+ * /roles:
+ *  get:
+ *  tags: [Rol]
+ *  summary: Obtiene todos los roles.
+ * 
+ * @swagger
  * /roles:
  *   get:
+ *     tags: [Rol]
  *     summary: Obtiene todos los roles.
  *     responses:
  *       '200':
@@ -62,9 +75,17 @@ router.get('/', getAllRols);
 router.get('/:id', getRolById);
 
 /**
- * @openapi
+ * @swagger
+ * /roles/update/{id}:
+ * put:
+ * tags: [Rol]
+ * summary: Actualiza un rol por su ID.
+ * 
+ * 
+ * @swagger
  * /roles/update/{id}:
  *   put:
+ *     tags: [Rol]
  *     summary: Actualiza un rol por su ID.
  *     parameters:
  *       - in: path
@@ -94,9 +115,17 @@ router.get('/:id', getRolById);
 router.put('/update/:id', updateRol);
 
 /**
- * @openapi
+ * @swagger
+ * /roles/delete/{id}:
+ * delete:
+ * tags: [Rol]
+ * summary: Elimina un rol por su ID.
+ * 
+ * 
+ * @swagger
  * /roles/delete/{id}:
  *   delete:
+ *     tags: [Rol]
  *     summary: Elimina un rol por su ID.
  *     parameters:
  *       - in: path
