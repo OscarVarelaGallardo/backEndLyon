@@ -1,7 +1,12 @@
-import express from 'express';
+import express from "express";
 
-import { register, login, confirmToken, recoverPassword, getAllUsers } from '../controllers/usersControllers.js';
-
+import {
+  register,
+  login,
+  confirmToken,
+  recoverPassword,
+  getAllUsers,
+} from "../controllers/usersControllers.js";
 
 const router = express.Router();
 
@@ -35,9 +40,15 @@ const router = express.Router();
  *       '500':
  *         description: Server error.
  */
-router.post('/register', register);
+router.post("/register", register);
 
 /**
+ * @swagger
+ * tags:
+ *  name: User
+ *  description: User management
+ *
+ *
  * @swagger
  * /user/login:
  *   post:
@@ -64,9 +75,14 @@ router.post('/register', register);
  *       '500':
  *         description: Server error.
  */
-router.post('/login', login);
+router.post("/login", login);
 
 /**
+ * @swagger
+ * tags:
+ *  name: User
+ *  description: Confirm token.
+ *
  * @swagger
  * /user/confirm/{token}:
  *   get:
@@ -85,25 +101,31 @@ router.post('/login', login);
  *         description: User not found.
  *       '500':
  *         description: Server error.
+ * 
  */
-router.get('/confirm/:token', confirmToken);
+router.get("/confirm/:token", confirmToken);
 
 /**
  * @swagger
+ * tags:
+ *   name: User
+ *   description: Recover password.
+ *
+ * @swagger
  * /user/recovery:
- *   tags: [User]
- *   post:
- *     summary: Send an email to recover password.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
+ *    post:
+ *      tags: [User]
+ *      summary: Send an email to recover password.
+ *      requestBody:
+ *         required: true
+ *         content:
+ *          application/json:
  *           schema:
  *             type: object
  *             properties:
  *               email:
  *                 type: string
- *     responses:
+ *      responses:
  *       '200':
  *         description: Email sent successfully.
  *       '400':
@@ -111,9 +133,13 @@ router.get('/confirm/:token', confirmToken);
  *       '500':
  *         description: Server error.
  */
-router.post('/recovery', recoverPassword);
+router.post("/recovery", recoverPassword);
 
 /**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Get all users.
  * @swagger
  * /user/users:
  *   get:
@@ -125,6 +151,6 @@ router.post('/recovery', recoverPassword);
  *       '500':
  *         description: Server error.
  */
-router.get('/users', getAllUsers);
+router.get("/users", getAllUsers);
 
 export default router;
