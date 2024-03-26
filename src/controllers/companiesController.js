@@ -168,6 +168,8 @@ const loginCompany = async (req, res) => {
         if (!validPassword) {
             return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
         }
+        //como no enviar el password
+        company.password = undefined;
         res.status(200).json({ status: 200, msg: 'Empresa logueada correctamente', company });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al loguear empresa', error: error.message });
