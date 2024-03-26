@@ -5,10 +5,17 @@ import protectRoute from '../middleware/protectRoute.js';
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Category
+ *  description: Categories management
+ * 
+ * 
+ * @swagger
  * /categories:
  *   post:
- *     summary: Crea una nueva categoría.
+ *     tags: [Category]
+ *     summary: Create a new category.
  *     requestBody:
  *       required: true
  *       content:
@@ -22,28 +29,40 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       '200':
- *         description: Categoría creada correctamente.
+ *         description: Category created successfully.
  *       '500':
- *         description: Error al crear la categoría.
+ *         description: Server error.
  */
 router.post('/', createCategory);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Category
+ *  summary: Get all categories.
+ * 
+ * @swagger
  * /categories:
  *   get:
- *     summary: Obtiene todas las categorías.
+ *     tags: [Category]
+ *     summary: Get all categories.
  *     responses:
  *       '200':
- *         description: Categorías encontradas.
+ *         description: Categories found successfully.
  */
 router.get('/', getAllCategories);
 
 /**
+ * @swagger
+ * tags:
+ *  name: Category
+ *  summary: Get a category.
+ * 
  * @openapi
  * /categories/{id}:
  *   get:
- *     summary: Obtiene una categoría por su ID.
+ *     tags: [Category]
+ *     summary: Get a category by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -52,17 +71,23 @@ router.get('/', getAllCategories);
  *           type: string
  *     responses:
  *       '200':
- *         description: Categoría encontrada.
+ *         description: Category found successfully.
  *       '404':
- *         description: Categoría no encontrada.
+ *         description: Category not found.
  */
 router.get('/:id', getCategoryById);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Category
+ *  summary: Update a category.
+ * 
+ * @swagger
  * /categories/update/{id}:
  *   put:
- *     summary: Actualiza una categoría existente por su ID.
+ *     tags: [Category]
+ *     summary: Update a category by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -82,17 +107,24 @@ router.get('/:id', getCategoryById);
  *                 type: string
  *     responses:
  *       '200':
- *         description: Categoría actualizada correctamente.
+ *         description: Category updated successfully.
  *       '404':
- *         description: Categoría no encontrada.
+ *         description: Category not found.
  */
 router.put('/update/:id', updateCategory);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Category
+ *  summary: Delete a category.
+ * 
+ * 
+ * @swagger
  * /categories/delete/{id}:
  *   delete:
- *     summary: Elimina una categoría por su ID.
+ *     tags: [Category]
+ *     summary: Delete a category by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -101,9 +133,9 @@ router.put('/update/:id', updateCategory);
  *           type: string
  *     responses:
  *       '200':
- *         description: Categoría eliminada correctamente.
+ *         description: Category deleted successfully.
  *       '404':
- *         description: Categoría no encontrada.
+ *         description: Category not found.
  */
 router.delete('/delete/:id', deleteCategory);
 

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema({
-    content: {
+    review: {
         type: String,
         required: true
     },
@@ -14,6 +14,10 @@ const CommentSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    email: {
+        type: String,
+        required: true
     },
     product: {
         type: Schema.Types.ObjectId,

@@ -8,10 +8,18 @@ import protectRoute from '../middleware/protectRoute.js';
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Product
+ *  description: Products management
+ */
+
+/**
+ * @swagger
  * /products:
  *   post:
- *     summary: Crea un nuevo producto.
+ *     tags: [Product]
+ *     summary: Create a new product.
  *     requestBody:
  *       required: true
  *       content:
@@ -35,30 +43,37 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       '201':
- *         description: Producto creado exitosamente.
+ *         description: Product create successfully.
  *       '500':
- *         description: Error al crear producto.
+ *         description: Error to create product.
  */
 router.post('/', createProduct);
 
 /**
- * @openapi
+ * @swagger
  * /products:
  *   get:
- *     summary: Obtiene todos los productos.
+ *     tags: [Product]
+ *     summary: Get all products.
  *     responses:
  *       '200':
- *         description: Productos encontrados exitosamente.
+ *         description: Products found successfully.
  *       '500':
- *         description: Error al encontrar productos.
+ *         description: Error to find products.
  */
 router.get('/', getAllProducts);
 
 /**
- * @openapi
+ * @swagger
+ * /products/{id}:
+ *  name: Product
+ *  description: Get a product by its ID.
+ * 
+ * @swagger
  * /products/{id}:
  *   get:
- *     summary: Obtiene un producto por su ID.
+ *     tags: [Product]
+ *     summary: Get a product by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -67,19 +82,20 @@ router.get('/', getAllProducts);
  *           type: string
  *     responses:
  *       '200':
- *         description: Producto encontrado exitosamente.
+ *         description: Product found successfully.
  *       '404':
- *         description: Producto no encontrado.
+ *         description: Product not found.
  *       '500':
- *         description: Error al encontrar producto.
+ *         description: Server error to find product.
  */
 router.get('/:id', getProductById);
 
 /**
- * @openapi
+ * @swagger
  * /products/update/{id}:
  *   put:
- *     summary: Actualiza un producto por su ID.
+ *     tags: [Product]
+ *     summary: Update a product.
  *     parameters:
  *       - in: path
  *         name: id
@@ -107,19 +123,26 @@ router.get('/:id', getProductById);
  *                 type: string
  *     responses:
  *       '200':
- *         description: Producto actualizado exitosamente.
+ *         description: Product updated successfully.
  *       '404':
- *         description: Producto no encontrado.
+ *         description: Product not found to update
  *       '500':
- *         description: Error al actualizar producto.
+ *         description: Error to update product.
  */
 router.put('/update/:id', updateProduct);
 
 /**
- * @openapi
+ * @swagger
+ * /products/delete/{id}:
+ *  tags: Product
+ *  summary: Delete a product.
+ * 
+ * 
+ * @swagger
  * /products/delete/{id}:
  *   delete:
- *     summary: Elimina un producto por su ID.
+ *     tags: [Product]
+ *     summary: Delete a product.
  *     parameters:
  *       - in: path
  *         name: id
@@ -128,19 +151,25 @@ router.put('/update/:id', updateProduct);
  *           type: string
  *     responses:
  *       '200':
- *         description: Producto eliminado exitosamente.
+ *         description: Product deleted successfully.
  *       '404':
- *         description: Producto no encontrado.
+ *         description: Product not found.
  *       '500':
- *         description: Error al eliminar producto.
+ *         description: Server error to delete product.
  */
 router.delete('/delete/:id', deleteProduct);
 
 /**
- * @openapi
+ * 
+ * @swagger
+ * tags:
+ *   name: Product
+ *   description: Products management
+ * @swagger
  * /products/img/{id}:
  *   post:
- *     summary: Sube una imagen para el producto especificado por su ID.
+ *     tags: [Product]
+ *     summary: Create a new product image by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -159,18 +188,35 @@ router.delete('/delete/:id', deleteProduct);
  *                 format: binary
  *     responses:
  *       '200':
- *         description: Imagen subida exitosamente.
+ *         description: Img created successfully.
  *       '404':
- *         description: Producto no encontrado.
+ *         description: Product not found to create img.
  *       '500':
- *         description: Error al cargar imagen.
+ *         description: Server error to create img.
  */
 router.post('/img/:id', upload.single('image'), storageImg);
 
+/**
+ * @swagger
+ * /products/img/{id}:
+ *   get:
+ *     tags: [Product]
+ *     summary: Get a product image by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Product image found successfully.
+ *       '404':
+ *         description: Product image not found.
+ *       '500':
+ *         description: Server error to find product image.
+ */
 router.get('/img/:id', getImgProductById);
-
-
-
 
 export default router;
 
