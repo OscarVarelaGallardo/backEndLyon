@@ -1,15 +1,22 @@
 import express from 'express';
-import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf } from '../controllers/companiesController.js';
+import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany } from '../controllers/companiesController.js';
 import protectRoute from '../middleware/protectRoute.js';
 import upload from '../helpers/multer.js';
 
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Company
+ *  description: Companies management
+ * 
+ * 
+ * @swagger
  * /companies:
  *   post:
- *     summary: Crea una nueva empresa.
+ *     tags: [Company]
+ *     summary: Create a new company.
  *     requestBody:
  *       required: true
  *       content:
@@ -42,10 +49,16 @@ const router = express.Router();
 router.post('/', createCompany);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Company
+ *  description: Get all companies.
+ * 
+ * @swagger
  * /companies:
  *   get:
- *     summary: Obtiene todas las empresas.
+ *     tags: [Company]    
+ *     summary: Get all companies.
  *     responses:
  *       '200':
  *         description: Empresas encontradas correctamente.
@@ -55,9 +68,14 @@ router.post('/', createCompany);
 router.get('/', getAllCompanies);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Company
+ *  description: Get company by ID.
+ * @swagger
  * /companies/{id}:
  *   get:
+ *     tags: [Company]
  *     summary: Obtiene una empresa por su ID.
  *     parameters:
  *       - in: path
@@ -76,10 +94,17 @@ router.get('/', getAllCompanies);
 router.get('/:id', getCompanyById);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Company
+ *  description: Update company.
+ * 
+ * 
+ * @swagger
  * /companies/{id}:
  *   put:
- *     summary: Actualiza una empresa por su ID.
+ *     tags: [Company]
+ *     summary: Update a company by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -116,10 +141,15 @@ router.get('/:id', getCompanyById);
 router.put('/:id', updateCompany);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Company
+ *  description: Delete company.
+ * @swagger
  * /companies/{id}:
  *   delete:
- *     summary: Elimina una empresa por su ID.
+ *     tags: [Company] 
+ *     summary: Delete a company by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -137,10 +167,15 @@ router.put('/:id', updateCompany);
 router.delete('/:id', deleteCompany);
 
 /**
- * @openapi
- * /companies/upload/{id}:
+ * @swagger
+ * tags:
+ *   name: Company
+ *   description: Endpoint to upload PDF for a company.
+ * @swagger
+ *  /companies/upload/{id}:
  *   post:
- *     summary: Sube un archivo PDF para la empresa especificada por su ID.
+ *     tags: [Company]
+ *     summary: Upload PDF for a company by its ID.
  *     parameters:
  *       - in: path
  *         name: id
@@ -168,10 +203,16 @@ router.delete('/:id', deleteCompany);
 router.post('/upload/:id', upload.single('pdf'), uploadPdf);
 
 /**
- * @openapi
+ * @swagger
+ *  tags:
+ *   name: Company
+ *   description: Company endpoints to upload and download PDF.
+ * 
+ * @swagger
  * /companies/download/{id}:
  *   get:
- *     summary: Descarga el archivo PDF de la empresa especificada por su ID.
+ *     tags: [Company]
+ *     summary: Download PDF for a company by its ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -187,5 +228,38 @@ router.post('/upload/:id', upload.single('pdf'), uploadPdf);
  *         description: Error al obtener PDF de la empresa.
  */
 router.get('/download/:id', showPdf);
+
+/**
+ * @swagger
+ * tags:
+ *  name: Company
+ *  description: Login company.
+ * 
+ * @swagger
+* /companies/login:
+ *   post:
+ *     tags: [Company]
+ *     summary: Login company.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Company logged in successfully.
+ *       '400':
+ *         description: Email or password are incorrect.  
+ *       '500':
+ *         description: Server error.
+ */
+router.post('/login', loginCompany);
+
 
 export default router;

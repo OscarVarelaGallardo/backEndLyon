@@ -22,7 +22,7 @@ const options = {
                 description: "Coment routes documentation to create, update, delete and get coments"
               },
               {
-                name: "Companies",
+                name: "Company",
                 description: "Companies routes documentation to create, update, delete and get companies"
               },
               {
