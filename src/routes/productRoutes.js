@@ -22,12 +22,12 @@ const router = express.Router();
  * @swagger
  * tags:
  *  name: Product
- *  description: Products management
+ *  description: Create a new product
  * @swagger
  * /products:
  *   post:
  *     tags: [Product]
- *     summary: Create a new product.
+ *     summary: Create a new product with name, price, image, stock, category, description, status and user_id.
  *     requestBody:
  *       required: true
  *       content:
@@ -40,7 +40,7 @@ const router = express.Router();
  *               price:
  *                 type: number
  *               image:
- *                 type: file
+ *                 type: string
  *               stock:
  *                 type: number
  *               category:
@@ -48,7 +48,7 @@ const router = express.Router();
  *               description:
  *                 type: string
  *               status:
- *                 
+ *                 type: boolean
  *               user_id:
  *                 type: string
  *     responses:
