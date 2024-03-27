@@ -14,15 +14,15 @@ const createCompany = async (req, res) => {
     const companyExist = await companiesSchema.findOne({ companyName });
     const getAllRoles = await rolesSchema.find({});
     //validar que no exista el email
-    const existEmail = await User.findOne({ email })
+    console.log(email)
+    const existEmailUser = await User.findOne({ email })
     const existCompanyEmail = await companiesSchema.findOne ({ email })
-    if (companyExist) {
+   
+    if (existCompanyEmail?.email === email || existEmailUser?.email === email) {
         return res.status(400).json({ status: 400, msg: 'La empresa ya está registrada' });
     }
 
-    if (existEmail || existCompanyEmail) {
-        return res.status(400).json({ status: 400, msg: 'El email ya está registrado' });
-    }
+
 
     if (email && password && getAllRoles) {
         try {

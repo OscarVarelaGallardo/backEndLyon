@@ -1,7 +1,7 @@
 import express from 'express';
 import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany } from '../controllers/companiesController.js';
 import protectRoute from '../middleware/protectRoute.js';
-import upload from '../helpers/multer.js';
+import { upload } from '../helpers/multer.js';
 
 const router = express.Router();
 
