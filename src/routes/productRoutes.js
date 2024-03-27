@@ -40,13 +40,15 @@ const router = express.Router();
  *               price:
  *                 type: number
  *               image:
- *                 type: string
+ *                 type: file
  *               stock:
  *                 type: number
  *               category:
  *                 type: string
  *               description:
  *                 type: string
+ *               status:
+ *                 
  *               user_id:
  *                 type: string
  *     responses:
@@ -55,7 +57,7 @@ const router = express.Router();
  *       '500':
  *         description: Error to create product.
  */
-router.post('/', createProduct);
+router.post('/',upload.single('image'), createProduct);
 
 /**
  * @swagger
@@ -202,7 +204,7 @@ router.delete('/delete/:id', deleteProduct);
  *       '500':
  *         description: Server error to create img.
  */
-router.post('/img/:id', upload.single('image'), storageImg);
+//router.post('/img/:id', upload.single('image'), storageImg);
     
 
 /**
