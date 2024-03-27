@@ -2,7 +2,8 @@ import express from 'express';
 
 import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct ,storageImg,getImgProductById,getCompleteProductById} from '../controllers/productsController.js';
 
-import upload from '../helpers/multer.js';
+
+import { upload} from '../helpers/multer.js';
 import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
@@ -218,7 +219,12 @@ router.post('/img/:id', upload.single('image'), storageImg);
  */
 router.get('/img/:id', getImgProductById);
 
+
 router.get('/complete/:id', getCompleteProductById);
+
+
+router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
+
 
 export default router;
 
