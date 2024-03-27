@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
         allowNull: false
     },
     price: {
-        type: Number,
+        type: String,
         allowNull: false
     },
     image: {
@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema({
         allowNull: false
     },
     stock: {
-        type:Number,
+        type:String,
         allowNull: false
     },
 

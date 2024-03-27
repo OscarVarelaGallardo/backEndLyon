@@ -54,9 +54,15 @@ router.post('/', createRol);
 router.get('/', getAllRols);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Rol
+ *  description: Roles management
+ * 
+ * @swagger
  * /roles/{id}:
- *   get:
+ *   get: 
+ *     tags: [Rol]
  *     summary: Obtiene un rol por su ID.
  *     parameters:
  *       - in: path

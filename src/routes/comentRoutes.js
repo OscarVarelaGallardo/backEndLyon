@@ -4,9 +4,14 @@ import { createComent, getAllComents, getComentById, updateComent, deleteComent 
 const router = express.Router();
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Coment
+ *  description: Coments management
+ * @swagger
  * /comments/createComent:
  *   post:
+ *     tags: [Coment]
  *     summary: Crea un nuevo comentario.
  *     requestBody:
  *       required: true
@@ -32,9 +37,14 @@ const router = express.Router();
 router.post('/createComent', createComent);
 
 /**
- * @openapi
+ * @swagger
+ *  tags:
+ *  name: Coment
+ *  description: Coments management
+ * @swagger
  * /comments:
  *   get:
+ *     tags: [Coment]
  *     summary: Obtiene todos los comentarios.
  *     responses:
  *       '200':
@@ -45,9 +55,15 @@ router.post('/createComent', createComent);
 router.get('/', getAllComents);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Coment
+ *  description: Coments management
+ * 
+ * @swagger
  * /comments/{id}:
  *   get:
+ *     tags: [Coment]
  *     summary: Obtiene un comentario por su ID.
  *     parameters:
  *       - in: path
@@ -64,9 +80,14 @@ router.get('/', getAllComents);
 router.get('/:id', getComentById);
 
 /**
- * @openapi
+ * @swagger
+ *  tags:
+ *  name: Coment
+ *  description: Coments management
+ * @swagger
  * /comments/{id}:
  *   put:
+ *     tags: [Coment]
  *     summary: Actualiza un comentario por su ID.
  *     parameters:
  *       - in: path
@@ -98,9 +119,14 @@ router.get('/:id', getComentById);
 router.put('/:id', updateComent);
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *  name: Coment
+ *  description: Coments management
+ * @swagger
  * /comments/{id}:
  *   delete:
+ *     tags: [Coment]
  *     summary: Elimina un comentario por su ID.
  *     parameters:
  *       - in: path

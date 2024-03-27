@@ -91,7 +91,7 @@ const deleteProduct = async (req, res) => {
 
 const storageImg = async (req, res) => {
     const productId = req.params.id;
-    console.log(req.file);
+    ;
     try {
         const product = await Products.findById(productId);
         if (!product) {
@@ -145,20 +145,17 @@ const getImgProductById = async (req, res) => {
 const getExcelDataProducts = async (req, res) => {
     try {
         const excelData = req.file;
-        console.log('excelData:', excelData);
         if (!excelData) {
             return res.status(400).json({ status: 400, msg: 'No se ha subido ningun archivo' });
         }
-
         const workbook = new ExcelJS.Workbook();
         const pathExcel = path.join(__dirname, '..', '..', 'public', 'excel', excelData.filename);
         await workbook.xlsx.readFile(pathExcel);
 
         const worksheet = workbook.getWorksheet(1);
-        const rows = worksheet.getRows();
-        console.log('rows:', rows);
+        workbook.worksheets.map(sheet => sheet.name);
         const products = [];
-        rows.forEach(row => {
+        worksheet.eachRow((row, rowNumber) => {
             products.push({
                 name: row.getCell(1).value,
                 price: row.getCell(2).value,
@@ -169,13 +166,12 @@ const getExcelDataProducts = async (req, res) => {
                 user_id: row.getCell(7).value,
             });
         });
-        console.log('products:', products);
-        //guardar en la base de datos
+
         if (products.length > 0) {
             await Products.insertMany(products);
-            res.status(201).json({ status: 201, msg: 'Productos creados exitosamente', products });
+            return await res.status(201).json({ status: 201, msg: 'Productos cargados exitosamente ' });
         }
-        res.status(400).json({ status: 400, msg: 'No se ha encontrado productos en el archivo excel' });
+        return res.status(400).json({ status: 400, msg: 'No se ha encontrado productos en el archivo excel' });
     } catch (error) {
         console.error('Error al obtener los datos del excel:', error);
         res.status(500).json({ status: 500, msg: 'Error al obtener los datos del excel', error: error.message });
@@ -211,5 +207,5 @@ const getCompleteProductById = async (req, res) => {
 
 
 
-export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct,storageImg,getImgProductById,getCompleteProductById };
+export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, storageImg, getImgProductById, getCompleteProductById, getExcelDataProducts };
 
