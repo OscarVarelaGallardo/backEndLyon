@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct ,storageImg,getImgProductById} from '../controllers/productsController.js';
+import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct ,storageImg,getImgProductById,getCompleteProductById} from '../controllers/productsController.js';
 
 import upload from '../helpers/multer.js';
 import protectRoute from '../middleware/protectRoute.js';
@@ -217,6 +217,8 @@ router.post('/img/:id', upload.single('image'), storageImg);
  *         description: Server error to find product image.
  */
 router.get('/img/:id', getImgProductById);
+
+router.get('/complete/:id', getCompleteProductById);
 
 export default router;
 
