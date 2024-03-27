@@ -223,7 +223,7 @@ router.get('/img/:id', getImgProductById);
 router.get('/complete/:id', getCompleteProductById);
 
 
-router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
+//router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
 
 
 export default router;
