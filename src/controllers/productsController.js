@@ -183,5 +183,33 @@ const getExcelDataProducts = async (req, res) => {
     }
 };
 
+const getCompleteProductById = async (req, res) => {
+    const productId = req.params.id;
 
-export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, storageImg, getImgProductById, getExcelDataProducts };
+    try {
+        const product = await Products.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
+        }
+
+        let responseData = { product };
+
+        if (product.image) {
+            const rutaCompleta = path.join(__dirname, '..', '..', 'public', 'images', product.image);
+            const nombreImagen = path.basename(product.image);
+            responseData.imageURL = nombreImagen;
+        }
+
+        return res.status(200).json({ status: 200, msg: 'Producto encontrado exitosamente', ...responseData });
+    } catch (error) {
+        console.error('Error al obtener el producto completo:', error);
+        return res.status(500).json({ status: 500, msg: 'Error al obtener el producto completo', error: error.message });
+    }
+};
+
+
+
+
+export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct,storageImg,getImgProductById,getCompleteProductById };
+
