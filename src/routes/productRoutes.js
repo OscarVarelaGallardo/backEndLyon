@@ -49,7 +49,7 @@ const router = express.Router();
  *                 type: string
  *               status:
  *                 type: boolean
- *               user_id:
+ *               company_id:
  *                 type: string
  *     responses:
  *       '201':
