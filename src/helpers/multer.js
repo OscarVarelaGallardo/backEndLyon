@@ -7,9 +7,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const storage = multer.diskStorage({
+  
     destination: function (req, file, cb, ) {
         if (file.fieldname === 'image') {
             cb(null, path.join(__dirname, '..', '..', 'public', 'images'));
+            
         }
         if (file.fieldname === 'file') {
             cb(null, path.join(__dirname, '..', '..', 'public', 'excel'));
@@ -21,6 +23,8 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
+
+
 });
 
 const upload = multer({ storage });
