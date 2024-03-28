@@ -18,9 +18,9 @@ const createCompany = async (req, res) => {
     const existEmailUser = await User.findOne({ email })
     const existCompanyEmail = await companiesSchema.findOne ({ email })
    
-    if (existCompanyEmail?.email === email || existEmailUser?.email === email) {
+ /*    if (existCompanyEmail?.email === email || existEmailUser?.email === email) {
         return res.status(400).json({ status: 400, msg: 'La empresa ya está registrada' });
-    }
+    } */
 
 
 
