@@ -27,9 +27,9 @@ const createCompany = async (req, res) => {
                 companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3,
             });
 
-            res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente', company: newCompany });
+          return  res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente', company: newCompany });
         } catch (error) {
-            res.status(500).json({ status: 500, msg: 'Error al asociar la empresa empresa', error: error.message });
+         return   res.status(500).json({ status: 500, msg: 'Error al asociar la empresa empresa', error: error.message });
         }
 
     }
@@ -44,7 +44,7 @@ const createCompany = async (req, res) => {
         res.status(200).json({ status: 200, msg: 'Empresa creada correctamente', company: newCompany });
     }
     catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error al crear empresa', error: error.message });
+      return  res.status(500).json({ status: 500, msg: 'Error al crear empresa', error: error.message });
     }
 
 
