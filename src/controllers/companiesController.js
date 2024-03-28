@@ -24,7 +24,7 @@ const createCompany = async (req, res) => {
     if (!user_id){
         try {
             const newCompany = await companiesSchema.create({
-                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3,
+                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3,email, password,
             });
 
           return  res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente', company: newCompany });

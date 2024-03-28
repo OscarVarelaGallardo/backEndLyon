@@ -17,11 +17,15 @@ const createProduct = async (req, res) => {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
     try {
+        status = false;
         const newProduct = await Products.create({
             name, price, stock, category, description, company_id, status, image: file.filename
 
         });
-        res.status(201).json({ status: 201, msg: 'producto creado exitosamente' });
+        if (!newProduct) {
+            return res.status(400).json({ status: 400, msg: 'Error al crear producto' });
+        }
+        return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente' });
     } catch (error) {
         console.error('Error al crear producto:', error);
         res.status(500).json({ status: 500, msg: 'Error al crear producto', error: error.mesage });
@@ -32,7 +36,7 @@ const getAllProducts = async (req, res) => {
 
     try {
         const products = await Products.find();
-        res.status(200).json({ status: 200, msg: 'productos encontrados exitosamente', products });
+        return res.status(200).json({ status: 200, msg: 'productos encontrados exitosamente', products });
     } catch (error) {
         console.error('Error al encontrar producto:', error);
         res.status(500).json({ status: 500, msg: 'error al encontrar productos', error: error.mesage });
@@ -47,7 +51,7 @@ const getProductById = async (req, res) => {
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
-        res.status(200).json({ status: 200, msg: 'producto encontrado exitosamente', product });
+       return res.status(200).json({ status: 200, msg: 'producto encontrado exitosamente', product });
     } catch (error) {
         console.error('Error al encontrar producto:', error);
         res.status(500).json({ status: 500, msg: 'error al encontrar producto', error: error.mesage });
@@ -58,7 +62,9 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, price, image, stock, category, description } = req.body;
-
+    if (!name || !price || !stock || !category || !description) {
+        return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
+    }
     try {
         const product = await Products.findById(id);
         if (!product) {
