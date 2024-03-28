@@ -10,7 +10,8 @@ import ExcelJS from 'exceljs';
 const createProduct = async (req, res) => {
     const { name, price, stock, category, description, company_id, status } = req.body;
 
-    if (file === undefined) {
+    const file = req.file;
+    if (!file) {
         return res.status(400).json({ status: 400, msg: 'Faltan la imagen del archivo ' });
     }
     if (!name || !price || !stock || !category || !description || !company_id, !status) {

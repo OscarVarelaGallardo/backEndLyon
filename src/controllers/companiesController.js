@@ -8,7 +8,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const createCompany = async (req, res) => {
     const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email } = req.body;
+    console.log(req.body);
     if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc) {
+       
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }
     const companyExist = await companiesSchema.findOne({ companyName });
