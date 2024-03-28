@@ -12,44 +12,44 @@ const createCompany = async (req, res) => {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }
     const companyExist = await companiesSchema.findOne({ companyName });
-    const getAllRoles = await rolesSchema.find({});
-    //validar que no exista el email
-    console.log(email)
-    const existEmailUser = await User.findOne({ email })
-    const existCompanyEmail = await companiesSchema.findOne ({ email })
-   
- /*    if (existCompanyEmail?.email === email || existEmailUser?.email === email) {
+
+    if (companyExist) {
         return res.status(400).json({ status: 400, msg: 'La empresa ya está registrada' });
-    } */
+    }
+    const emailExist = await companiesSchema.findOne({ email });
 
-
-
-    if (email && password && getAllRoles) {
+    if (emailExist) {
+        return res.status(400).json({ status: 400, msg: 'El email ya está registrado' });
+    }
+    if (!user_id){
         try {
             const newCompany = await companiesSchema.create({
-                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, rol_id: 3,
-            });
-            if (!newCompany) {
-                return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
-            }
-            res.status(200).json({ status: 200, msg: 'Empresa creada correctamente', company: newCompany });
-        }
-        catch (error) {
-            res.status(500).json({ status: 500, msg: 'Error al crear empresa', error: error.message });
-        }
-    } else {
-        try {
-            const newCompany = await companiesSchema.create({
-                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email,
+                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3,
             });
 
             res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente', company: newCompany });
         } catch (error) {
             res.status(500).json({ status: 500, msg: 'Error al asociar la empresa empresa', error: error.message });
         }
-    }
-}
 
+    }
+
+    try {
+        const newCompany = await companiesSchema.create({
+            companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, rol_id: 3,
+        });
+        if (!newCompany) {
+            return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
+        }
+        res.status(200).json({ status: 200, msg: 'Empresa creada correctamente', company: newCompany });
+    }
+    catch (error) {
+        res.status(500).json({ status: 500, msg: 'Error al crear empresa', error: error.message });
+    }
+
+
+
+}
 
 
 
@@ -179,4 +179,4 @@ const loginCompany = async (req, res) => {
 
 
 
-export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf,loginCompany }
+export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany }
