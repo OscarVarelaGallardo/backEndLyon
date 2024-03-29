@@ -33,6 +33,10 @@ const productSchema = new mongoose.Schema({
         allowNull: false,
         defaultValue: false
     },
+    company_id: {
+        type: String,
+        allowNull: false
+    },
 
     createdAt: {
         type: Date,
