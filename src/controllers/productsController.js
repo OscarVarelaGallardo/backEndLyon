@@ -40,7 +40,7 @@ const getAllProducts = async (req, res) => {
         const url = "https://backendlyon.onrender.com"
         products.map(product => {
             if (product.image) {
-                product.image = `${url}/public/images/${product.image}`;
+                product.image = `${url}/${product.image}`;
             }
         });
         
