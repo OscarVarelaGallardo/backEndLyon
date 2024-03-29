@@ -9,11 +9,8 @@ import ExcelJS from 'exceljs';
 
 const createProduct = async (req, res) => {
     const { name, price, stock, category, description, company_id, status } = req.body;
-
-    let file = req.file;
-
     console.log(req.body);
-    console.log(file);
+    let file = req.file;
     if (!file) {
         return res.status(400).json({ status: 400, msg: 'Faltan la imagen del archivo ' });
     }
@@ -21,10 +18,11 @@ const createProduct = async (req, res) => {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
     try {
-        await Products.create({
+       const productCreated= await Products.create({
             name, price, stock, category, description, company_id, status, image: file.filename
 
         });
+        console.log('Producto creado:', productCreated);
         
         return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente' });
     } catch (error) {
