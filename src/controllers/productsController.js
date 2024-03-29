@@ -179,12 +179,16 @@ const getExcelDataProducts = async (req, res) => {
         worksheet.eachRow((row, rowNumber) => {
             products.push({
                 name: row.getCell(1).value,
-                price: row.getCell(2).value,
-                image: row.getCell(3).value,
-                stock: row.getCell(4).value,
-                category: row.getCell(5).value,
-                description: row.getCell(6).value,
-                user_id: row.getCell(7).value,
+                description: row.getCell(2).value,
+                business_Name: row.getCell(3).value,
+                direccion: row.getCell(4).value,
+                telefono: row.getCell(5).value,
+                website: row.getCell(6).value,
+                MOQ: row.getCell(7).value,
+                Unit: row.getCell(8).value,
+                AVG_Price: row.getCell(9).value,
+                Pictures: row.getCell(10).value,
+            
             });
         });
 
