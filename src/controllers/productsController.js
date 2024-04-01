@@ -72,7 +72,8 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
 
-        const productStatus = product.productStatus; if (productStatus === 0 || productStatus === false) {
+        const productStatus = product.productStatus; 
+        if (productStatus === 0 || productStatus === false) {
             return res.status(403).json({ status: 403, msg: 'No se puede actualizar el producto porque el status es inactivo' });
         }
 
@@ -106,7 +107,7 @@ const deleteProduct = async (req, res) => {
 
 const storageImg = async (req, res) => {
     const productId = req.params.id;
-    ;
+    
     try {
         const product = await Products.findById(productId);
         if (!product) {
@@ -172,19 +173,33 @@ const getExcelDataProducts = async (req, res) => {
         const products = [];
         worksheet.eachRow((row, rowNumber) => {
             products.push({
-                name: row.getCell(1).value,
-                price: row.getCell(2).value,
-                image: row.getCell(3).value,
-                stock: row.getCell(4).value,
+                category: row.getCell(1).value,
+                name: row.getCell(2).value,
+                nodata: row.getCell(3).value,
+                description: row.getCell(4).value,
                 category: row.getCell(5).value,
-                description: row.getCell(6).value,
-                user_id: row.getCell(7).value,
+                imagess : row.getCell(6).value,
+                status: false,
+                company_ids: row.getCell(7).value,
+                nodata: row.getCell(8).value,
+                stock: row.getCell(9).value,
+                price: row.getCell(11).value,
+                image: row.getCell(12).value,
+                image1: row.getCell(13).value ,
+                image2: row.getCell(14).value
+
             });
         });
-
+        products.map((product) => 
+        {
+            if (product?.image?.hyperlink) {
+                product.image = product.image.hyperlink;
+            }
+        });
         if (products.length > 0) {
+            console.log(products);
             await Products.insertMany(products);
-            return await res.status(201).json({ status: 201, msg: 'Productos cargados exitosamente ' });
+           return await res.status(201).json({ status: 201, msg: 'Productos cargados exitosamente ' });
         }
         return res.status(400).json({ status: 400, msg: 'No se ha encontrado productos en el archivo excel' });
     } catch (error) {
