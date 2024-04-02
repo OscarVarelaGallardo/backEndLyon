@@ -16,122 +16,26 @@ import { upload } from '../helpers/multer.js';
 
 const router = express.Router();
 
-/**
- * @swagger
- * tags:
- *  name: Product
- *  description: Create a new product
- * @swagger
- * /products:
- *   post:
- *     tags: [Product]
- *     summary: Create a new product with name, price, image, stock, category, description, status and user_id.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               price:
- *                 type: number
- *               image:
- *                 type: string
- *               stock:
- *                 type: number
- *               category:
- *                 type: string
- *               description:
- *                 type: string
- *               status:
- *                 type: boolean
- *               company_id:
- *                 type: string
- *     responses:
- *       '201':
- *         description: Product create successfully.
- *       '500':
- *         description: Error to create product.
- */
-router.post('/',upload.single('image'), createProduct);
+
+
 
 /**
  * @swagger
  * tags:
- *   name: Product
- *   description: Update a product status
- * /product/updateStatus:
- *   put:
- *     tags: [Product]
- *     summary: Update a product.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               _id:
- *                 type: string
- *               status:
- *                 type: string
- *     responses:
- *       '200':
- *         description: Product updated successfully.
- *       '404':
- *         description: Product not found to update
- *       '500':
- *         description: Error to update product.
- */
-router.put('/updateStatus', updateStatus);
-/**
+ *   name: Productt
+ *   description: Get all products
  * @swagger
- * /products/update/{id}:
- *   put:
+ * /products:
+ *   get:
  *     tags: [Product]
- *     summary: Update a product.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               price:
- *                 type: number
- *               image:
- *                 type: string
- *               stock:
- *                 type: number
- *               category:
- *                 type: string
- *               description:
- *                 type: string
+ *     summary: Get all products.
  *     responses:
  *       '200':
- *         description: Product updated successfully.
- *       '404':
- *         description: Product not found to update
+ *         description: Products retrieved successfully.
  *       '500':
- *         description: Error to update product.
+ *         description: Error retrieving products.
  */
-router.put('/update',upload.single('image'), updateProduct);
+router.get('/', getAllProducts);
 
 /**
  * @swagger
