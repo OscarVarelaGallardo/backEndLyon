@@ -139,7 +139,7 @@ router.get('/:id', getProductById);
  *       '500':
  *         description: Error to update product.
  */
-router.put('/update/:id', updateProduct);
+router.put('/update',upload.single('image'), updateProduct);
 
 /**
  * @swagger

@@ -67,27 +67,24 @@ const getProductById = async (req, res) => {
 
 
 const updateProduct = async (req, res) => {
-    const { id } = req.params;
-    const { name, price, image, stock, category, description } = req.body;
-    if (!name || !price || !stock || !category || !description) {
+
+    const {_id, name, price, image, stock, category, description,status} = req.body;
+    if (!name || !price || !stock || !category || !description || !_id|| !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
     }
     try {
-        const product = await Products.findById(id);
+        const product = await Products.findById(_id);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
 
-        const productStatus = product.productStatus; 
-        if (productStatus === 0 || productStatus === false) {
-            return res.status(403).json({ status: 403, msg: 'No se puede actualizar el producto porque el status es inactivo' });
+      const productUpdated = await Products.updateOne({ _id }, 
+            { name, price, image, stock, category, description,status });
+        console.log('Producto actualizado:', productUpdated);
+        if (productUpdated.nModified === 0) {
+            return res.status(400).json({ status: 400, msg: 'No se ha actualizado el producto' });
         }
-
-        await product.updateOne({
-            name, price, image, stock, category, description
-        });
-
-        res.status(200).json({ status: 200, msg: 'Producto actualizado exitosamente', product });
+        res.status(200).json({ status: 200, msg: 'Producto actualizado exitosamente', productUpdated });
     } catch (error) {
         console.error('Error al actualizar producto:', error);
         res.status(500).json({ status: 500, msg: 'Error al actualizar producto', error: error.message });
