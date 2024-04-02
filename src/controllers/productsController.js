@@ -6,25 +6,23 @@ import ExcelJS from 'exceljs';
 
 const updateStatus = async (req, res) => {
     const { status, _id } = req.body;
-    if (!_id) { return res.status(400).json({ status: 400, msg: 'Falta el id de la empresa' }); }
-    if (!status) { return res.status(400).json({ status: 400, msg: 'Falta el estado de la empresa' }); }
-
+    if (!_id) { return res.status(400).json({ status: 400, msg: 'Falta el id del producto' }); }
+    if (!status) { return res.status(400).json({ status: 400, msg: 'Falta el status del producto' }); }
+    if (status !== 'reject' && status !== 'accept') {
+        return res.status(400).json({ status: 400, msg: 'Status invalido' })
+    }
     try {
-        const company = await companiesSchema.findById(_id);
-        if (!company) {
-            return res.status(404).json({ status: 404, msg: 'Empresa no encontrada' });
-        } 
-        if (status !== 'reject' && status !== 'accept') {
-            return res.status(400).json({ status: 400, msg: 'Status invalido' })
+        const product = await Products.findById(_id);
+        if (!product) {
+            return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
-        const producUpdate = await companiesSchema.updateOne({ _id }, { status});
-        if (producUpdate.nModified === 0) {
-            return res.status(400).json({ status: 400, msg: 'No se ha actualizado el estado de la empresa' });
+        const productUpdated = await Products.updateOne({ _id }, { status });
+        if (productUpdated.nModified === 0) {
+            return res.status(400).json({ status: 400, msg: 'No se ha actualizado el estado del producto' });
         }
-
-        res.status(200).json({ status: 200, msg: 'Estado de empresa actualizado correctamente' });
+        res.status(200).json({ status: 200, msg: 'Estado del producto actualizado exitosamente' });
     } catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error al actualizar estado de empresa', error: error.message });
+        res.status(500).json({ status: 500, msg: 'Error al actualizar datos del producto', error: error.message });
     }
 
 }

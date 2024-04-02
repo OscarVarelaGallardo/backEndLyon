@@ -7,7 +7,8 @@ import {
     getProductById,
     updateProduct,
     deleteProduct,
-    getExcelDataProducts
+    getExcelDataProducts,
+    updateStatus
 } from '../controllers/productsController.js';
 
 
@@ -58,45 +59,39 @@ router.post('/',upload.single('image'), createProduct);
 
 /**
  * @swagger
- * /products:
- *   get:
+ * tags:
+ *   name: Product
+ *   description: Update a product status
+ * /product/updateStatus:
+ *   put:
  *     tags: [Product]
- *     summary: Get all products.
- *     responses:
- *       '200':
- *         description: Products found successfully.
- *       '500':
- *         description: Error to find products.
- */
-router.get('/', getAllProducts);
-
-/**
- * @swagger
- * /products/{id}:
- *  name: Product
- *  description: Get a product by its ID.
- * 
- * @swagger
- * /products/{id}:
- *   get:
- *     tags: [Product]
- *     summary: Get a product by its ID.
+ *     summary: Update a product.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *               status:
+ *                 type: string
  *     responses:
  *       '200':
- *         description: Product found successfully.
+ *         description: Product updated successfully.
  *       '404':
- *         description: Product not found.
+ *         description: Product not found to update
  *       '500':
- *         description: Server error to find product.
+ *         description: Error to update product.
  */
-router.get('/:id', getProductById);
-
+router.put('/updateStatus', updateStatus);
 /**
  * @swagger
  * /products/update/{id}:
