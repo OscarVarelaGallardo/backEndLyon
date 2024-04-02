@@ -37,7 +37,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         allowNull: false
     },
-
+    category: {
+        type: String,
+        allowNull: false
+    },
     createdAt: {
         type: Date,
         allowNull: false,
