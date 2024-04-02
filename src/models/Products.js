@@ -29,7 +29,7 @@ const productSchema = new mongoose.Schema({
         defaultValue: false
     },
     status: {
-        type: Boolean,
+        type: String,
         allowNull: false,
         defaultValue: false
     },
