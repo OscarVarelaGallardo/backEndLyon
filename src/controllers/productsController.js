@@ -9,8 +9,8 @@ import ExcelJS from 'exceljs';
 
 const createProduct = async (req, res) => {
     const { name, price, stock, category, description, company_id, status } = req.body;
-
-    const file = req.file;
+    console.log(req.body);
+    let file = req.file;
     if (!file) {
         return res.status(400).json({ status: 400, msg: 'Faltan la imagen del archivo ' });
     }
@@ -18,14 +18,12 @@ const createProduct = async (req, res) => {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
     try {
-        status = false;
-        const newProduct = await Products.create({
+       const productCreated= await Products.create({
             name, price, stock, category, description, company_id, status, image: file.filename
 
         });
-        if (!newProduct) {
-            return res.status(400).json({ status: 400, msg: 'Error al crear producto' });
-        }
+        console.log('Producto creado:', productCreated);
+        
         return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente' });
     } catch (error) {
         console.error('Error al crear producto:', error);
@@ -37,6 +35,14 @@ const getAllProducts = async (req, res) => {
 
     try {
         const products = await Products.find();
+        const url = "https://backendlyon.onrender.com"
+        products.map(product => {
+            if (product.image) {
+                product.image = `${url}/${product.image}`;
+            }
+        });
+        
+        console.log(products);
         return res.status(200).json({ status: 200, msg: 'productos encontrados exitosamente', products });
     } catch (error) {
         console.error('Error al encontrar producto:', error);

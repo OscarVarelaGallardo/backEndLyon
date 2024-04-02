@@ -236,6 +236,32 @@ router.get('/img/:id', getImgProductById);
 
 router.get('/complete/:id', getCompleteProductById);
 
+/** 
+* @swagger
+* tags:
+*  name: Product
+*  description: Get all products from an excel file
+* @swagger
+* /products/uploadFile:
+*   post:
+*     tags: [Product]
+*     summary: Get all products from an excel file
+*     requestBody:
+*       required: true
+*       content:
+*         multipart/form-data:
+*           schema:
+*             type: object
+*             properties:
+*               file:
+*                 type: string
+*                 format: binary
+*     responses:
+*       '200':
+*         description: Products found successfully.
+*       '500':
+*         description: Error to find products.
+*/
 
 router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
 
