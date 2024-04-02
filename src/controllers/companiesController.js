@@ -183,15 +183,15 @@ const updateStatus = async (req, res) => {
     const { _id, status } = req.body;
     if (!_id) { return res.status().json({ status: 400, msg: 'Id de empresa requerido' }) }
     if (!status) { return res.status().json({ status: 400, msg: 'Status de empresa requerido' }) }
-    const company = await companiesSchema.findById(_id);
+    const company = await companiesSchema.findOne({ _id });
     if (!company) {
         return res.status().json({ status: 400, msg: "No se encuntra la empresa registrada" })
     }
+    if (status !== 'reject' && status !== 'accept') {
+        return res.status(400).json({ status: 400, msg: 'Status invalido' })
+    }
     try {
-        if (status !== 'reject' && status !== 'accept') {
-            return res.status(400).json({ status: 400, msg: 'Status invalido' })
-        }
-        const companyUpdate = await companiesSchema.update
+        const companyUpdate = await companiesSchema.updateOne
             ({ _id }, { status });
         if (companyUpdate.nModified === 0) {
             return res.status(400).json({ status: 400, msg: 'No se ha actualizado el estado de la empresa' });
