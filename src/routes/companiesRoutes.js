@@ -1,9 +1,43 @@
 import express from 'express';
-import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany } from '../controllers/companiesController.js';
+import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany, updateStatus } from '../controllers/companiesController.js';
 import protectRoute from '../middleware/protectRoute.js';
 import { upload } from '../helpers/multer.js';
 
 const router = express.Router();
+
+/**
+ * @swagger
+ * tags:
+ *  name: Company update Status
+ *  description: Companies management
+ * 
+ * 
+ * @swagger
+ * /companies/updateCompany:
+ *   post:
+ *     tags: [Company]
+ *     summary: Update company status.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *              
+ *     responses:
+ *       '200':
+ *         description: Company status updated successfully.
+ *       '400':
+ *         description: Company not found or status is required.
+ *       '500':
+ *         description: Error updating company status.
+ */
+router.post('/updateCompany', updateStatus);
 
 /**
  * @swagger

@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const RolSchema = new mongoose.Schema({
+    id_rol: {
+        type: Number,
+        required: true
+    },
+
     name: {
         type: String,
         required: true

@@ -16,13 +16,14 @@ const seeders = async () => {
         const countRol = await Rol.countDocuments();
         if (countRol === 0) {
             await Rol.insertMany([
-                { name: 'Admin', description: 'Este rol es para los administradores' },
-                { name: 'User', description: 'Este rol es para los usuarios' },
-                { name: 'Empresa', description: 'Este rol es para las empresas' },
+                { id_rol: "1", name: 'Admin', description: 'Este rol es para los administradores' },
+                { id_rol: "2", name: 'User', description: 'Este rol es para los usuarios' },
+                { id_rol: "3", name: 'Company', description: 'Este rol es para las empresas' },
+
 
             ]);
         }
-        
+
     } catch (error) {
         console.log(error);
     }

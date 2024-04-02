@@ -1,4 +1,5 @@
 import express from 'express';
+import protectRoute from '../middleware/protectRoute.js';
 
 import {
     createProduct,
@@ -6,15 +7,11 @@ import {
     getProductById,
     updateProduct,
     deleteProduct,
-    storageImg,
-    getImgProductById,
-    getCompleteProductById,
     getExcelDataProducts
 } from '../controllers/productsController.js';
 
 
 import { upload } from '../helpers/multer.js';
-import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
 
@@ -206,35 +203,6 @@ router.delete('/delete/:id', deleteProduct);
  */
 //router.post('/img/:id', upload.single('image'), storageImg);
     
-
-/**
- * @swagger
- *  tags:
- *   name: Product  
- *   description: Products add image
- * @swagger
- * /products/img/{id}:
- *   get:
- *     tags: [Product]
- *     summary: Get a product image by its ID.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: Product image found successfully.
- *       '404':
- *         description: Product image not found.
- *       '500':
- *         description: Server error to find product image.
- */
-router.get('/img/:id', getImgProductById);
-
-
-router.get('/complete/:id', getCompleteProductById);
 
 /** 
 * @swagger

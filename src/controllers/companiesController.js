@@ -1,16 +1,15 @@
 import companiesSchema from '../models/Companies.js';
-import rolesSchema from '../models/Rol.js';
-import User from '../models/User.js';
 import path from 'path';
-import fs from 'fs';
+import fs, { stat } from 'fs';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+
+
+
 const createCompany = async (req, res) => {
-    const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email } = req.body;
-    console.log(req.body);
-    if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc) {
-       
+    const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, status } = req.body;
+    if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }
     const companyExist = await companiesSchema.findOne({ companyName });
@@ -19,37 +18,40 @@ const createCompany = async (req, res) => {
         return res.status(400).json({ status: 400, msg: 'La empresa ya está registrada' });
     }
     const emailExist = await companiesSchema.findOne({ email });
-    console.log(emailExist);
+
     if (emailExist) {
         return res.status(400).json({ status: 400, msg: 'El email ya está registrado' });
     }
-    if (!user_id){
+    if (!user_id) {
         try {
             const newCompany = await companiesSchema.create({
-                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3,email, password,
+                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3, email, password, status
             });
-
-          return  res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente', company: newCompany });
+            if (!newCompany) {
+                return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
+            }
+            return res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente' });
         } catch (error) {
-         return   res.status(500).json({ status: 500, msg: 'Error al asociar la empresa empresa', error: error.message });
+            return res.status(500).json({ status: 500, msg: 'Error al asociar la empresa empresa', error: error.message });
         }
 
     }
 
     try {
+
+
         const newCompany = await companiesSchema.create({
-            companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, rol_id: 3,
+            companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, rol_id: 3, status
         });
         if (!newCompany) {
             return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
         }
+
         res.status(200).json({ status: 200, msg: 'Empresa creada correctamente', company: newCompany });
     }
     catch (error) {
-      return  res.status(500).json({ status: 500, msg: 'Error al crear empresa', error: error.message });
+        return res.status(500).json({ status: 500, msg: 'Error al crear empresa', error: error.message });
     }
-
-
 
 }
 
@@ -115,7 +117,6 @@ const deleteCompany = async (req, res) => {
     }
 }
 
-//create service for pdf
 const uploadPdf = async (req, res) => {
     const companyId = req.params.id;
 
@@ -178,6 +179,23 @@ const loginCompany = async (req, res) => {
 }
 
 
+const updateStatus = async (req, res) => {
+    const { _id, status } = req.body;
+    if (!_id) { return res.status().json({ status: 400, msg: 'Id de empresa requerido' }) }
+    if (!status) { return res.status().json({ status: 400, msg: 'Status de empresa requerido' }) }
+    const company = await companiesSchema.findById(_id);
+    if (!company) {
+        return res.status().json({ status: 400, msg: "No se encuntra la empresa registrada" })
+    }
+    try {
+        if (status !== 'reject' && status !== 'accept') {
+            return res.status(400).json({ status: 400, msg: 'Status invalido' })
+        }
+         return res.status(200).json({status:200, msg:"Compañia actualizada correctamente"})
+    } catch (error) {
+        res.status(500).json({ status: 500, msg: 'Error al  actualizar', error: error.message })
+    }
+}
 
 
-export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany }
+export { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany, updateStatus }

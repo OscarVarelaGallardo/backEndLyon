@@ -32,7 +32,7 @@ const companiesSchema = new mongoose.Schema({
         allowNull: false
     },
     status: {
-        type: Boolean,
+        type: String,
         allowNull: false,
         defaultValue: false
     },
