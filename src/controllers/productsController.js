@@ -13,6 +13,9 @@ const updateStatus = async (req, res) => {
         const company = await companiesSchema.findById(_id);
         if (!company) {
             return res.status(404).json({ status: 404, msg: 'Empresa no encontrada' });
+        } 
+        if (status !== 'reject' && status !== 'accept') {
+            return res.status(400).json({ status: 400, msg: 'Status invalido' })
         }
         const producUpdate = await companiesSchema.updateOne({ _id }, { status});
         if (producUpdate.nModified === 0) {

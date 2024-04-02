@@ -191,6 +191,11 @@ const updateStatus = async (req, res) => {
         if (status !== 'reject' && status !== 'accept') {
             return res.status(400).json({ status: 400, msg: 'Status invalido' })
         }
+        const companyUpdate = await companiesSchema.update
+            ({ _id }, { status });
+        if (companyUpdate.nModified === 0) {
+            return res.status(400).json({ status: 400, msg: 'No se ha actualizado el estado de la empresa' });
+        }
          return res.status(200).json({status:200, msg:"Compañia actualizada correctamente"})
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al  actualizar', error: error.message })
