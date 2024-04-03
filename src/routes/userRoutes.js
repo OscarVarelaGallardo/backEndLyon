@@ -15,7 +15,6 @@ const router = express.Router();
  * tags:
  *   name: User
  *   description: Users management
-
  * @swagger
  * /user/register:
  *   post:
