@@ -10,7 +10,7 @@ const options = {
                description: "User routes documentation to login and register"
            },
            {
-                name: "Product",
+                name: "Products",
                 description: "Product routes documentation to create, update, delete and get products"
               },
               {
