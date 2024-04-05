@@ -1,7 +1,7 @@
 import express from 'express';
 import { createCompany, getAllCompanies, getCompanyById, updateCompany, deleteCompany, uploadPdf, showPdf, loginCompany, updateStatus } from '../controllers/companiesController.js';
 import protectRoute from '../middleware/protectRoute.js';
-import { upload } from '../helpers/multer.js';
+import handleFileUpload from '../helpers/multer.js';
 
 const router = express.Router();
 
@@ -234,7 +234,7 @@ router.delete('/:id', deleteCompany);
  *       '500':
  *         description: Error al cargar PDF.
  */
-router.post('/upload/:id', upload.single('pdf'), uploadPdf);
+//router.post('/upload/:id', upload.single('pdf'), uploadPdf);
 
 /**
  * @swagger

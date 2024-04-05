@@ -30,22 +30,36 @@ const updateStatus = async (req, res) => {
 
 const createProduct = async (req, res) => {
     const { name, price, stock, category, description, company_id, status } = req.body;
+    //obtener la url de la imagen
 
     let file = req.file;
+ 
     if (!file) {
         return res.status(400).json({ status: 400, msg: 'Faltan la imagen del archivo ' });
     }
+    
     if (!name || !price || !stock || !category || !description || !company_id, !status) {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
     try {
-        const productCreated = await Products.create({
-            name, price, stock, category, description, company_id, status, image: file.filename
 
+      
+        const product = new Products({
+            name,
+            price,
+            image: file.originalname,
+            stock,
+            category,
+            description,
+            company_id,
+            status
         });
+
+        const productCreated = await product.save();
+       
         console.log('Producto creado:', productCreated);
 
-        return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente' });
+        return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente', product: productCreated});
     } catch (error) {
         console.error('Error al crear producto:', error);
         res.status(500).json({ status: 500, msg: 'Error al crear producto', error: error.mesage });
@@ -56,14 +70,12 @@ const getAllProducts = async (req, res) => {
 
     try {
         const products = await Products.find();
-        const url = "https://backendlyon.onrender.com"
+        const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/"
         products.map(product => {
             if (product.image) {
                 product.image = `${url}/${product.image}`;
             }
         });
-
-        console.log(products);
         return res.status(200).json({ status: 200, msg: 'productos encontrados exitosamente', products });
     } catch (error) {
         console.error('Error al encontrar producto:', error);
@@ -88,13 +100,14 @@ const getProductById = async (req, res) => {
 
 
 const updateProduct = async (req, res) => {
-
+    console.log(req.body);
     const { _id, name, price, image, stock, category, description, status } = req.body;
-    if (!_id || !name || !price || !image || !stock || !category || !description || !status) {
+    console.log(req.body.image);
+    if (!_id || !name || !price || !stock || !category || !description || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
     }
     try {
-        const product = await Products.findById(_id);
+        const product = await Products.findByIdAndUpdate(_id);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }

@@ -11,7 +11,7 @@ import {
 } from '../controllers/productsController.js';
 
 
-import { upload } from '../helpers/multer.js';
+import  handleFileUpload from '../helpers/multer.js';
 import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
@@ -55,7 +55,7 @@ const router = express.Router();
  *       '500':
  *         description: Error to create product.
  */
-router.post('/', upload.single('image'), createProduct);
+router.post('/', handleFileUpload, createProduct);
 
 /**
  * @swagger
@@ -132,7 +132,7 @@ router.get('/:id', getProductById);
  *       '500':
  *         description: Error to update product.
  */
-router.put('/update', updateProduct);
+router.put('/update',  updateProduct);
 
 /**
  * @swagger
@@ -189,7 +189,7 @@ router.delete('/delete/:id', deleteProduct);
 *         description: Error to find products.
 */
 
-router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
+//router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
 /**
  * @swagger
  * tags:
