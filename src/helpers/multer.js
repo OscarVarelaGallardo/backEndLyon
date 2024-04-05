@@ -45,7 +45,6 @@ async function handleFileUpload(req, res, next) {
 
             //como le paso el url de la imagen a la base de datos
             req.fileUrl = data.Key;
-            console.log('URL de la imagen:', req.fileUrl);
             next();
 
         });
