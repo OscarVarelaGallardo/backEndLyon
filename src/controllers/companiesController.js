@@ -189,7 +189,7 @@ const loginCompany = async (req, res) => {
             return res.status(403).json({ status: 403, msg: 'No tienes permisos para ingresar' });
         }
         company.password = undefined;
-        res.status(200).json({ status: 200, msg: 'Empresa logueada correctamente', userExist });
+        res.status(200).json({ status: 200, msg: 'Empresa logueada correctamente', company });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al loguear empresa', error: error.message });
     }
