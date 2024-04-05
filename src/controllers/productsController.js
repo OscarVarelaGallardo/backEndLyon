@@ -90,7 +90,7 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req, res) => {
 
     const { _id, name, price, image, stock, category, description, status } = req.body;
-    if (!name || !price || !stock || !category || !description || !_id || !status) {
+    if (!_id || !name || !price || !image || !stock || !category || !description || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
     }
     try {
