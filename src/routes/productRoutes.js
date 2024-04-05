@@ -219,7 +219,7 @@ router.post('/uploadFile', upload.single('file'), getExcelDataProducts);
  *       '500':
  *         description: Error to create product.
  */
-router.post('/updateStatus', updateProduct);
+router.post('/updateStatus', updateStatus);
 
 
 
