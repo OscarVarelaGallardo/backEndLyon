@@ -1,4 +1,6 @@
 import companiesSchema from '../models/Companies.js';
+import User from '../models/User.js';
+
 import path from 'path';
 import fs, { stat } from 'fs';
 import { fileURLToPath } from 'url';
@@ -17,7 +19,7 @@ const createCompany = async (req, res) => {
         user_id,
         password,
         email,
-        status } = req.body;
+         status } = req.body;
 
     if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
@@ -169,22 +171,25 @@ const showPdf = async (req, res) => {
 
 const loginCompany = async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
+    }
     try {
         const company = await companiesSchema.findOne({ email });
         if (!company) {
             return res.status(400).json({ status: 400, msg: 'El no esta registrado como empresa' });
         }
-
-        const validPassword = await company.validPassword(password);
+        const userExist = await User.findOne({ email });
+        const validPassword = await userExist.validPassword(password);
         if (!validPassword) {
             return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
         }
         //validar si tiene un rol de empresa
-        if (company.rol_id !== 3) {
+        if (userExist.rol_id !== 3) {
             return res.status(403).json({ status: 403, msg: 'No tienes permisos para ingresar' });
         }
         company.password = undefined;
-        res.status(200).json({ status: 200, msg: 'Empresa logueada correctamente', company });
+        res.status(200).json({ status: 200, msg: 'Empresa logueada correctamente', userExist });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al loguear empresa', error: error.message });
     }
