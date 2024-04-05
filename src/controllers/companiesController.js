@@ -8,13 +8,23 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
 const createCompany = async (req, res) => {
-    const { companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, status } = req.body;
+    const { companyName,
+        companyCountry,
+        productType,
+        companyPhone,
+        companyContact,
+        companyRfc,
+        user_id,
+        password,
+        email,
+         status } = req.body;
+
     if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }
-    const companyExist = await companiesSchema.findOne({ companyName });
+    const companyNameExist = await companiesSchema.findOne({ companyName });
 
-    if (companyExist) {
+    if (companyNameExist) {
         return res.status(400).json({ status: 400, msg: 'La empresa ya está registrada' });
     }
     const emailExist = await companiesSchema.findOne({ email });
@@ -24,10 +34,10 @@ const createCompany = async (req, res) => {
     }
     if (!user_id) {
         try {
-            const newCompany = await companiesSchema.create({
+            const newCompanyeCreated = await companiesSchema.create({
                 companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3, email, password, status
             });
-            if (!newCompany) {
+            if (!newCompanyeCreated) {
                 return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
             }
             return res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente' });
@@ -165,11 +175,16 @@ const loginCompany = async (req, res) => {
     try {
         const company = await companiesSchema.findOne({ email });
         if (!company) {
-            return res.status(404).json({ status: 404, msg: 'Empresa no encontrada' });
+            return res.status(400).json({ status: 400, msg: 'El no esta registrado como empresa' });
         }
-        const validPassword = await company.validPassword(password);
+
+        const validPassword = await companiesSchema.validPassword(password);
         if (!validPassword) {
             return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
+        }
+        //validar si tiene un rol de empresa
+        if (company.rol_id !== 3) {
+            return res.status(403).json({ status: 403, msg: 'No tienes permisos para ingresar' });
         }
         company.password = undefined;
         res.status(200).json({ status: 200, msg: 'Empresa logueada correctamente', company });
@@ -196,7 +211,7 @@ const updateStatus = async (req, res) => {
         if (companyUpdate.nModified === 0) {
             return res.status(400).json({ status: 400, msg: 'No se ha actualizado el estado de la empresa' });
         }
-         return res.status(200).json({status:200, msg:"Compañia actualizada correctamente"})
+        return res.status(200).json({ status: 200, msg: "Compañia actualizada correctamente" })
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al  actualizar', error: error.message })
     }
