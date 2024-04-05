@@ -17,7 +17,7 @@ const createCompany = async (req, res) => {
         user_id,
         password,
         email,
-         status } = req.body;
+        status } = req.body;
 
     if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
@@ -180,7 +180,7 @@ const loginCompany = async (req, res) => {
             return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
         }
         //validar si tiene un rol de empresa
-        if (company.rol_id !== 3) {
+        if (company.rol_id === 3) {
             return res.status(403).json({ status: 403, msg: 'No tienes permisos para ingresar' });
         }
         company.password = undefined;
