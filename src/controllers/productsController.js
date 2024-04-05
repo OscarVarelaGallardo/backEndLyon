@@ -99,8 +99,10 @@ const getProductById = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     console.log(req.body);
+    let file = req.file;
+    console.log(file)
     const { _id, name, price, image, stock, category, description, status } = req.body;
-    console.log(req.body.image);
+    
     if (!_id || !name || !price || !stock || !category || !description || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
     }
@@ -110,9 +112,20 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
 
-        const productUpdated = await Products.updateOne({ _id },
-            { name, price, image, stock, category, description, status });
+       const newProduct = {
+            name,
+            price,
+            image: file.originalname,
+            stock,
+            category,
+            description,
+            status
+        };
+        const productUpdated = await Products.updateOne({
+            _id
+        }, newProduct);
 
+        
         if (productUpdated.nModified === 0) {
             return res.status(400).json({ status: 400, msg: 'No se ha actualizado el producto' });
         }
