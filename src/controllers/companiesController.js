@@ -169,16 +169,13 @@ const showPdf = async (req, res) => {
 
 const loginCompany = async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
-    }
     try {
         const company = await companiesSchema.findOne({ email });
         if (!company) {
             return res.status(400).json({ status: 400, msg: 'El no esta registrado como empresa' });
         }
 
-        const validPassword = await companiesSchema.validPassword(password);
+        const validPassword = await company.validPassword(password);
         if (!validPassword) {
             return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
         }
