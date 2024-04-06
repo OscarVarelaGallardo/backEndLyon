@@ -99,19 +99,19 @@ const getProductById = async (req, res) => {
 
 const updateProduct = async (req, res) => {
 
-    let file = req.file;
-
+//recuperar todos los demas datos del producto
+   
     const { _id, name, price, image, stock, category, description, status } = req.body;
-
-    if (!_id || !name || !price || !stock || !category || !description || !status) {
-        return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
+    if (!_id) {
+        return res.status(400).json({ status: 400, msg: 'Falta el id del producto' });
     }
+  
     try {
         const product = await Products.findByIdAndUpdate(_id);
         if (!product) {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
-
+        let file = req.file;
         const newProduct = {
             name,
             price,
