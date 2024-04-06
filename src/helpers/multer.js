@@ -14,42 +14,43 @@ const upload = multer({ storage }).single('image'); // Se asume que solo se est�
 
 
 async function handleFileUpload(req, res, next) {
+    if (!req.file) {
+        return next();
+    }
+
     try {
         upload(req, res, async function (err) {
 
-          /*   if (!req.file) {
-                return next();
-            } */
-            req.file.originalname = Date.now() + path.extname(req.file.originalname);
+            if (req.file) {
+
+                req.file.originalname = Date.now() + path.extname(req.file.originalname);
+                if (err instanceof multer.MulterError) {
+                    // Manejar errores de Multer
+                    return res.status(400).json({ error: err.message });
+                } else if (err) {
+                    // Manejar otros errores
+                    return res.status(500).json({ error: err.message });
+                }
+
+                // Si se subió correctamente, almacenar el archivo en Supabase
+                const file = req.file;
+
+                if (!file) {
+                    return res.status(400).json({ error: "Por favor, sube un archivo" });
+                }
+
+                const { data, error } = await supabase.storage.from('img').upload(file.originalname, file.buffer);
+
+                if (error) {
+                    return res.status(500).json({ error: error.message });
+                }
 
 
-            if (err instanceof multer.MulterError) {
-                // Manejar errores de Multer
-                return res.status(400).json({ error: err.message });
-            } else if (err) {
-                // Manejar otros errores
-                return res.status(500).json({ error: err.message });
+
+                //como le paso el url de la imagen a la base de datos
+                req.fileUrl = data.Key;
+                next();
             }
-
-            // Si se subió correctamente, almacenar el archivo en Supabase
-            const file = req.file;
-
-            if (!file) {
-                return res.status(400).json({ error: "Por favor, sube un archivo" });
-            }
-
-            const { data, error } = await supabase.storage.from('img').upload(file.originalname, file.buffer);
-
-            if (error) {
-                return res.status(500).json({ error: error.message });
-            }
-
-
-
-            //como le paso el url de la imagen a la base de datos
-            req.fileUrl = data.Key;
-            next();
-
         });
     } catch (error) {
         return res.status(500).json({ error: error.message });
