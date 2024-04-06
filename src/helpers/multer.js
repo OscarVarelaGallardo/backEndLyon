@@ -16,7 +16,10 @@ const upload = multer({ storage }).single('image'); // Se asume que solo se est√
 async function handleFileUpload(req, res, next) {
     try {
         upload(req, res, async function (err) {
-            //renombrar el archivo
+
+          /*   if (!req.file) {
+                return next();
+            } */
             req.file.originalname = Date.now() + path.extname(req.file.originalname);
 
 
@@ -41,7 +44,7 @@ async function handleFileUpload(req, res, next) {
                 return res.status(500).json({ error: error.message });
             }
 
-           
+
 
             //como le paso el url de la imagen a la base de datos
             req.fileUrl = data.Key;

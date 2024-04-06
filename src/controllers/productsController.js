@@ -33,17 +33,17 @@ const createProduct = async (req, res) => {
     //obtener la url de la imagen
 
     let file = req.file;
- 
+
     if (!file) {
         return res.status(400).json({ status: 400, msg: 'Faltan la imagen del archivo ' });
     }
-    
+
     if (!name || !price || !stock || !category || !description || !company_id, !status) {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
     try {
 
-      
+
         const product = new Products({
             name,
             price,
@@ -57,7 +57,7 @@ const createProduct = async (req, res) => {
 
         const productCreated = await product.save();
 
-        return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente', product: productCreated});
+        return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente', product: productCreated });
     } catch (error) {
         console.error('Error al crear producto:', error);
         res.status(500).json({ status: 500, msg: 'Error al crear producto', error: error.mesage });
@@ -98,11 +98,11 @@ const getProductById = async (req, res) => {
 
 
 const updateProduct = async (req, res) => {
-    console.log(req.body);
+
     let file = req.file;
-    console.log(file)
+
     const { _id, name, price, image, stock, category, description, status } = req.body;
-    
+
     if (!_id || !name || !price || !stock || !category || !description || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos para actualizar' });
     }
@@ -112,10 +112,10 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
 
-       const newProduct = {
+        const newProduct = {
             name,
             price,
-            image: file.originalname,
+            image: file ? file.originalname : product.image,
             stock,
             category,
             description,
@@ -125,7 +125,7 @@ const updateProduct = async (req, res) => {
             _id
         }, newProduct);
 
-        
+
         if (productUpdated.nModified === 0) {
             return res.status(400).json({ status: 400, msg: 'No se ha actualizado el producto' });
         }
@@ -192,7 +192,7 @@ const getExcelDataProducts = async (req, res) => {
             }
         });
         if (products.length > 0) {
-            console.log(products);
+
             await Products.insertMany(products);
             return await res.status(201).json({ status: 201, msg: 'Productos cargados exitosamente ' });
         }
