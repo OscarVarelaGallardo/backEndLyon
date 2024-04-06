@@ -51,7 +51,12 @@ const companiesSchema = new mongoose.Schema({
     rol_id: {
         type: String,
         allowNull: true
+    },
+    pdfDocument: {
+        type: String,
+        allowNull: false
     }
+
 
 })
 

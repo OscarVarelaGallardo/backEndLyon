@@ -234,7 +234,7 @@ router.delete('/:id', deleteCompany);
  *       '500':
  *         description: Error al cargar PDF.
  */
-//router.post('/upload/:id', upload.single('pdf'), uploadPdf);
+router.post('/uploadPdf', handleFileUpload, uploadPdf);
 
 /**
  * @swagger

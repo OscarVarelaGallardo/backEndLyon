@@ -59,7 +59,7 @@ const createProduct = async (req, res) => {
 
         return res.status(201).json({ status: 201, msg: 'Producto creado exitosamente', product: productCreated });
     } catch (error) {
-        console.error('Error al crear producto:', error);
+
         res.status(500).json({ status: 500, msg: 'Error al crear producto', error: error.mesage });
     }
 };

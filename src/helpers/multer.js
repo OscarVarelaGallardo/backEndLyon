@@ -10,44 +10,45 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Configura multer para manejar la subida de archivos
 const storage = multer.memoryStorage();
 
-const upload = multer({ storage }).single('image'); // Se asume que solo se está subiendo un solo archivo
+const upload = multer({ storage }).single('file'); // Se asume que solo se está subiendo un solo archivo
 
 async function handleFileUpload(req, res, next) {
-    try {
-        upload(req, res, async function (err) {
-            if (err instanceof multer.MulterError) {
-                // Manejar errores de Multer
-                return res.status(400).json({ error: err.message });
-            } else if (err) {
-                // Manejar otros errores
-                return res.status(500).json({ error: err.message });
-            }
+    upload(req, res, async function (err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
 
-            // Si no se subió un archivo, pasar al siguiente middleware
-            if (!req.file) {
-                next();
-                return;
-            }
-
-            // Cambiar el nombre del archivo
-            req.file.originalname = Date.now() + path.extname(req.file.originalname);
-
-            // Si se subió correctamente, almacenar el archivo en Supabase
-            const file = req.file;
-            const { data, error } = await supabase.storage.from('img').upload(file.originalname, file.buffer, {
-                contentType: file.mimetype,
-            });
-
-            if (error) {
-                return res.status(500).json({ error: error.message });
-            }
-
-            // Pasar al siguiente middleware
+        // Si no se subió un archivo, pasar al siguiente middleware
+        if (!req.file) {
             next();
-        });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+            return;
+        }
+
+        // Cambiar el nombre del archivo
+        let typeFile = req.file.mimetype.split("/")[1]
+        let bucket = "";
+
+        req.file.originalname = Date.now() + path.extname(req.file.originalname);
+
+        if (typeFile === "png" || typeFile === "jpg" || typeFile === "jpeg") {
+            bucket = "img"
+        }
+
+        if (typeFile === "pdf") {
+            bucket = "pdf"
+        }
+
+        // Si se subió correctamente, almacenar el archivo en Supabase
+        const { data, error } = await supabase.storage.from(bucket).upload(req.file.originalname, req.file.buffer);
+
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+
+        //como le paso el url de la imagen a la base de datos
+        req.fileUrl = data.Key;
+        next();
+    });
 }
 
 export default handleFileUpload;

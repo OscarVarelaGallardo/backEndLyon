@@ -31,6 +31,7 @@ try {
     await conectarDB()
     //create table if not exist
     //await db.sync({ force: true });
+    //para sincronizar solo un modelo companiesSchema
      await seeders()
     console.log('Connection has been established successfully.');
 }

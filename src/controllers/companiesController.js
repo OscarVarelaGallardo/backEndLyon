@@ -71,10 +71,17 @@ const createCompany = async (req, res) => {
 
 const getAllCompanies = async (req, res) => {
     try {
+        const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/pdf/"
         const companies = await companiesSchema.find({});
         if (!companies) {
             return res.status(404).json({ status: 404, msg: 'empresas no encontradas' });
         }
+        companies.map(company => {
+            if (company.pdfDocument) {
+                company.pdfDocument = `${url}/${company.pdfDocument}`;
+            }
+        });
+
         res.status(200).json({ status: 200, msg: 'Empresas encontradas', companies });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error al encontrar empresas', error: error.message });
@@ -130,15 +137,38 @@ const deleteCompany = async (req, res) => {
 }
 
 const uploadPdf = async (req, res) => {
-    const companyId = req.params.id;
-
+    const { _id } = req.body;
     try {
-        const company = await companiesSchema.findById(companyId);
+        let company = await companiesSchema.findOne({ _id: _id });
         if (!company) {
-            return res.status(404).json({ status: 404, msg: 'empresa no encontrada no encontrada' });
+            return res.status(404).json({ status: 404, msg: 'Empresa no encontrada' });
         }
-        // Guardar el nombre del archivo PDF en la base de datos
-        await company.updateOne({ pdf: req.file.filename });
+        if (!req.file) {
+            return res.status(400).json({ status: 400, msg: 'Archivo pdf requerido' });
+        }
+
+        const newCompany = {
+            companyName: company.companyName,
+            companyCountry: company.companyCountry,
+            productType: company.productType,
+            companyPhone: company.companyPhone,
+            companyContact: company.companyContact,
+            companyRfc: company.companyRfc,
+            pdfDocument: req.file.originalname,
+            status: company.status,
+            user_id: company.user_id,
+            email: company.email,
+            password: company.password,
+            rol_id: company.rol_id
+
+        }
+        const companyUpdated = await companiesSchema.updateOne({ _id }, newCompany);
+       
+
+        if (companyUpdated.nModified === 0) {
+            return res.status(400).json({ status: 400, msg: 'No se ha actualizado el pdf' });
+        }
+        
         res.status(200).json({ status: 200, msg: 'pdf subido correctamente', company });
     }
     catch (error) {
