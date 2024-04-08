@@ -47,7 +47,7 @@ const createProduct = async (req, res) => {
         const product = new Products({
             name,
             price,
-            image: file.originalname,
+            file: file.originalname,
             stock,
             category,
             description,
@@ -115,7 +115,7 @@ const updateProduct = async (req, res) => {
         const newProduct = {
             name,
             price,
-            image: file ? file.originalname : product.image,
+            file: file ? file.originalname : product.image,
             stock,
             category,
             description,

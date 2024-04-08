@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         allowNull: false
     },
-    image: {
+    file: {
         type: String,
         allowNull: false
     },
