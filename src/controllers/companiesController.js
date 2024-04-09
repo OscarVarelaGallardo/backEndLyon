@@ -138,6 +138,7 @@ const deleteCompany = async (req, res) => {
 
 const uploadPdf = async (req, res) => {
     const { _id } = req.body;
+
     try {
         let company = await companiesSchema.findOne({ _id: _id });
         if (!company) {

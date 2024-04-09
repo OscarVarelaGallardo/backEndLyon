@@ -5,7 +5,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import ExcelJS from 'exceljs';
 
 const updateStatus = async (req, res) => {
-    const { status, _id } = req.body;
+
     if (!_id) { return res.status(400).json({ status: 400, msg: 'Falta el id del producto' }); }
     if (!status) { return res.status(400).json({ status: 400, msg: 'Falta el status del producto' }); }
     if (status !== 'reject' && status !== 'accept') {
@@ -30,24 +30,19 @@ const updateStatus = async (req, res) => {
 
 const createProduct = async (req, res) => {
     const { name, price, stock, category, description, company_id, status } = req.body;
-    //obtener la url de la imagen
 
-    let file = req.file;
-
-    if (!file) {
-        return res.status(400).json({ status: 400, msg: 'Faltan la imagen del archivo ' });
-    }
-
-    if (!name || !price || !stock || !category || !description || !company_id, !status) {
+    if (!name || !price || !stock || !category || !description || !status) {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
-    try {
 
+    const file = req.file;
+
+    try {
 
         const product = new Products({
             name,
             price,
-            file: file.originalname,
+            file: file ? file.originalname : null,
             stock,
             category,
             description,
@@ -101,7 +96,7 @@ const updateProduct = async (req, res) => {
 
 //recuperar todos los demas datos del producto
    
-    const { _id, name, price, image, stock, category, description, status } = req.body;
+    const { _id, name, price, stock, category, description, status } = req.body;
     if (!_id) {
         return res.status(400).json({ status: 400, msg: 'Falta el id del producto' });
     }

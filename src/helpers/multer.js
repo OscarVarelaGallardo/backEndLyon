@@ -13,12 +13,14 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('file'); // Se asume que solo se está subiendo un solo archivo
 
 async function handleFileUpload(req, res, next) {
+
     upload(req, res, async function (err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-
+      
         // Si no se subió un archivo, pasar al siguiente middleware
+        console.log(req.body)
         if (!req.file) {
             next();
             return;
