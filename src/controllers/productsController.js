@@ -65,8 +65,8 @@ const getAllProducts = async (req, res) => {
         const products = await Products.find();
         const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/"
         products.map(product => {
-            if (product.image) {
-                product.image = `${url}/${product.image}`;
+            if (product.file) {
+                product.file = `${url}/${product.file}`;
             }
         });
         return res.status(200).json({ status: 200, msg: 'productos encontrados exitosamente', products });
