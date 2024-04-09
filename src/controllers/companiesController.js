@@ -15,13 +15,12 @@ const createCompany = async (req, res) => {
         productType,
         companyPhone,
         companyContact,
-        companyRfc,
         user_id,
         password,
         email,
-         status } = req.body;
-
-    if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !companyRfc || !status) {
+        status } = req.body;
+    console.log
+    if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }
     const companyNameExist = await companiesSchema.findOne({ companyName });
@@ -36,10 +35,23 @@ const createCompany = async (req, res) => {
     }
     if (!user_id) {
         try {
-            const newCompanyeCreated = await companiesSchema.create({
-                companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, rol_id: 3, email, password, status
-            });
-            if (!newCompanyeCreated) {
+
+            const newCompanyeCreated = {
+                companyName: companyName,
+                companyCountry: companyCountry,
+                productType: productType,
+                companyPhone: companyPhone,
+                companyContact: companyContact,
+                user_id: user_id,
+                password: password,
+                email: email,
+                rol_id: 3,
+                status: status,
+                pdf: req.file.originalname
+            }
+
+            const newCompany = await companiesSchema.create(newCompanyeCreated);
+            if (!newCompany) {
                 return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
             }
             return res.status(200).json({ status: 200, msg: 'Empresa asociada correctamente' });
@@ -53,7 +65,7 @@ const createCompany = async (req, res) => {
 
 
         const newCompany = await companiesSchema.create({
-            companyName, companyCountry, productType, companyPhone, companyContact, companyRfc, user_id, password, email, rol_id: 3, status
+            companyName, companyCountry, productType, companyPhone, companyContact,user_id, password, email, rol_id: 3, status, pdf: req.file.originalname
         });
         if (!newCompany) {
             return res.status(400).json({ status: 400, msg: 'Error al crear empresa' });
@@ -164,12 +176,12 @@ const uploadPdf = async (req, res) => {
 
         }
         const companyUpdated = await companiesSchema.updateOne({ _id }, newCompany);
-       
+
 
         if (companyUpdated.nModified === 0) {
             return res.status(400).json({ status: 400, msg: 'No se ha actualizado el pdf' });
         }
-        
+
         res.status(200).json({ status: 200, msg: 'pdf subido correctamente', company });
     }
     catch (error) {

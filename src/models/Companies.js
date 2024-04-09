@@ -23,10 +23,7 @@ const companiesSchema = new mongoose.Schema({
         type: String,
         allowNull: false
     },
-    companyRfc: {
-        type: String,
-        allowNull: false
-    },
+   
     pdf: {
         type: String,
         allowNull: false
@@ -52,10 +49,7 @@ const companiesSchema = new mongoose.Schema({
         type: String,
         allowNull: true
     },
-    pdfDocument: {
-        type: String,
-        allowNull: false
-    }
+   
 
 
 })

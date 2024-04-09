@@ -80,7 +80,7 @@ router.post('/updateCompany', updateStatus);
  *       '500':
  *         description: Error al crear empresa.
  */
-router.post('/', createCompany);
+router.post('/', handleFileUpload, createCompany);
 
 /**
  * @swagger
