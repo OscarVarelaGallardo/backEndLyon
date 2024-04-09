@@ -19,7 +19,7 @@ const createCompany = async (req, res) => {
         password,
         email,
         status } = req.body;
-    console.log
+    console.log(req.body);
     if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }
@@ -62,8 +62,6 @@ const createCompany = async (req, res) => {
     }
 
     try {
-
-
         const newCompany = await companiesSchema.create({
             companyName, companyCountry, productType, companyPhone, companyContact,user_id, password, email, rol_id: 3, status, pdf: req.file.originalname
         });

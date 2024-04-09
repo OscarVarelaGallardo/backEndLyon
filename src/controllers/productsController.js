@@ -5,7 +5,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import ExcelJS from 'exceljs';
 
 const updateStatus = async (req, res) => {
-
+    const { _id, status } = req.body;
     if (!_id) { return res.status(400).json({ status: 400, msg: 'Falta el id del producto' }); }
     if (!status) { return res.status(400).json({ status: 400, msg: 'Falta el status del producto' }); }
     if (status !== 'reject' && status !== 'accept') {
