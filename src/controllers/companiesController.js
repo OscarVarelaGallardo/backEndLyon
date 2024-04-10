@@ -87,8 +87,8 @@ const getAllCompanies = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'empresas no encontradas' });
         }
         companies.map(company => {
-            if (company.pdfDocument) {
-                company.pdfDocument = `${url}/${company.pdfDocument}`;
+            if (company.pdf) {
+                company.pdf = `${url}/${company.pdfDocument}`;
             }
         });
 
