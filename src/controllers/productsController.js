@@ -4,6 +4,7 @@ import path from 'path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import ExcelJS from 'exceljs';
 
+const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/"
 const updateStatus = async (req, res) => {
     const { _id, status } = req.body;
     if (!_id) { return res.status(400).json({ status: 400, msg: 'Falta el id del producto' }); }
@@ -63,7 +64,7 @@ const getAllProducts = async (req, res) => {
 
     try {
         const products = await Products.find();
-        const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/"
+    
         products.map(product => {
             if (product.file) {
                 product.file = `${url}/${product.file}`;
@@ -82,8 +83,12 @@ const getProductById = async (req, res) => {
     try {
         const product = await Products.findById(productId);
         if (!product) {
+
             return res.status(404).json({ status: 404, msg: 'producto no encontrado' });
         }
+
+        product.file = `${url}/${product.file}`;
+        console.log(product.file)
         return res.status(200).json({ status: 200, msg: 'producto encontrado exitosamente', product });
     } catch (error) {
         console.error('Error al encontrar producto:', error);

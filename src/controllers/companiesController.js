@@ -220,13 +220,14 @@ const loginCompany = async (req, res) => {
         if (!company) {
             return res.status(400).json({ status: 400, msg: 'El no esta registrado como empresa' });
         }
-        const userExist = await User.findOne({ email });
-        const validPassword = await userExist.validPassword(password);
+
+        const validPassword = await company.validPassword(password);
         if (!validPassword) {
             return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
         }
         //validar si tiene un rol de empresa
-        if (userExist.rol_id !== 3) {
+      
+        if (company.rol_id !== "3") {
             return res.status(403).json({ status: 403, msg: 'No tienes permisos para ingresar' });
         }
         company.password = undefined;
