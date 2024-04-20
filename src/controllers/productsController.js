@@ -48,7 +48,9 @@ const createProduct = async (req, res) => {
             category,
             description,
             company_id,
-            status
+            status,
+            brand,
+            color
         });
 
         const productCreated = await product.save();
@@ -88,7 +90,7 @@ const getProductById = async (req, res) => {
         }
 
         product.file = `${url}/${product.file}`;
-        console.log(product.file)
+       
         return res.status(200).json({ status: 200, msg: 'producto encontrado exitosamente', product });
     } catch (error) {
         console.error('Error al encontrar producto:', error);
@@ -101,7 +103,9 @@ const updateProduct = async (req, res) => {
 
 //recuperar todos los demas datos del producto
    
-    const { _id, name, price, stock, category, description, status } = req.body;
+    const { _id, name, price, stock, category, description, status
+    ,brand,color
+    } = req.body;
     if (!_id) {
         return res.status(400).json({ status: 400, msg: 'Falta el id del producto' });
     }
