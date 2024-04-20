@@ -123,7 +123,9 @@ const updateProduct = async (req, res) => {
             stock,
             category,
             description,
-            status
+            status,
+            brand,
+            color
         };
         const productUpdated = await Products.updateOne({
             _id
