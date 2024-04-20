@@ -13,6 +13,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './src/config/swagger.js';
 import seeders from './src/config/seeders.js';
+import db from './src/config/db.js'
 
 const app = express()
 
@@ -31,7 +32,7 @@ app.use(express.urlencoded({ extended: true }))
 try {
     await conectarDB()
     //create table if not exist
-    //await db.sync({ force: true });
+    //await db.sync({ force: true })
     //para sincronizar solo un modelo companiesSchema
      await seeders()
     console.log('Connection has been established successfully.');

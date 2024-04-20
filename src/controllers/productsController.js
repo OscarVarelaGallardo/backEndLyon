@@ -30,14 +30,14 @@ const updateStatus = async (req, res) => {
 
 
 const createProduct = async (req, res) => {
-    const { name, price, stock, category, description, company_id, status } = req.body;
+    const { name, price, stock, category, description, company_id, status, brand, color } = req.body;
 
     if (!name || !price || !stock || !category || !description || !status) {
         return res.status(400).json({ status: 400, msg: 'Faltan campos obligatorios' });
     }
 
     const file = req.file;
-
+    console.log(req.body)
     try {
 
         const product = new Products({
@@ -51,7 +51,10 @@ const createProduct = async (req, res) => {
             status,
             brand,
             color
-        });
+        })
+        if (!product) {
+            return res.status(400).json({ status: 400, msg: 'No se ha podido crear el producto' });
+        }
 
         const productCreated = await product.save();
 
