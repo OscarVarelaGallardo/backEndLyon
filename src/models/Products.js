@@ -18,6 +18,15 @@ const productSchema = new mongoose.Schema({
         type:String,
         allowNull: false
     },
+  
+    brand: {
+        type: String,
+        allowNull: false
+    },
+    color: {
+        type: String,
+        allowNull: false
+    },
 
     description: {
         type: String,
