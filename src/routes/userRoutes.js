@@ -6,6 +6,7 @@ import {
   confirmToken,
   recoverPassword,
   getAllUsers,
+  loginAdmin,
 } from "../controllers/usersControllers.js";
 
 const router = express.Router();
@@ -151,5 +152,43 @@ router.post("/recovery", recoverPassword);
  *         description: Server error.
  */
 router.get("/users", getAllUsers);
+
+
+
+/**
+ * @swagger
+ * tags:
+ *  name: User
+ *  description: User management
+ *
+ *
+ * @swagger
+ * /user/login:
+ *   post:
+ *     tags: [User]
+ *     summary: User login.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: User logged in successfully.
+ *       '400':
+ *         description: User does not exist or password is incorrect.
+ *       '403':
+ *         description: Account is not confirmed.
+ *       '500':
+ *         description: Server error.
+ */
+router.post("/loginAdmin", loginAdmin);
+
 
 export default router;

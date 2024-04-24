@@ -106,9 +106,7 @@ const updateProduct = async (req, res) => {
 
 //recuperar todos los demas datos del producto
    
-    const { _id, name, price, stock, category, description, status
-    ,brand,color
-    } = req.body;
+    const { _id, name, price, stock, category, description, status ,brand,color} = req.body;
     if (!_id) {
         return res.status(400).json({ status: 400, msg: 'Falta el id del producto' });
     }

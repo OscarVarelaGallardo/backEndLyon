@@ -10,6 +10,7 @@ const register = async (req, res) => {
     if (existEmail) {
         return res.status(400).json({ status: 400, msg: 'El email ya se encuentra registrado' });
     }
+    
     try {
         const user = new User(req.body);
         user.token = generateToken();
@@ -22,6 +23,32 @@ const register = async (req, res) => {
         res.status(500).json({ status: 500, msg: error });
     }
 }
+
+const loginAdmin = async (req, res) => {
+    try {
+    const { email } = req.body;
+    const user = await User.findOne({ email});
+    if(!user){
+        return res.status(400).json({ status: 400, msg: 'El email no se encuentra registrado' });
+    }
+    const validaPassword = await user.validPassword(req.body.password);
+    if(!validaPassword){
+        return res.status(400).json({ status: 400, msg: 'Contraseña incorrecta' });
+    }
+    if(user.rol_id !== 1){
+        return res.status(400).json({ status: 400, msg: 'No tienes permisos para acceder' });
+    }
+
+    //quitar el password
+    user.password = undefined;
+
+    return res.status(200).json({ status: 200, msg: 'Bienvenido',user});
+    } catch (error) {
+        res.status(500).json({ status: 500, msg: error });
+    }   
+}
+    
+
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -43,7 +70,7 @@ const login = async (req, res) => {
             return res.status(403).json({ status: 403, msg: error.message })
         }
         const createUser = generateUser(user)
-        console.log("createUser", createUser)
+        
         const company = await Companies.findOne({ user_id: createUser.id });
         createUser.token = generateJWT(user.id)
         User.updateOne({ _id: user.id }, { $set: { jwt: createUser.token } });
@@ -113,11 +140,11 @@ const generateUser = (user) => {
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
-        console.log("users", users)
+   
         res.status(200).json({ status: 200, msg: 'Usuarios encontrados', users });
     } catch (error) {
         res.status(500).json({ status: 500, msg: error });
     }
 }
 
-export { register, login, confirmToken, recoverPassword, getAllUsers }
+export { register, login, confirmToken, recoverPassword, getAllUsers, loginAdmin }
