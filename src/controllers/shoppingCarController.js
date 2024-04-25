@@ -1,77 +1,71 @@
-import CartDetails from "../models/CartDetails.js";
+import ShoppingCarts from "../models/ShoppingCarts.js";
 
-
-const createCartDetails = async (req, res) => {
-    const { quantity, total, productId, shoppingCartId } = req.body
-    console.log(req.body)
+const createShoppingCart = async (req, res) => {
+    const { total, cartStatus, userId } = req.body; // Cambiado CartStatus a cartStatus
     try {
-        const cartDetails = new CartDetails({ quantity, total, productId, shoppingCartId })
-        await cartDetails.save()
-        
-        res.status(201).json({ status: 201, msg: 'CartDetails creado correctamente', cartDetails })
+        const shoppingCart = new ShoppingCarts({ total, cartStatus, userId }); // Cambiado CartStatus a cartStatus
+        await shoppingCart.save();
+        res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
     } catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error en el servidor' })
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-const getCartDetailsById = async (req, res) => {
-    const { _id } = req.body;
+const getShoppingCartById = async (req, res) => {
+    const { id } = req.params; // Cambiado req.body a req.params
     try {
-        const cartDetails = await CartDetails.findOne({ where: { _id } })
-        if (!cartDetails) {
-            return res.status(400).json({ status: 400, msg: 'CartDetails no encontrado' })
+        const shoppingCart = await ShoppingCarts.findById(id); // Cambiado findOne a findById
+        if (!shoppingCart) {
+            return res.status(404).json({ status: 404, msg: `ShoppingCart con ID ${id} no encontrado` });
         }
-        res.status(200).json({ status: 200, cartDetails })
+        res.status(200).json({ status: 200, shoppingCart });
     } catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error en el servidor' })
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-const getAllCartDetails = async (req, res) => {
+const getAllShoppingCarts = async (req, res) => {
     try {
-        const cartDetails = await CartDetails.findAll()
-
-        if (cartDetails.length === 0) {
-            return res.status(400).json({ status: 400, msg: 'No hay Carritos  alamacenados' })
+        const shoppingCarts = await ShoppingCarts.find();
+        if (!shoppingCarts || shoppingCarts.length === 0) {
+            return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
         }
-
-        res.status(200).json({ status: 200, cartDetails })
+        res.status(200).json({ status: 200, shoppingCarts });
     } catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error en el servidor' })
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-const updateCartDetails = async (req, res) => {
-    const { _id, quantity, total, productId, shoppingCartId } = req.body
+const updateShoppingCart = async (req, res) => {
+    const { id } = req.params; // Cambiado req.body a req.params
+    const { total, cartStatus, userId } = req.body; // Cambiado CartStatus a cartStatus
     try {
-        const cartDetails = await CartDetails.findOne({ where: { _id } })
-        if (!cartDetails) {
-            return res.status(400).json({ status: 400, msg: 'CartDetails no encontrado' })
+        const shoppingCart = await ShoppingCarts.findByIdAndUpdate(id, { total, cartStatus, userId }, { new: true }); // Cambiado findOne a findByIdAndUpdate
+        if (!shoppingCart) {
+            return res.status(404).json({ status: 404, msg: `ShoppingCart con ID ${id} no encontrado` });
         }
-        cartDetails.quantity = quantity
-        cartDetails.total = total
-        cartDetails.productId = productId
-        cartDetails.shoppingCartId = shoppingCartId
-        await cartDetails.save()
-        res.status(200).json({ status: 200, msg: 'CartDetails actualizado correctamente', cartDetails })
+        res.status(200).json({ status: 200, msg: 'ShoppingCart actualizado correctamente', shoppingCart });
     } catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error en el servidor' })
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-const deleteCartDetails = async (req, res) => {
-    const { _id } = req.body
+const deleteShoppingCart = async (req, res) => {
+    const { id } = req.params;
     try {
-        const cartDetails = await CartDetails.findOne({ where: { _id } })
-        if (!cartDetails) {
-            return res.status(400).json({ status: 400, msg: 'CartDetails no encontrado' })
+        const shoppingCart = await ShoppingCarts.findOneAndDelete({ _id: id });
+        if (!shoppingCart) {
+            return res.status(404).json({ status: 404, msg: `ShoppingCart con ID ${id} no encontrado` });
         }
-        await cartDetails.destroy()
-        res.status(200).json({ status: 200, msg: 'CartDetails eliminado correctamente' })
+        res.status(200).json({ status: 200, msg: 'ShoppingCart eliminado correctamente' });
     } catch (error) {
-        res.status(500).json({ status: 500, msg: 'Error en el servidor' })
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-
-export { createCartDetails, getCartDetailsById, getAllCartDetails, updateCartDetails, deleteCartDetails }
+export { createShoppingCart, getShoppingCartById, getAllShoppingCarts, updateShoppingCart, deleteShoppingCart };

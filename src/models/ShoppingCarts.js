@@ -1,36 +1,21 @@
-import db from '../config/db.js'
-import DataType from 'sequelize'
+import mongoose from 'mongoose';
 
-const ShoppingCarts = db.define('shoppingCarts', {
-    id: {
-        type: DataType.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+const { Schema } = mongoose;
+
+const ShoppingCartSchema = new Schema({
     total: {
-        type: DataType.FLOAT,
-        allowNull: false
+        type: Number,
+        required: true
     },
-    CartStatus: {
-        type: DataType.STRING,
-        allowNull: false
+    cartStatus: {
+        type: String,
+        required: true
     },
-
     userId: {
-        type: DataType.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
-        }
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
-})
+});
 
-ShoppingCarts.associate = (models) => {
-    ShoppingCarts.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE'
-    })
-}
-
-export default ShoppingCarts;
+export default mongoose.model('ShoppingCart', ShoppingCartSchema);

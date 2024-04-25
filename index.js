@@ -8,6 +8,7 @@ import categoryRoutes from './src/routes/categoryRoutes.js'
 import rolRoutes from './src/routes/rolRoutes.js'
 import adminRoutes from './src/routes/adminRoutes.js'
 import carRoutes from './src/routes/shoppingCarRoutes.js'
+import carDetailsRoutes from './src/routes/shoppingCarDetailsRoutes.js'
 import { transporter } from './src/helpers/nodemailer.js'
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -59,7 +60,8 @@ app.use('/product', productRoutes);
 app.use('/category', categoryRoutes);
 app.use('/rols', rolRoutes);
 app.use('/admin', adminRoutes);
-app.use('/car', carRoutes)
+app.use('/cart', carRoutes)
+app.use('/cartDetails', carDetailsRoutes)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const port = 4000 || process.env.PORT 
