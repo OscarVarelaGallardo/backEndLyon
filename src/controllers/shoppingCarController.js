@@ -8,7 +8,7 @@ const createShoppingCart = async (req, res) => {
         res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
     } catch (error) {
         console.error('Error en el servidor:', error);
-        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
+        res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
     }
 }
 
