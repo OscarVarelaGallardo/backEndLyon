@@ -3,12 +3,14 @@ import CardDetails from '../models/CartDetails.js'
 import Products from '../models/Products.js';
 const createShoppingCart = async (req, res) => {
     const { total, shoppingCartId, quantity, productId } = req.body;
+    const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
+    if (!shoppingCartexist) {
+      
     try {
+       
         const shoppingCart = new CardDetails({ total, shoppingCartId, quantity, productId });
         
-        if (shoppingCart) {
-            return res.status(404).json({ status: 404, msg: 'El carrito de compras ya existe'});
-        }
+        
         if (shoppingCart.total === 0) {
             return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
         }
@@ -33,6 +35,36 @@ const createShoppingCart = async (req, res) => {
         res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
     }
 }
+   
+    try {
+        const product = await Products.findById(productId);
+        if (!product) {
+            return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
+        }
+        //validat stock
+        if (product.stock <= quantity) {
+            return res.status(400).json({ status: 400, msg: 'No hay suficiente stock' });
+        }
+        product.quantity -= quantity;
+        await product.save();
+        const shoppingCart = await Card
+            .findById(shoppingCartId);
+        if (!shoppingCart) {
+            return res.status(404).json({ status: 404, msg: 'ShoppingCart no encontrado' });
+        }
+        
+
+        await shoppingCart.save();
+        res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
+    }
+    catch (error) {
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
+    }
+}
+
+
+
 
 
 
