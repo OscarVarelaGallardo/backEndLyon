@@ -1,6 +1,7 @@
 import ShoppingCarts from "../models/ShoppingCarts.js";
 import CardDetails from '../models/CartDetails.js'
 import Products from '../models/Products.js';
+import { get } from "mongoose";
 const createShoppingCart = async (req, res) => {
     const { total, shoppingCartId, quantity, productId } = req.body;
     const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
@@ -64,34 +65,36 @@ const createShoppingCart = async (req, res) => {
 
 
 
-
 const getAllShoppingCarts = async (req, res) => {
     const { shoppingCart } = req.body;
 
     try {
-        const shoppingCarts = await CardDetails.find(shoppingCart)
+        const carDetails = await CardDetails.find(shoppingCart);
 
-        const getAllProducts = [];
-        if (!shoppingCarts || shoppingCarts.length === 0) {
+        if (!carDetails || carDetails.length === 0) {
             return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
-        }   
-
-        console.log(shoppingCarts)
-
-        for (let i = 0; i < shoppingCarts.length; i++) {
-            const product = await Products.findById(shoppingCarts[i].productId);
-            //agregar la cantidad de productos seleccionados
-          
-           
-            getAllProducts.push(product);
-            
-           
-
         }
-        //saber cuantos productos selecciono el usuario y cuales    
-       
 
-        res.status(200).json({ status: 200, getAllProducts });
+        const getAllProducts = await Promise.all(carDetails.map(async (car) => {
+            const product = await Products.findById(car.productId);
+            const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/";
+            console.log(product);
+            if (!product) {
+                return null; // O maneja este caso como prefieras
+            }
+            return {
+                product: {
+                    name: product.name,
+                    description: product.description,
+                    price: product.price,
+                    //stock: product.stock,
+                    quantity: car.quantity,
+                    file: url + product.file
+                }
+            };
+        }));
+        const nonNullProducts = getAllProducts.filter(product => product !== null);
+        res.status(200).json({ status: 200,msg:"Carrito", nonNullProducts });
     } catch (error) {
         console.error('Error en el servidor:', error);
         res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
