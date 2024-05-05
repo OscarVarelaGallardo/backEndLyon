@@ -30,10 +30,6 @@ const getAllShoppingCarts = async (req, res) => {
             const product = await Products.findById(shoppingCarts[i].productId);
             getAllProducts.push(product);
         }   
-        console.log('products:', getAllProducts);
-        // Fixed the query object
-    
-
         res.status(200).json({ status: 200, getAllProducts });
     } catch (error) {
         console.error('Error en el servidor:', error);
