@@ -7,8 +7,8 @@ import companiesRoutes from './src/routes/companiesRoutes.js'
 import categoryRoutes from './src/routes/categoryRoutes.js'
 import rolRoutes from './src/routes/rolRoutes.js'
 import adminRoutes from './src/routes/adminRoutes.js'
-import carRoutes from './src/routes/shoppingCarRoutes.js'
-import shoppigCarRoutes from './src/routes/shoppingCarRoutes.js';
+
+import carRoutes from './src/routes/shoppingCarRoutes.js';
 import { transporter } from './src/helpers/nodemailer.js'
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -61,7 +61,7 @@ app.use('/category', categoryRoutes);
 app.use('/rols', rolRoutes);
 app.use('/admin', adminRoutes);
 app.use('/cart', carRoutes)
-app.use('/shoppingCar', shoppigCarRoutes)
+
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
