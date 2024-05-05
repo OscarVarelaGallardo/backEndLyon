@@ -60,7 +60,7 @@ app.use('/product', productRoutes);
 app.use('/category', categoryRoutes);
 app.use('/rols', rolRoutes);
 app.use('/admin', adminRoutes);
-app.use('/car', carRoutes)
+app.use('/shoppingCar', carRoutes)
 
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
