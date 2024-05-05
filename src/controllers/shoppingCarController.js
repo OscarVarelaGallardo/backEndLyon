@@ -2,10 +2,31 @@ import ShoppingCarts from "../models/ShoppingCarts.js";
 import CardDetails from '../models/CartDetails.js'
 import Products from '../models/Products.js';
 const createShoppingCart = async (req, res) => {
-    const { total, cartStatus, userId } = req.body; // Cambiado CartStatus a cartStatus
+    const { total, shoppingCartId, quantity, productId } = req.body;
     try {
-        const shoppingCart = new ShoppingCarts({ total, cartStatus, userId }); // Cambiado CartStatus a cartStatus
+        const shoppingCart = new CardDetails({ total, shoppingCartId, quantity, productId });
+        
+        if (shoppingCart) {
+            return res.status(404).json({ status: 404, msg: 'El carrito de compras ya existe'});
+        }
+        if (shoppingCart.total === 0) {
+            return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
+        }
+      
+        //reestar quantity
+        const product = await Products.findById(productId);
+        //validat stock
+        if (product.stock <= quantity) {
+            return res.status(400).json({ status: 400, msg: 'No hay suficiente stock' });
+        }
+
+        if (!product) {
+            return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
+        }
+        product.quantity -= quantity;
+        await product.save();
         await shoppingCart.save();
+
         res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
     } catch (error) {
         console.error('Error en el servidor:', error);
@@ -16,11 +37,11 @@ const createShoppingCart = async (req, res) => {
 
 
 const getAllShoppingCarts = async (req, res) => {
-    const {shoppingCart} =req.body;
+    const { shoppingCart } = req.body;
 
     try {
         const shoppingCarts = await CardDetails.find(shoppingCart)
-        
+
         const getAllProducts = [];
         if (!shoppingCarts || shoppingCarts.length === 0) {
             return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
@@ -29,7 +50,7 @@ const getAllShoppingCarts = async (req, res) => {
         for (let i = 0; i < shoppingCarts.length; i++) {
             const product = await Products.findById(shoppingCarts[i].productId);
             getAllProducts.push(product);
-        }   
+        }
         res.status(200).json({ status: 200, getAllProducts });
     } catch (error) {
         console.error('Error en el servidor:', error);
