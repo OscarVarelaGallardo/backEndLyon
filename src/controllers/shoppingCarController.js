@@ -26,13 +26,14 @@ const createShoppingCart = async (req, res) => {
         product.quantity -= quantity;
         await product.save();
         await shoppingCart.save();
-
+        //saber cuandtos productos selecciono
+    
         res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
     } catch (error) {
         console.error('Error en el servidor:', error);
         res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
     }
-}
+}else{
    
     try {
         const product = await Products.findById(productId);
@@ -59,6 +60,7 @@ const createShoppingCart = async (req, res) => {
         console.error('Error en el servidor:', error);
         res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
     }
+    }
 }
 
 
@@ -80,7 +82,13 @@ const getAllShoppingCarts = async (req, res) => {
         for (let i = 0; i < shoppingCarts.length; i++) {
             const product = await Products.findById(shoppingCarts[i].productId);
             getAllProducts.push(product);
+            //agregar la cantidad de productos seleccionados
+           // getAllProducts[i].stock = shoppingCarts[i].quantity;
+
         }
+        //saber cuantos productos selecciono el usuario y cuales    
+       
+
         res.status(200).json({ status: 200, getAllProducts });
     } catch (error) {
         console.error('Error en el servidor:', error);
