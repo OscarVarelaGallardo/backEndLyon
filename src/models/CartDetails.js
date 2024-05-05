@@ -17,10 +17,11 @@ const CartDetailsSchema = new Schema({
         required: true
     },
     shoppingCartId: {
-        type: Schema.Types.ObjectId,
-        ref: 'ShoppingCart',
+        type:String,
         required: true
     }
 });
 
-export default mongoose.model('CartDetails', CartDetailsSchema);
+const CarDetails = mongoose.model('CartDetails', CartDetailsSchema);
+
+export default CarDetails;

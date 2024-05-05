@@ -1,14 +1,15 @@
 import ShoppingCarts from "../models/ShoppingCarts.js";
-import CardDetails from '../models/CartDetails.js'
+import CarDetails from '../models/CartDetails.js';
 import Products from '../models/Products.js';
-import { get } from "mongoose";
-const createShoppingCart = async (req, res) => {
+
+
+const createShoppingCar = async (req, res) => {
     const { total, shoppingCartId, quantity, productId } = req.body;
     const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
     if (!shoppingCartexist) {
     try {
         
-        const shoppingCart = new CardDetails({ total, shoppingCartId, quantity, productId });
+        const shoppingCart = new CarDetails({ total, shoppingCartId, quantity, productId });
         if (shoppingCart.total === 0) {
             return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
         }
@@ -65,12 +66,18 @@ const createShoppingCart = async (req, res) => {
 
 
 
-const getAllShoppingCarts = async (req, res) => {
-    const { shoppingCart } = req.body;
-
+const getAllShoppingCars = async (req, res) => {
+    const { shoppingCarId } = req.body;
+   
+    if (typeof shoppingCarId !== 'string') {
+        return res.status(400).json({ status: 400, msg: 'El ID del carrito de compras debe ser un string' });
+    }
+    if (!shoppingCarId) {
+        return res.status(400).json({ status: 400, msg: 'No se ha proporcionado un carrito de compras' });
+    }
     try {
-        const carDetails = await CardDetails.find(shoppingCart);
-
+        const carDetails = await CarDetails.find({ shoppingCartId: shoppingCarId });
+        console.log(carDetails);
         if (!carDetails || carDetails.length === 0) {
             return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
         }
@@ -131,6 +138,6 @@ const deleteShoppingCart = async (req, res) => {
 } */
 
 export {
-    createShoppingCart,
-    getAllShoppingCarts
+    createShoppingCar,
+    getAllShoppingCars
 }

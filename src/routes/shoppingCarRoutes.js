@@ -1,15 +1,15 @@
 import express from "express"
 import {
-    createShoppingCart,
-    getAllShoppingCarts
+    createShoppingCar,
+    getAllShoppingCars
    
 } from "../controllers/shoppingCarController.js";
 const router = express.Router();
 
 
-router.post("/", createShoppingCart);
+router.post("/", createShoppingCar);
 
-router.post("/getAllCart", getAllShoppingCarts);
+router.post("/getAllCar", getAllShoppingCars);
 /*
 router.get("/", getShoppingCarById);
 
