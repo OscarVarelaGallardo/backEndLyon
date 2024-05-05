@@ -5,9 +5,8 @@ const createShoppingCart = async (req, res) => {
     const { total, shoppingCartId, quantity, productId } = req.body;
     const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
     if (!shoppingCartexist) {
-      
     try {
-       
+        
         const shoppingCart = new CardDetails({ total, shoppingCartId, quantity, productId });
         if (shoppingCart.total === 0) {
             return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
@@ -15,7 +14,7 @@ const createShoppingCart = async (req, res) => {
       
         //reestar quantity
         const product = await Products.findById(productId);
-        //validat stock
+       
        
 
         if (!product) {
@@ -39,9 +38,9 @@ const createShoppingCart = async (req, res) => {
             return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
         }
         //validat stock
-        if (product.stock <= quantity) {
+       /*  if (product.stock <= quantity) {
             return res.status(400).json({ status: 400, msg: 'No hay suficiente stock' });
-        }
+        } */
         product.quantity -= quantity;
         await product.save();
         const shoppingCart = await Card
@@ -56,7 +55,7 @@ const createShoppingCart = async (req, res) => {
     }
     catch (error) {
         console.error('Error en el servidor:', error);
-        res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
+        res.status(500).json({ status: 500, msg: 'Error al actualizar ', error: error });
     }
     }
 }
@@ -75,13 +74,18 @@ const getAllShoppingCarts = async (req, res) => {
         const getAllProducts = [];
         if (!shoppingCarts || shoppingCarts.length === 0) {
             return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
-        }
+        }   
+
+        console.log(shoppingCarts)
 
         for (let i = 0; i < shoppingCarts.length; i++) {
             const product = await Products.findById(shoppingCarts[i].productId);
-            getAllProducts.push(product);
             //agregar la cantidad de productos seleccionados
-           // getAllProducts[i].stock = shoppingCarts[i].quantity;
+          
+           
+            getAllProducts.push(product);
+            
+           
 
         }
         //saber cuantos productos selecciono el usuario y cuales    
