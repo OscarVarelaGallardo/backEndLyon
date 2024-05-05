@@ -1,18 +1,36 @@
 import CartDetails from "../models/CartDetails.js";
+import Product from "../models/Products.js"; // Assuming you have a Product model
 
-const createCartDetails = async (req, res) => {
+export const createShoppingCar = async (req, res) => {
     const { quantity, total, productId, shoppingCartId } = req.body;
+    const existProduct = await Product.findOne({ _id:productId });
+  
+    if (!existProduct) {
+        return res.status(400).json({ status: 400, msg: 
+            'El producto no existe en la base de datos'
+         });
+    }
+    if(existProduct.stock < quantity){
+        return res.status(400).json({ status: 400, msg: 
+            'No hay suficiente stock para realizar la compra'
+         });
+    }
+
     try {
         const cartDetails = new CartDetails({ quantity, total, productId, shoppingCartId });
+        //quitar los productos del stock
+        existProduct.stock = existProduct.stock - quantity;
+        await existProduct.save();
+        //ver cuantos productos me restan en stock
         await cartDetails.save();
-        
-        res.status(201).json({ status: 201, msg: 'CartDetails creado correctamente', cartDetails });
+
+        res.status(201).json({ status: 201, msg: 'CartDetails creado correctamente' });
     } catch (error) {
         res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-const getCartDetailsById = async (req, res) => {
+const getShoppingCarById = async (req, res) => {
     const { id } = req.params;
     try {
         const cartDetails = await CartDetails.findOne({ _id: id });
@@ -74,4 +92,9 @@ const deleteCartDetails = async (req, res) => {
 }
 
 
-export { createCartDetails, getCartDetailsById, getAllCartDetails, updateCartDetails, deleteCartDetails };
+export {
+    getShoppingCarById,
+    getAllCartDetails,
+    updateCartDetails,
+    deleteCartDetails
+};

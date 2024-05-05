@@ -1,23 +1,21 @@
 import express from "express"
 import {
-    createShoppingCart,
-    getShoppingCartById,
-    getAllShoppingCarts,
-    updateShoppingCart,
-    deleteShoppingCart
-} from "../controllers/shoppingCarController.js";
+    createShoppingCar,
+   
+} from "../controllers/shoppingCarDetailsController.js";
 const router = express.Router();
 
 
-router.post("/", createShoppingCart);
-
-router.get("/:id", getShoppingCartById);
+router.post("/", createShoppingCar);
+/* 
+router.get("/", getShoppingCarById);
 
 router.get("/", getAllShoppingCarts);
 
-router.put("/:id", updateShoppingCart);
+router.put("/", updateShoppingCart);
 
-router.delete("/:id", deleteShoppingCart);
+router.delete("/", deleteShoppingCart);
 
+ */
 
 export default router;
