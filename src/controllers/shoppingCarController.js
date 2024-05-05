@@ -9,8 +9,6 @@ const createShoppingCart = async (req, res) => {
     try {
        
         const shoppingCart = new CardDetails({ total, shoppingCartId, quantity, productId });
-        
-        
         if (shoppingCart.total === 0) {
             return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
         }
