@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/", createShoppingCart);
 
-router.get("/", getAllShoppingCarts);
+router.post("/getAllCart", getAllShoppingCarts);
 /*
 router.get("/", getShoppingCarById);
 
