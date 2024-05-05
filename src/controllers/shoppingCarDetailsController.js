@@ -1,6 +1,7 @@
 import CartDetails from "../models/CartDetails.js";
 import Product from "../models/Products.js"; // Assuming you have a Product model
-
+import User from "../models/User.js";
+ // Assuming you have a User model
 export const createShoppingCar = async (req, res) => {
     const { quantity, total, productId, shoppingCartId } = req.body;
     const existProduct = await Product.findOne({ _id:productId });
@@ -10,7 +11,7 @@ export const createShoppingCar = async (req, res) => {
             'El producto no existe en la base de datos'
          });
     }
-    if(existProduct.stock < quantity){
+    if(existProduct.stock <= quantity){
         return res.status(400).json({ status: 400, msg: 
             'No hay suficiente stock para realizar la compra'
          });
@@ -31,8 +32,10 @@ export const createShoppingCar = async (req, res) => {
 }
 
 const getShoppingCarById = async (req, res) => {
-    const { id } = req.params;
+    const { _id } = req.body;
+    console.log(_id);
     try {
+        const user = await User
         const cartDetails = await CartDetails.findOne({ _id: id });
         if (!cartDetails) {
             return res.status(400).json({ status: 400, msg: 'CartDetails no encontrado' });
