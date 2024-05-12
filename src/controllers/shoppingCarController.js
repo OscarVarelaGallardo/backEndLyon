@@ -69,9 +69,7 @@ const createShoppingCar = async (req, res) => {
 const getAllShoppingCars = async (req, res) => {
     const { shoppingCarId } = req.body;
    
-    if (typeof shoppingCarId !== 'string') {
-        return res.status(400).json({ status: 400, msg: 'El ID del carrito de compras debe ser un string' });
-    }
+   
     if (!shoppingCarId) {
         return res.status(400).json({ status: 400, msg: 'No se ha proporcionado un carrito de compras' });
     }
