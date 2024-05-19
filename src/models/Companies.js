@@ -79,7 +79,7 @@ companiesSchema.pre('save', async function (next) {
 )
 
 companiesSchema.methods.validPassword = async function (password) {
-    console.log('this is', this.password)
+    
     return await bcrypt.compare(password, this.password);
 };
 
