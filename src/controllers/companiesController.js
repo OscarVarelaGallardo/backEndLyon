@@ -19,7 +19,7 @@ const createCompany = async (req, res) => {
         password,
         email,
         status } = req.body;
-    console.log(req.body);
+  
     if (!companyName || !companyCountry || !productType || !companyPhone || !companyContact || !status) {
         return res.status(400).json({ status: 400, msg: 'Todos los campos son requeridos' });
     }

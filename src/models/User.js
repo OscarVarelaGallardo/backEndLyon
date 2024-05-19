@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.validPassword = async function (password) {
-    console.log('this is', this.password)
+    
     return await bcrypt.compare(password, this.password);
 };
 

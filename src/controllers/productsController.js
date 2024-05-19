@@ -37,7 +37,7 @@ const createProduct = async (req, res) => {
     }
 
     const file = req.file;
-    console.log(req.body)
+    
     try {
 
         const product = new Products({

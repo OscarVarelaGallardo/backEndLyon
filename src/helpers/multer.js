@@ -20,7 +20,7 @@ async function handleFileUpload(req, res, next) {
         }
       
         // Si no se subió un archivo, pasar al siguiente middleware
-        console.log(req.body)
+     
         if (!req.file) {
             next();
             return;
