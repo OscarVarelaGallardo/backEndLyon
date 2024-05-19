@@ -1,7 +1,8 @@
 import express from "express"
 import {
     createShoppingCar,
-    getAllShoppingCars
+    getAllShoppingCars,
+    deleteShoppingCarById
    
 } from "../controllers/shoppingCarController.js";
 const router = express.Router();
@@ -10,6 +11,8 @@ const router = express.Router();
 router.post("/", createShoppingCar);
 
 router.post("/getAllCar", getAllShoppingCars);
+
+router.delete("/delete", deleteShoppingCarById);
 /*
 router.get("/", getShoppingCarById);
 
@@ -17,7 +20,6 @@ router.get("/", getAllShoppingCarts);
 
 router.put("/", updateShoppingCart);
 
-router.delete("/", deleteShoppingCart);
 
  */
 

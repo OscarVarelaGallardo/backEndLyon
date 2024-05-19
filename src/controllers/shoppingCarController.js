@@ -105,37 +105,45 @@ const getAllShoppingCars = async (req, res) => {
         res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
-/* 
-const updateShoppingCart = async (req, res) => {
-    const { id } = req.params; // Cambiado req.body a req.params
-    const { total, cartStatus, userId } = req.body; // Cambiado CartStatus a cartStatus
+const deleteShoppingCarById = async (req, res) => {
+    const { shoppingCarId } = req.body;
     try {
-        const shoppingCart = await ShoppingCarts.findByIdAndUpdate(id, { total, cartStatus, userId }, { new: true }); // Cambiado findOne a findByIdAndUpdate
-        if (!shoppingCart) {
-            return res.status(404).json({ status: 404, msg: `ShoppingCart con ID ${id} no encontrado` });
+        const carDetails = await CarDetails.find({ shoppingCartId: shoppingCarId });
+        console.log(carDetails);
+        if (!carDetails || carDetails.length === 0) {
+            return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados para eliminar' });
         }
-        res.status(200).json({ status: 200, msg: 'ShoppingCart actualizado correctamente', shoppingCart });
+
+        const getAllProducts = await Promise.all(carDetails.map(async (car) => {
+            const product = await Products.findById(car.productId);
+            const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/";
+            console.log(product);
+            if (!product) {
+                return null; // O maneja este caso como prefieras
+            }
+            return {
+                product: {
+                    name: product.name,
+                    description: product.description,
+                    price: product.price,
+                    //stock: product.stock,
+                    quantity: car.quantity,
+                    file: url + product.file
+                }
+            };
+        }));
+        const nonNullProducts = getAllProducts.filter(product => product !== null);
+        //eliminar 
+        await CarDetails.deleteMany({ shoppingCartId: shoppingCarId });
+        res.status(200).json({ status: 200,msg:"Carrito Eliminado correctamente",  });
     } catch (error) {
         console.error('Error en el servidor:', error);
         res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
     }
 }
 
-const deleteShoppingCart = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const shoppingCart = await ShoppingCarts.findOneAndDelete({ _id: id });
-        if (!shoppingCart) {
-            return res.status(404).json({ status: 404, msg: `ShoppingCart con ID ${id} no encontrado` });
-        }
-        res.status(200).json({ status: 200, msg: 'ShoppingCart eliminado correctamente' });
-    } catch (error) {
-        console.error('Error en el servidor:', error);
-        res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
-    }
-} */
-
 export {
     createShoppingCar,
-    getAllShoppingCars
+    getAllShoppingCars,
+    deleteShoppingCarById
 }
