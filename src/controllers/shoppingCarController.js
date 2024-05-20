@@ -107,6 +107,8 @@ const getAllShoppingCars = async (req, res) => {
 }
 const deleteShoppingCarById = async (req, res) => {
     const { shoppingCarId } = req.body;
+    console.log(req.body)
+    console.log(shoppingCarId);
     try {
       
        const findCar= await CarDetails.deleteMany({ shoppingCartId: shoppingCarId });
