@@ -110,7 +110,7 @@ const deleteShoppingCarById = async (req, res) => {
     try {
       
        const findCar= await CarDetails.deleteMany({ shoppingCartId: shoppingCarId });
-
+        console.log(findCar);
         if (!findCar) {
             return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
         }
