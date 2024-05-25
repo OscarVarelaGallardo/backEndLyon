@@ -3,6 +3,7 @@ import CarDetails from '../models/CartDetails.js';
 import Products from '../models/Products.js';
 
 
+
 const createShoppingCar = async (req, res) => {
     const { total, shoppingCartId, quantity, productId } = req.body;
     const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
@@ -125,20 +126,21 @@ const deleteShoppingCarById = async (req, res) => {
 }
 
 const deleteProductById = async (req, res) => {
-    const { shoppingCarId, productId } = req.body;
    
+    const { shoppingCartId, productId } = req.body;
     try {
-        const findCar = await CarDetails.find({ shoppingCartId: shoppingCarId});
-        if(findCar){
-            const productFind = await CarDetails.findById(productId);
-            await CarDetails.deleteOne(productFind);
-            if (!productFind) {
-                return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
-            }
-            res.status(200).json({ status: 200, msg: "Producto eliminado correctamente" });
+        const findCar = await CarDetails.find(shoppingCartId);
+        console.log(findCar);
+      if (findCar.length === 0) {
+            return res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
         }
-     
-       res.status(404).json({ status: 404, msg: 'No hay Carritos almacenados' });
+        const productFind = await CarDetails.findOne({ productId: productId });
+      
+        if (!productFind) {
+            return res.status(404).json({ status: 404, msg: 'Producto no encontrado' });
+        }
+        await CarDetails.deleteOne({ productId: productId }); 
+        res.status(200).json({ status: 200, msg: "Producto eliminado correctamente" });
     } catch (error) {
         console.error('Error en el servidor:', error);
         res.status(500).json({ status: 500, msg: 'Error en el servidor', error: error });
