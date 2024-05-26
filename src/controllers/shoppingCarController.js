@@ -90,6 +90,7 @@ const getAllShoppingCars = async (req, res) => {
             }
             return {
                 product: {
+                    id: product._id,
                     name: product.name,
                     description: product.description,
                     price: product.price,
