@@ -5,13 +5,11 @@ import Products from '../models/Products.js';
 
 
 const createShoppingCar = async (req, res) => {
-    //const { total, shoppingCartId, quantity, productId } = req.body;
+    const { total, shoppingCartId, quantity, productId } = req.body;
     //simular datos 
-    const { total, shoppingCartId, quantity, productId } = { total: 100, shoppingCartId: '65fbc9de5bfd6d54ae2b5b46', quantity: 1, productId: '662f3097561d49e3e7050e38' };
     const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
     if (!shoppingCartexist) {
         try {
-            console.log('entro');
             const shoppingCart = new CarDetails({ total, shoppingCartId, quantity, productId });
             if (shoppingCart.total === 0) {
                 return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
@@ -29,7 +27,6 @@ const createShoppingCar = async (req, res) => {
             await product.save();
             await shoppingCart.save();
             //regresar el carrito de compras
-            console.log(product);
         const getAllProducts = await Promise.all([product].map(async (car) => {
             console.log(car);
             let product = await Products.findById(car._id);

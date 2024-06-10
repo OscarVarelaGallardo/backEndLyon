@@ -7,18 +7,14 @@ import companiesRoutes from './src/routes/companiesRoutes.js'
 import categoryRoutes from './src/routes/categoryRoutes.js'
 import rolRoutes from './src/routes/rolRoutes.js'
 import adminRoutes from './src/routes/adminRoutes.js'
-
+import orderRoutes from './src/routes/ordersRoutes.js'
 import carRoutes from './src/routes/shoppingCarRoutes.js';
 import { transporter } from './src/helpers/nodemailer.js'
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './src/config/swagger.js';
 import seeders from './src/config/seeders.js';
-import db from './src/config/db.js'
-
 const app = express()
-
-
 
 app.use(cors({
     origin: '*',
@@ -61,7 +57,7 @@ app.use('/category', categoryRoutes);
 app.use('/rols', rolRoutes);
 app.use('/admin', adminRoutes);
 app.use('/shoppingCar', carRoutes)
-
+app.use('/orders', orderRoutes)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
