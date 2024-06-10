@@ -5,11 +5,13 @@ import Products from '../models/Products.js';
 
 
 const createShoppingCar = async (req, res) => {
-    const { total, shoppingCartId, quantity, productId } = req.body;
+    //const { total, shoppingCartId, quantity, productId } = req.body;
+    //simular datos 
+    const { total, shoppingCartId, quantity, productId } = { total: 100, shoppingCartId: '65fbc9de5bfd6d54ae2b5b46', quantity: 1, productId: '662f3097561d49e3e7050e38' };
     const shoppingCartexist = await ShoppingCarts.findById(shoppingCartId);
     if (!shoppingCartexist) {
         try {
-
+            console.log('entro');
             const shoppingCart = new CarDetails({ total, shoppingCartId, quantity, productId });
             if (shoppingCart.total === 0) {
                 return res.status(400).json({ status: 400, msg: 'El total no puede ser 0' });
@@ -26,9 +28,30 @@ const createShoppingCar = async (req, res) => {
             product.quantity -= quantity;
             await product.save();
             await shoppingCart.save();
-            //saber cuandtos productos selecciono
+            //regresar el carrito de compras
+            console.log(product);
+        const getAllProducts = await Promise.all([product].map(async (car) => {
+            console.log(car);
+            let product = await Products.findById(car._id);
+            const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/";
 
-            res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
+            if (!product) {
+                return null; // O maneja este caso como prefieras
+            }
+            return product = {
+                //todos los datos del producto
+                id: product._id,
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                stock: product.stock,
+                quantity: car.quantity,
+                file: url + product.file,
+                brand: product.brand ? product.brand : null,
+            };
+        }
+        ));
+            res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente',shoppingCart,   getAllProducts });
         } catch (error) {
             console.error('Error en el servidor:', error);
             res.status(500).json({ status: 500, msg: 'Error al crear el carrito de compras', error: error });
@@ -54,7 +77,29 @@ const createShoppingCar = async (req, res) => {
 
 
             await shoppingCart.save();
-            res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente', shoppingCart });
+            //devolver el carrito de compras agregando datos de productos
+            const getAllProducts = await Promise.all([product].map(async (car) => {
+                const product = await Products.findById(car.productId);
+                const url = "https://dvhdecadrkjnssqtlncz.supabase.co/storage/v1/object/public/img/";
+
+                if (!product) {
+                    return null; // O maneja este caso como prefieras
+                }
+                return product = {
+                    //todos los datos del producto
+                    id: product._id,
+                    name: product.name,
+                    description: product.description,
+                    price: product.price,
+                    stock: product.stock,
+                    quantity: car.quantity,
+                    file: url + product.file,
+                    brand: product.brand ? product.brand : null,
+                };
+            }
+            ));
+
+            res.status(201).json({ status: 201, msg: 'ShoppingCart creado correctamente2'    , getAllProducts });
         }
         catch (error) {
             console.error('Error en el servidor:', error);
